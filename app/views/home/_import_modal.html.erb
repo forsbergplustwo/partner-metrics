@@ -1,0 +1,35 @@
+<% if user_signed_in? %>
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content text-center">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Import Data</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-xs-12 col-md-10 col-md-offset-1">
+              <p>In your Shopify Partners Dashboard, click the <b>Export payouts as csv</b> button on the <b>Payouts</b> page. Then drop the received ZIP file here:</p>
+                <%= form_tag(import_path, id: "import_form", class: "directUpload top-buffer", data: { 'form-data' => (@s3_direct_post.fields), 'url' => @s3_direct_post.url, 'host' => URI.parse(@s3_direct_post.url).host }) do %>
+                <span class="btn btn-primary btn-file" style="margin-bottom: 15px;">
+                  Select ZIP or CSV file<%= file_field_tag :file %>
+                </span>
+              <% end %>
+              <% if @metrics.blank? %>
+                <p style="margin-top: 10px;">Note: Your first import can take 15-20 minutes to process.</p>
+              <% else %>
+                <p style="margin-top: 10px;">Pro Tip: Drop your payment file onto any page. Import will then start automatically in the background.</p>
+              <% end %>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <a href="<%= reset_metrics_path %>" onclick="return confirm('Resetting metrics will delete all previously calculated metrics. Once reset, you will need to import data again. Are you sure?');" class="form-control-static pull-left btn btn-danger btn-outline">Reset metrics</a>
+          <a href="https://github.com/forsbergplustwo/partner-metrics-for-shopify/blob/master/app/models/payment_history.rb#L32" target="_blank" class="form-control-static pull-left btn btn-default btn-outline">How are metrics calculated?</a>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

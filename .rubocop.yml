@@ -1,0 +1,1 @@
+inherit_from: "../linter-configs/rubocop/.rubocop.yml"

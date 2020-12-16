@@ -1,0 +1,73 @@
+<div id="heading_row" class="row">
+    <%= render "heading_row", title: "Overview" %>
+  </div>
+
+  <% if !@metrics.blank? %>
+
+  <div class="row" id="chart_tile">
+    <%= render "chart_tile" %>
+  </div>
+
+  <div class="row" id="metric_tiles">
+    <%= render "metric_tiles" %>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <%= pie_chart current_user.metrics.where(metric_date: 12.months.ago..@date).group(:app_title).sum(:revenue) %>
+        </div>
+        <div class="panel-footer text-center">
+          <h5>Revenue per Product (Last 12 Months)</h5>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <%= pie_chart current_user.payment_histories.where(payment_date: 12.months.ago..@date).group(:shop_country).order('sum_revenue DESC').sum(:revenue) %>
+        </div>
+        <div class="panel-footer text-center">
+          <h5>Revenue per Country (Last 12 Months)</h5>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <%= column_chart current_user.metrics.where(metric_date: 12.months.ago..@date).group(:charge_type).sum(:revenue) %>
+        </div>
+        <div class="panel-footer text-center">
+          <h5>Revenue per Charge Type (Last 12 Months)</h5>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <%= column_chart current_user.metrics.where(metric_date: @first_metric_date..@date).group(:charge_type).sum(:revenue) %>
+        </div>
+        <div class="panel-footer text-center">
+          <h5>Revenue per Charge Type (TOTAL)</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% else %>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="col-sm-12 text-center">
+              <h2><i class="fa fa-line-chart" style="font-size: 100px" aria-hidden="true"></i></h2>
+              <h2>Welcome!</h2>
+              <p>Click the <b>Import Data</b> button above to get started.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <%= render partial: 'import_modal' %>

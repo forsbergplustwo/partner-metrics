@@ -1,0 +1,1 @@
+extends: $HOME/linter-configs/lefthook/lefthook-extend.yml
