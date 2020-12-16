@@ -106,6 +106,7 @@ class HomeController < ApplicationController
     filename = params[:file]
     current_user.update(import: "Importing", import_status: 100)
     Resque.enqueue(ImportWorker, current_user.id, filename)
+    head :ok
   end
 
   def import_status
