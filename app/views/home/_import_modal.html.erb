@@ -11,7 +11,7 @@
           <div class="row">
             <div class="col-xs-12 col-md-10 col-md-offset-1">
               <p>In your Shopify Partners Dashboard, click the <b>Export payouts as csv</b> button on the <b>Payouts</b> page. Then drop the received ZIP file here:</p>
-                <%= form_tag(import_path, id: "import_form", class: "directUpload top-buffer", data: { 'form-data' => (@s3_direct_post.fields), 'url' => @s3_direct_post.url, 'host' => URI.parse(@s3_direct_post.url).host }) do %>
+              <%= form_tag(import_path, id: "import_form", class: "directUpload top-buffer", data: { 'form-data' => (@s3_direct_post.fields), 'url' => @s3_direct_post.url, 'host' => URI.parse(@s3_direct_post.url).host }) do %>
                 <span class="btn btn-primary btn-file" style="margin-bottom: 15px;">
                   Select ZIP or CSV file<%= file_field_tag :file %>
                 </span>
@@ -23,6 +23,15 @@
               <% end %>
             </div>
           </div>
+
+          <div class="row">
+            <%= form_tag(partner_api_credentials_path, id: "partner_api_form", class: "", data: { }) do %>
+              Organization ID <%= text_field_tag 'partner_api_organization_id', current_user.partner_api_organization_id  %>
+              Access token <%= password_field_tag 'partner_api_access_token', current_user.partner_api_access_token  %>
+              <%= submit_tag %>
+            <% end %>
+          </div>
+
         </div>
         <div class="modal-footer">
           <a href="<%= reset_metrics_path %>" onclick="return confirm('Resetting metrics will delete all previously calculated metrics. Once reset, you will need to import data again. Are you sure?');" class="form-control-static pull-left btn btn-danger btn-outline">Reset metrics</a>

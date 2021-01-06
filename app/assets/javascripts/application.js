@@ -142,6 +142,30 @@ setupUploads = function () {
   })
 }
 
+var setupPartnerAPI
+setupPartnerAPI = function () {
+  $(function () {
+    if ($('#progress-bar-partner-api').length == 0) {
+      $('#partner_api_form').on('submit', function (e) {
+        e.preventDefault();
+        $.ajax({
+          type: 'POST',
+          url: e.target.action,
+          dataType: 'json',
+          data: $(this).serialize(),
+          timeout: 3000,
+          success: function (data) {
+            console.log('success')
+          },
+          error: function (xhr) {
+            console.log('error')
+          }
+        })
+      })
+    }
+  })
+}
+
 var toggleLoading
 toggleLoading = function () {
   $('#import_progress').show()

@@ -102,6 +102,11 @@ class HomeController < ApplicationController
     render json: @metrics
   end
 
+  def save_partner_api_credentials
+    current_user.update!(partner_api_access_token: params[:partner_api_access_token], partner_api_organization_id: params[:partner_api_organization_id])
+    head :ok
+  end
+
   def import
     filename = params[:file]
     current_user.update(import: "Importing", import_status: 100)
