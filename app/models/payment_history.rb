@@ -1,4 +1,6 @@
 require "zip"
+require "graphql/client"
+require "graphql/client/http"
 
 class PaymentHistory < ActiveRecord::Base
   belongs_to :user
@@ -107,6 +109,44 @@ class PaymentHistory < ActiveRecord::Base
       Rails.logger.info(e.message)
       Rails.logger.info(e.backtrace.join("\n"))
       raise e
+    end
+
+    def import_partner_api(current_user, last_calculated_metric_date)
+      current_user.payment_histories.where("payment_date > ?", last_calculated_metric_date).delete_all
+
+      http = GraphQL::Client::HTTP.new("https://partners.shopify.com/#{current_user.partner_api_organization_id}/api/unstable/graphql.json")  do
+        def headers(context)
+          { "X-Shopify-Access-Token": @partner_api_access_token }
+        end
+      end
+      http.instance_variable_set(:@partner_api_access_token, current_user.partner_api_access_token) # dirty
+
+      # So the schema is not requested every time the client is initialized we store it on disk.
+      # If the schema changes, run GraphQL::Client.dump_schema(http, "config/partner-api-schema.json")
+      schema = GraphQL::Client.load_schema("config/partner-api-schema.json")
+      client = GraphQL::Client.new(schema: schema, execute: http)
+
+      Query = client.parse <<-'GRAPHQL'
+        {
+          transactions(createdAtMin: "2000-01-01T20:47:55Z") {
+            edges {
+              node {
+                id,
+                createdAt,
+                ... on AppSubscriptionSale {
+                  netAmount {
+                    amount
+                  }
+                }
+              }
+            },
+            pageInfo {
+              hasNextPage
+            }
+          }
+        }
+      GRAPHQL
+      result = client.query(Query)
     end
 
     def calculate_metrics(current_user)

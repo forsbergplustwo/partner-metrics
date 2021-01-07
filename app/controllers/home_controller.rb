@@ -103,7 +103,13 @@ class HomeController < ApplicationController
   end
 
   def save_partner_api_credentials
-    current_user.update!(partner_api_access_token: params[:partner_api_access_token], partner_api_organization_id: params[:partner_api_organization_id])
+    current_user.update!(
+      partner_api_access_token: params[:partner_api_access_token],
+      partner_api_organization_id: params[:partner_api_organization_id],
+      import: "Importing",
+      import_status: 100
+    )
+    Resque.enqueue(ImportWorker, current_user.id)
     head :ok
   end
 
