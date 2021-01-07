@@ -35,6 +35,7 @@ gem "smarter_csv"
 gem "spring", group: :development
 gem "uglifier", ">= 1.3.0"
 gem "unicorn"
+gem "graphql"
 
 group :development, :test do
   # Code analysis / linters
