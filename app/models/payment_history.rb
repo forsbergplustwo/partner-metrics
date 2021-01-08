@@ -3,6 +3,81 @@ require "graphql/client"
 require "graphql/client/http"
 
 class PaymentHistory < ActiveRecord::Base
+  include ShopifyPartnerAPI
+
+  TransactionsQuery = ShopifyPartnerAPI.client.parse <<-'GRAPHQL'
+        query($createdAtMin: DateTime, $cursor: String) {
+          transactions(createdAtMin: $createdAtMin, after: $cursor) {
+            edges {
+              cursor
+              node {
+                id,
+                createdAt,
+                # Apps
+                ... on AppSubscriptionSale {
+                  netAmount {
+                    amount
+                  },
+                  app {
+                    name
+                  },
+                  shop {
+                    myshopifyDomain
+                  }
+                },
+                ... on AppOneTimeSale {
+                  netAmount {
+                    amount
+                  },
+                  app {
+                    name
+                  },
+                  shop {
+                    myshopifyDomain
+                  }
+                },
+                ... on AppSaleAdjustment {
+                  netAmount {
+                    amount
+                  },
+                  app {
+                    name
+                  },
+                  shop {
+                    myshopifyDomain
+                  }
+                },
+                ... on AppSaleCredit {
+                  netAmount {
+                    amount
+                  },
+                  app {
+                    name
+                  },
+                  shop {
+                    myshopifyDomain
+                  }
+                },
+                ... on AppUsageSale {
+                  netAmount {
+                    amount
+                  },
+                  app {
+                    name
+                  },
+                  shop {
+                    myshopifyDomain
+                  }
+                }
+              }
+            },
+            pageInfo {
+                hasNextPage
+            }
+          }
+        }
+  GRAPHQL
+
   belongs_to :user
   validates :user_id, presence: true
 
@@ -114,39 +189,35 @@ class PaymentHistory < ActiveRecord::Base
     def import_partner_api(current_user, last_calculated_metric_date)
       current_user.payment_histories.where("payment_date > ?", last_calculated_metric_date).delete_all
 
-      http = GraphQL::Client::HTTP.new("https://partners.shopify.com/#{current_user.partner_api_organization_id}/api/unstable/graphql.json")  do
-        def headers(context)
-          { "X-Shopify-Access-Token": @partner_api_access_token }
-        end
+      transactions = []
+      cursor = ""
+      has_next_page = true
+      created_at_min = last_calculated_metric_date.strftime('%Y-%m-%dT%H:%M:%S.%L%z') # ISO-8601
+
+      while has_next_page == true do
+        results = ShopifyPartnerAPI.client.query(
+          TransactionsQuery,
+          variables: { createdAtMin: created_at_min, cursor: cursor },
+          context: { access_token: current_user.partner_api_access_token, organization_id: current_user.partner_api_organization_id })
+        return if results.data == nil
+        transactions = transactions.concat(results.data.transactions.edges)
+        has_next_page = results.data.transactions.page_info.has_next_page
+        cursor = results.data.transactions.edges.last.cursor
       end
-      http.instance_variable_set(:@partner_api_access_token, current_user.partner_api_access_token) # dirty
 
-      # So the schema is not requested every time the client is initialized we store it on disk.
-      # If the schema changes, run GraphQL::Client.dump_schema(http, "config/partner-api-schema.json")
-      schema = GraphQL::Client.load_schema("config/partner-api-schema.json")
-      client = GraphQL::Client.new(schema: schema, execute: http)
+      transactions.each do |transaction|
+        created_at = Date.parse(transaction.node.created_at)
 
-      Query = client.parse <<-'GRAPHQL'
-        {
-          transactions(createdAtMin: "2000-01-01T20:47:55Z") {
-            edges {
-              node {
-                id,
-                createdAt,
-                ... on AppSubscriptionSale {
-                  netAmount {
-                    amount
-                  }
-                }
-              }
-            },
-            pageInfo {
-              hasNextPage
-            }
-          }
-        }
-      GRAPHQL
-      result = client.query(Query)
+        next if created_at <= last_calculated_metric_date
+
+        payment_date = created_at
+        charge_type = "recurring_revenue"
+        app_title = transaction.node.app.name
+        shop = transaction.node.shop.myshopify_domain
+        revenue = transaction.node.net_amount.amount
+
+        PaymentHistory.create!(user_id: current_user.id, payment_date: payment_date, charge_type: charge_type, app_title: app_title, shop: shop, revenue: revenue)
+      end
     end
 
     def calculate_metrics(current_user)
