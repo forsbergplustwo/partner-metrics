@@ -6,76 +6,132 @@ class PaymentHistory < ActiveRecord::Base
   include ShopifyPartnerAPI
 
   TransactionsQuery = ShopifyPartnerAPI.client.parse <<-'GRAPHQL'
-        query($createdAtMin: DateTime, $cursor: String) {
-          transactions(createdAtMin: $createdAtMin, after: $cursor) {
-            edges {
-              cursor
-              node {
-                id,
-                createdAt,
-                # Apps
-                ... on AppSubscriptionSale {
-                  netAmount {
-                    amount
-                  },
-                  app {
-                    name
-                  },
-                  shop {
-                    myshopifyDomain
-                  }
-                },
-                ... on AppOneTimeSale {
-                  netAmount {
-                    amount
-                  },
-                  app {
-                    name
-                  },
-                  shop {
-                    myshopifyDomain
-                  }
-                },
-                ... on AppSaleAdjustment {
-                  netAmount {
-                    amount
-                  },
-                  app {
-                    name
-                  },
-                  shop {
-                    myshopifyDomain
-                  }
-                },
-                ... on AppSaleCredit {
-                  netAmount {
-                    amount
-                  },
-                  app {
-                    name
-                  },
-                  shop {
-                    myshopifyDomain
-                  }
-                },
-                ... on AppUsageSale {
-                  netAmount {
-                    amount
-                  },
-                  app {
-                    name
-                  },
-                  shop {
-                    myshopifyDomain
-                  }
-                }
+    query($createdAtMin: DateTime, $cursor: String) {
+      transactions(createdAtMin: $createdAtMin, after: $cursor) {
+        edges {
+          cursor
+          node {
+            id,
+            createdAt,
+            # Apps
+            ... on AppSubscriptionSale {
+              netAmount {
+                amount
+              },
+              app {
+                name
+              },
+              shop {
+                myshopifyDomain
               }
             },
-            pageInfo {
-                hasNextPage
-            }
+            ... on AppOneTimeSale {
+              netAmount {
+                amount
+              },
+              app {
+                name
+              },
+              shop {
+                myshopifyDomain
+              }
+            },
+            ... on AppSaleAdjustment {
+              netAmount {
+                amount
+              },
+              app {
+                name
+              },
+              shop {
+                myshopifyDomain
+              }
+            },
+            ... on AppSaleCredit {
+              netAmount {
+                amount
+              },
+              app {
+                name
+              },
+              shop {
+                myshopifyDomain
+              }
+            },
+            ... on AppUsageSale {
+              netAmount {
+                amount
+              },
+              app {
+                name
+              },
+              shop {
+                myshopifyDomain
+              }
+            },
+            # skipped LegacyTransaction, not sure what it is
+            ... on ReferralAdjustment {
+              amount {
+                amount
+              },
+              shop {
+                myshopifyDomain
+              }
+            },
+            ... on ReferralTransaction {
+              amount {
+                amount
+              },
+              shopNonNullable: shop {
+                myshopifyDomain
+              }
+            },
+            ... on ServiceSale {
+              netAmount {
+                amount
+              },
+              shop {
+                myshopifyDomain
+              }
+            },
+            ... on ServiceSaleAdjustment {
+              netAmount {
+                amount
+              },
+              shop {
+                myshopifyDomain
+              }
+            },
+            # skipped TaxTransaction
+            ... on ThemeSale {
+              netAmount {
+                amount
+              },
+              theme {
+                name # may not match CSV import behaviour
+              },
+              shop {
+                myshopifyDomain
+              }
+            },
+            ... on ThemeSaleAdjustment {
+              netAmount {
+                amount
+              },
+              theme {
+                name # may not match CSV import behaviour
+              },
+              shop {
+                myshopifyDomain
+              }
+            },
           }
+        },
+        pageInfo {
+            hasNextPage
         }
+      }
+    }
   GRAPHQL
 
   belongs_to :user
@@ -206,15 +262,42 @@ class PaymentHistory < ActiveRecord::Base
       end
 
       transactions.each do |transaction|
-        created_at = Date.parse(transaction.node.created_at)
+        node = transaction.node
+
+        created_at = Date.parse(node.created_at)
 
         next if created_at <= last_calculated_metric_date
 
         payment_date = created_at
-        charge_type = "recurring_revenue"
-        app_title = transaction.node.app.name
-        shop = transaction.node.shop.myshopify_domain
-        revenue = transaction.node.net_amount.amount
+        charge_type = lookup_charge_type(node.__typename)
+
+        revenue = case node.__typename
+                  when 'ReferralAdjustment',
+                    'ReferralTransaction'
+                    node.amount.amount
+                  else
+                    node.net_amount.amount
+                  end
+
+        app_title = case node.__typename
+                    when 'ReferralAdjustment',
+                      'ReferralTransaction',
+                      'ServiceSale',
+                      'ServiceSaleAdjustment'
+                      nil
+                    when 'ThemeSaleAdjustment',
+                      'ThemeSale'
+                      node.theme.name
+                    else
+                      node.app.name
+                    end
+
+        shop = case node.__typename
+               when 'ReferralTransaction'
+                 node.shopNonNullable.myshopify_domain
+               else
+                 node.shop.myshopify_domain
+               end
 
         PaymentHistory.create!(user_id: current_user.id, payment_date: payment_date, charge_type: charge_type, app_title: app_title, shop: shop, revenue: revenue)
       end
@@ -338,6 +421,30 @@ class PaymentHistory < ActiveRecord::Base
       Rails.logger.info(e.message)
       Rails.logger.info(e.backtrace.join("\n"))
       raise e
+    end
+
+    private
+
+    def lookup_charge_type(api_type)
+      case api_type
+      when "AppSubscriptionSale",
+        "AppUsageSale"
+        "recurring_revenue"
+      when "AppOneTimeSale",
+        "ServiceSale",
+        "ThemeSale"
+        "onetime_revenue"
+      when "ReferralTransaction",
+        "affiliate_revenue"
+      when "AppSaleAdjustment",
+      "AppSaleCredit",
+        "ReferralAdjustment",
+        "ServiceSaleAdjustment",
+        "ThemeSaleAdjustment"
+        "refund"
+      else
+        api_type
+      end
     end
   end
 end
