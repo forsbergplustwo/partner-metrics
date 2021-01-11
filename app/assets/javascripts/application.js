@@ -69,7 +69,7 @@ setupUploads = function () {
         var progressBarLabel = $("<div id='progress-label'>&nbsp;</div>")
         var progressBar = $("<div id='progress-bar' class='progress-bar progress-bar-info progress-bar-striped active' role='progressbar' aria-valuenow='0' aria-valuemin='0' aria-valuemax='100' style='width:0%'>")
         var barContainer = $("<div class='progress'></div>").append(progressBar)
-        var progressBarAfter = $('.btn-file')
+        var progressBarAfter = $('#progressPlaceholder')
         progressBarAfter.after(barContainer)
         progressBarAfter.after(progressBarLabel)
         fileInput.fileupload({
@@ -151,11 +151,11 @@ setupPartnerAPI = function () {
         $.ajax({
           type: 'POST',
           url: e.target.action,
-          dataType: 'json',
           data: $(this).serialize(),
           timeout: 3000,
           success: function (data) {
             console.log('success')
+            pollImportStatus()
           },
           error: function (xhr) {
             console.log('error')

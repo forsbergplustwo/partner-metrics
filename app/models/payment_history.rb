@@ -255,6 +255,7 @@ class PaymentHistory < ActiveRecord::Base
           TransactionsQuery,
           variables: { createdAtMin: created_at_min, cursor: cursor },
           context: { access_token: current_user.partner_api_access_token, organization_id: current_user.partner_api_organization_id })
+        raise StandardError.new(results.errors.messages.map{|k,v| "#{k}=#{v}"}.join('&')) if results.errors.any?
         return if results.data == nil
         transactions = transactions.concat(results.data.transactions.edges)
         has_next_page = results.data.transactions.page_info.has_next_page
@@ -268,10 +269,12 @@ class PaymentHistory < ActiveRecord::Base
 
         next if created_at <= last_calculated_metric_date
 
-        payment_date = created_at
-        charge_type = lookup_charge_type(node.__typename)
+        record = { user_id: current_user.id }
 
-        revenue = case node.__typename
+        record.payment_date = created_at
+        record.charge_type = lookup_charge_type(node.__typename)
+
+        record.revenue = case node.__typename
                   when 'ReferralAdjustment',
                     'ReferralTransaction'
                     node.amount.amount
@@ -279,7 +282,7 @@ class PaymentHistory < ActiveRecord::Base
                     node.net_amount.amount
                   end
 
-        app_title = case node.__typename
+        record.app_title = case node.__typename
                     when 'ReferralAdjustment',
                       'ReferralTransaction',
                       'ServiceSale',
@@ -292,15 +295,20 @@ class PaymentHistory < ActiveRecord::Base
                       node.app.name
                     end
 
-        shop = case node.__typename
+        record.shop = case node.__typename
                when 'ReferralTransaction'
                  node.shopNonNullable.myshopify_domain
                else
                  node.shop.myshopify_domain
                end
 
-        PaymentHistory.create!(user_id: current_user.id, payment_date: payment_date, charge_type: charge_type, app_title: app_title, shop: shop, revenue: revenue)
+        PaymentHistory.create!(record)
       end
+    rescue => e
+      current_user.update(import: "Failed", import_status: 100)
+      Rails.logger.info(e.message)
+      Rails.logger.info(e.backtrace.join("\n"))
+      raise e
     end
 
     def calculate_metrics(current_user)

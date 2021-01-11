@@ -133,7 +133,14 @@ class HomeController < ApplicationController
     elsif label.include?("Failed")
       amount_done = current_user.import_status
       reload = true
-      flash[:error] = "Something went wrong during import! Make sure the file you are uploading was exported using <a href='export-button.png' target='_blank'>this exact button</a> within your Shopify Partner Dashboard. Your Partner Dashboard in Shopify must be in English, otherwise Shopify changes the column names in the CSV files which causes problems.<br>If troubles continue, please feel free to get in contact on: <a href='mailto:bjorn@forsbergplustwo.com' target='_blank'>bjorn@forsbergplustwo.com</a>"
+      flash[:error] = <<-'HTML'
+        <h3><strong>Something went wrong during import!</strong></h3>
+        <h3>Partner API</h3>
+        <p>If you are using Partner API credentials, check the Organization ID and Access token you entered are correct.</p>
+        <h3>CSV export</h3>
+        <p>If you uploaded a CSV, make sure the file you are uploading was exported using <a href='export-button.png' target='_blank'>this exact button</a> within your Shopify Partner Dashboard. Your Partner Dashboard in Shopify must be in English, otherwise Shopify changes the column names in the CSV files which causes problems.</p>
+        <br>If troubles continue, please feel free to get in contact on: <a href='mailto:bjorn@forsbergplustwo.com' target='_blank'>bjorn@forsbergplustwo.com</a>
+      HTML
     end
     flash.keep
     render json: {

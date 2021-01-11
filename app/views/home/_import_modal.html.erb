@@ -42,11 +42,16 @@
                   Select ZIP or CSV file<%= file_field_tag :file %>
                 </span>
               <% end %>
+              <p style="margin-top: 10px;">Pro Tip: Drop your payment file onto any page. Import will then start automatically in the background.</p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-xs-12 col-md-12">
               <% if @metrics.blank? %>
-                <p style="margin-top: 10px;">Note: Your first import can take 15-20 minutes to process.</p>
-              <% else %>
-                <p style="margin-top: 10px;">Pro Tip: Drop your payment file onto any page. Import will then start automatically in the background.</p>
+                <p style="margin-top: 10px;"><strong>Note: Your first import can take 15-20 minutes to process.</strong></p>
               <% end %>
+              <div id="progressPlaceholder"></div>
             </div>
           </div>
 
