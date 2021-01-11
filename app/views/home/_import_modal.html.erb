@@ -8,8 +8,34 @@
           <h4 class="modal-title" id="myModalLabel">Import Data</h4>
         </div>
         <div class="modal-body">
+
           <div class="row">
             <div class="col-xs-12 col-md-10 col-md-offset-1">
+              <p>
+                You can either use the Partner API to automatically import data every day or manually upload an export
+              </p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-xs-6 col-md-6">
+              <h3>Automatic Import</h3>
+              <p>In your Shopify Partners Dashboard, <a href="https://shopify.dev/docs/partner-api/getting-started#create-an-api-client" target="_blank">create an API client</a>. Then enter the details here:</p>
+              <%= form_tag(partner_api_credentials_path, id: "partner_api_form", class: "", data: { }) do %>
+                <div class="form-group">
+                  <label for="partner_api_organization_id">Organization ID</label>
+                  <%= text_field_tag 'partner_api_organization_id', current_user.partner_api_organization_id, class: "form-control", placeholder: "Partner API Organization ID", required: true %>
+                </div>
+                <div class="form-group">
+                  <label for="partner_api_access_token">Access token</label>
+                  <%= password_field_tag 'partner_api_access_token', current_user.partner_api_access_token, class: "form-control", placeholder: "Partner API Access token", required: true %>
+                </div>
+                <%= submit_tag "Save details", class: "btn btn-primary" %>
+              <% end %>
+              <p style="margin-top: 10px;">Pro Tip: Once you've saved your Partner API details and performed the first import, future imports will happen automatically every day.</p>
+            </div>
+            <div class="col-xs-6 col-md-6">
+              <h3>Manual Upload</h3>
               <p>In your Shopify Partners Dashboard, click the <b>Export payouts as csv</b> button on the <b>Payouts</b> page. Then drop the received ZIP file here:</p>
               <%= form_tag(import_path, id: "import_form", class: "directUpload top-buffer", data: { 'form-data' => (@s3_direct_post.fields), 'url' => @s3_direct_post.url, 'host' => URI.parse(@s3_direct_post.url).host }) do %>
                 <span class="btn btn-primary btn-file" style="margin-bottom: 15px;">
@@ -22,14 +48,6 @@
                 <p style="margin-top: 10px;">Pro Tip: Drop your payment file onto any page. Import will then start automatically in the background.</p>
               <% end %>
             </div>
-          </div>
-
-          <div class="row">
-            <%= form_tag(partner_api_credentials_path, id: "partner_api_form", class: "", data: { }) do %>
-              Organization ID <%= text_field_tag 'partner_api_organization_id', current_user.partner_api_organization_id  %>
-              Access token <%= password_field_tag 'partner_api_access_token', current_user.partner_api_access_token  %>
-              <%= submit_tag %>
-            <% end %>
           </div>
 
         </div>
