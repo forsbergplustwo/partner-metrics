@@ -35,7 +35,6 @@ ActiveRecord::Schema.define(version: 20210106150630) do
     t.integer  "user_id"
   end
 
-  add_index "metrics", ["metric_date"], name: "index_metrics_on_metric_date", using: :btree
   add_index "metrics", ["user_id", "app_title"], name: "index_metrics_on_user_id_and_app_title", using: :btree
   add_index "metrics", ["user_id", "charge_type"], name: "index_metrics_on_user_id_and_charge_type", using: :btree
   add_index "metrics", ["user_id", "metric_date"], name: "index_metrics_on_user_id_and_metric_date", using: :btree
@@ -45,34 +44,33 @@ ActiveRecord::Schema.define(version: 20210106150630) do
     t.text     "charge_type"
     t.text     "app_title"
     t.text     "shop"
-    t.decimal  "revenue",      precision: 8, scale: 2
+    t.decimal  "revenue",                  precision: 8, scale: 2
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_id"
-    t.string   "shop_country"
+    t.string   "shop_country", limit: 255
   end
 
-  add_index "payment_histories", ["payment_date"], name: "index_payment_histories_on_payment_date", using: :btree
   add_index "payment_histories", ["user_id", "app_title"], name: "index_payment_histories_on_user_id_and_app_title", using: :btree
   add_index "payment_histories", ["user_id", "charge_type"], name: "index_payment_histories_on_user_id_and_charge_type", using: :btree
   add_index "payment_histories", ["user_id", "payment_date", "charge_type", "app_title", "shop"], name: "payment_histories_full_index", using: :btree
   add_index "payment_histories", ["user_id", "payment_date"], name: "index_payment_histories_on_user_id_and_payment_date", using: :btree
 
   create_table "users", force: :cascade do |t|
-    t.string   "email",                       default: "", null: false
-    t.string   "encrypted_password",          default: "", null: false
-    t.string   "reset_password_token"
+    t.string   "email",                       limit: 255, default: "", null: false
+    t.string   "encrypted_password",          limit: 255, default: "", null: false
+    t.string   "reset_password_token",        limit: 255
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",               default: 0,  null: false
+    t.integer  "sign_in_count",                           default: 0,  null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.inet     "current_sign_in_ip"
     t.inet     "last_sign_in_ip"
-    t.datetime "created_at",                               null: false
-    t.datetime "updated_at",                               null: false
-    t.string   "import"
-    t.integer  "import_status",               default: 0
+    t.datetime "created_at",                                           null: false
+    t.datetime "updated_at",                                           null: false
+    t.string   "import",                      limit: 255
+    t.integer  "import_status",                           default: 0
     t.string   "partner_api_access_token"
     t.integer  "partner_api_organization_id"
   end
