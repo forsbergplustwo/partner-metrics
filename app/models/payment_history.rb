@@ -300,7 +300,7 @@ class PaymentHistory < ActiveRecord::Base
 
           record.shop = case node.__typename
             when "ReferralTransaction"
-              node.shop_NonNullable.myshopify_domain
+              node.shop_non_nullable.myshopify_domain
             else
               node.shop.myshopify_domain
           end
