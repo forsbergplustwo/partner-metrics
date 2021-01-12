@@ -5,6 +5,8 @@ require "graphql/client/http"
 class PaymentHistory < ActiveRecord::Base
   include ShopifyPartnerAPI
 
+  THROTTLE_MIN_TIME_PER_CALL = 0.3
+
   TransactionsQuery = ShopifyPartnerAPI.client.parse <<-'GRAPHQL'
     query($createdAtMin: DateTime, $cursor: String) {
       transactions(createdAtMin: $createdAtMin, after: $cursor, first: 100) {
@@ -441,7 +443,7 @@ class PaymentHistory < ActiveRecord::Base
     def throttle(start_time)
       stop_time = Time.zone.now
       processing_duration = stop_time - start_time
-      wait_time = (0.3 - processing_duration).round(1)
+      wait_time = (THROTTLE_MIN_TIME_PER_CALL - processing_duration).round(1)
       Rails.logger.info("THROTTLING: #{wait_time}")
       sleep wait_time if wait_time > 0.0
       Time.zone.now
