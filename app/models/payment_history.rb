@@ -248,15 +248,16 @@ class PaymentHistory < ActiveRecord::Base
       transactions = []
       cursor = ""
       has_next_page = true
-      created_at_min = last_calculated_metric_date.strftime('%Y-%m-%dT%H:%M:%S.%L%z') # ISO-8601
+      created_at_min = last_calculated_metric_date.strftime("%Y-%m-%dT%H:%M:%S.%L%z") # ISO-8601
 
-      while has_next_page == true do
+      while has_next_page == true
         results = ShopifyPartnerAPI.client.query(
           TransactionsQuery,
-          variables: { createdAtMin: created_at_min, cursor: cursor },
-          context: { access_token: current_user.partner_api_access_token, organization_id: current_user.partner_api_organization_id })
-        raise StandardError.new(results.errors.messages.map{|k,v| "#{k}=#{v}"}.join('&')) if results.errors.any?
-        return if results.data == nil
+          variables: {createdAtMin: created_at_min, cursor: cursor},
+          context: {access_token: current_user.partner_api_access_token, organization_id: current_user.partner_api_organization_id}
+        )
+        raise StandardError.new(results.errors.messages.map { |k, v| "#{k}=#{v}" }.join("&")) if results.errors.any?
+        return if results.data.nil?
         transactions = transactions.concat(results.data.transactions.edges)
         has_next_page = results.data.transactions.page_info.has_next_page
         cursor = results.data.transactions.edges.last.cursor
@@ -269,38 +270,38 @@ class PaymentHistory < ActiveRecord::Base
 
         next if created_at <= last_calculated_metric_date
 
-        record = { user_id: current_user.id }
+        record = {user_id: current_user.id}
 
         record.payment_date = created_at
         record.charge_type = lookup_charge_type(node.__typename)
 
         record.revenue = case node.__typename
-                  when 'ReferralAdjustment',
-                    'ReferralTransaction'
+                  when "ReferralAdjustment",
+                    "ReferralTransaction"
                     node.amount.amount
                   else
                     node.net_amount.amount
-                  end
+        end
 
         record.app_title = case node.__typename
-                    when 'ReferralAdjustment',
-                      'ReferralTransaction',
-                      'ServiceSale',
-                      'ServiceSaleAdjustment'
+                    when "ReferralAdjustment",
+                      "ReferralTransaction",
+                      "ServiceSale",
+                      "ServiceSaleAdjustment"
                       nil
-                    when 'ThemeSaleAdjustment',
-                      'ThemeSale'
+                    when "ThemeSaleAdjustment",
+                      "ThemeSale"
                       node.theme.name
                     else
                       node.app.name
-                    end
+        end
 
         record.shop = case node.__typename
-               when 'ReferralTransaction'
+               when "ReferralTransaction"
                  node.shopNonNullable.myshopify_domain
                else
                  node.shop.myshopify_domain
-               end
+        end
 
         PaymentHistory.create!(record)
       end
@@ -442,7 +443,7 @@ class PaymentHistory < ActiveRecord::Base
         "ServiceSale",
         "ThemeSale"
         "onetime_revenue"
-      when "ReferralTransaction",
+      when "ReferralTransaction"
         "affiliate_revenue"
       when "AppSaleAdjustment",
       "AppSaleCredit",

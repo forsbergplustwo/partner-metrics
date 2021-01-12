@@ -45,6 +45,8 @@ group :development, :test do
   gem "lefthook"
   gem "rubocop"
   gem "rubocop-rails"
+  gem "rubocop-performance"
+  gem "rubocop-thread_safety"
 end
 
 group :development do
@@ -58,4 +60,4 @@ group :production do
   gem "rails_12factor"
 end
 
-gem 'graphiql-rails', group: :development
+gem "graphiql-rails", group: :development
