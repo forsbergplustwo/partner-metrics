@@ -6,7 +6,7 @@ class ImportWorker
     current_user = User.find(current_user_id)
     last_calculated_metric = current_user.metrics.maximum("metric_date")
     last_calculated_metric_date = last_calculated_metric.presence || 60.months.ago.to_date # question for Bjorn: any reason for 5 years?
-    if filename != nil
+    if !filename.nil?
       PaymentHistory.import_csv(current_user, last_calculated_metric_date, filename)
     else
       PaymentHistory.import_partner_api(current_user, last_calculated_metric_date)
