@@ -245,12 +245,15 @@ class PaymentHistory < ActiveRecord::Base
     def import_partner_api(current_user, last_calculated_metric_date)
       current_user.payment_histories.where("payment_date > ?", last_calculated_metric_date).delete_all
 
-      transactions = []
       cursor = ""
       has_next_page = true
       created_at_min = last_calculated_metric_date.strftime("%Y-%m-%dT%H:%M:%S.%L%z") # ISO-8601
+      throttle_start_time = Time.zone.now
 
       while has_next_page == true
+        throttle_start_time = throttle(throttle_start_time)
+        transactions = []
+        records = []
         results = ShopifyPartnerAPI.client.query(
           TransactionsQuery,
           variables: {createdAtMin: created_at_min, cursor: cursor},
@@ -258,57 +261,58 @@ class PaymentHistory < ActiveRecord::Base
         )
         raise StandardError.new(results.errors.messages.map { |k, v| "#{k}=#{v}" }.join("&")) if results.errors.any?
         return if results.data.nil?
-        transactions = transactions.concat(results.data.transactions.edges)
+        transactions = results.data.transactions.edges
+        Rails.logger.info("Number of Transactions: " + transactions.size.to_s)
         has_next_page = results.data.transactions.page_info.has_next_page
         cursor = results.data.transactions.edges.last.cursor
-      end
+        transactions.each do |transaction|
+          node = transaction.node
 
-      transactions.each do |transaction|
-        node = transaction.node
+          created_at = Date.parse(node.created_at)
 
-        created_at = Date.parse(node.created_at)
+          next if created_at <= last_calculated_metric_date
 
-        next if created_at <= last_calculated_metric_date
+          record = PaymentHistory.new(user_id: current_user.id)
 
-        record = {user_id: current_user.id}
+          record.payment_date = created_at
+          record.charge_type = lookup_charge_type(node.__typename)
 
-        record.payment_date = created_at
-        record.charge_type = lookup_charge_type(node.__typename)
+          record.revenue = case node.__typename
+            when "ReferralAdjustment",
+              "ReferralTransaction"
+              node.amount.amount
+            else
+              node.net_amount.amount
+          end
 
-        record.revenue = case node.__typename
-                  when "ReferralAdjustment",
-                    "ReferralTransaction"
-                    node.amount.amount
-                  else
-                    node.net_amount.amount
+          record.app_title = case node.__typename
+            when "ReferralAdjustment",
+              "ReferralTransaction",
+              "ServiceSale",
+              "ServiceSaleAdjustment"
+              nil
+            when "ThemeSaleAdjustment",
+              "ThemeSale"
+              node.theme.name
+            else
+              node.app.name
+          end
+
+          record.shop = case node.__typename
+            when "ReferralTransaction"
+              node.shop_NonNullable.myshopify_domain
+            else
+              node.shop.myshopify_domain
+          end
+          records << record
         end
-
-        record.app_title = case node.__typename
-                    when "ReferralAdjustment",
-                      "ReferralTransaction",
-                      "ServiceSale",
-                      "ServiceSaleAdjustment"
-                      nil
-                    when "ThemeSaleAdjustment",
-                      "ThemeSale"
-                      node.theme.name
-                    else
-                      node.app.name
-        end
-
-        record.shop = case node.__typename
-               when "ReferralTransaction"
-                 node.shopNonNullable.myshopify_domain
-               else
-                 node.shop.myshopify_domain
-        end
-
-        PaymentHistory.create!(record)
+        PaymentHistory.import(records)
       end
     rescue => e
       current_user.update(import: "Failed", import_status: 100)
       Rails.logger.info(e.message)
       Rails.logger.info(e.backtrace.join("\n"))
+      Rails.logger.info(transactions.to_json) if transactions.present?
       raise e
     end
 
@@ -433,6 +437,15 @@ class PaymentHistory < ActiveRecord::Base
     end
 
     private
+
+    def throttle(start_time)
+      stop_time = Time.zone.now
+      processing_duration = stop_time - start_time
+      wait_time = (0.3 - processing_duration).round(1)
+      Rails.logger.info("THROTTLING: #{wait_time}")
+      sleep wait_time if wait_time > 0.0
+      Time.zone.now
+    end
 
     def lookup_charge_type(api_type)
       case api_type
