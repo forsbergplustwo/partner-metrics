@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   get "affiliate" => "home#affiliate"
   get "prospectus" => "home#prospectus"
   get "chart_data" => "home#chart_data"
+  get "more" => "home#more"
 
   get "reset_metrics" => "home#reset_metrics"
 end
