@@ -67,9 +67,9 @@ setupUploads = function () {
         var form = $(fileInput.parents('form:first'))
         var submitButton = form.find('input[type="submit"]')
         var progressBarLabel = $("<div id='progress-label'>&nbsp;</div>")
-        var progressBar = $("<div id='progress-bar' class='progress-bar progress-bar-info progress-bar-striped active' role='progressbar' aria-valuenow='0' aria-valuemin='0' aria-valuemax='100' style='width:0%'>")
+        var progressBar = $("<div id='progress-bar' class='progress-bar progress-bar-info' role='progressbar' aria-valuenow='0' aria-valuemin='0' aria-valuemax='100' style='width:0%'>")
         var barContainer = $("<div class='progress'></div>").append(progressBar)
-        var progressBarAfter = $('.btn-file')
+        var progressBarAfter = $('#progressPlaceholder')
         progressBarAfter.after(barContainer)
         progressBarAfter.after(progressBarLabel)
         fileInput.fileupload({
@@ -77,10 +77,11 @@ setupUploads = function () {
           url: form.data('url'),
           type: 'POST',
           autoUpload: true,
+          dropZone: $(".dropzone"),
           formData: form.data('form-data'),
           paramName: 'file', // S3 does not like nested name fields i.e. name="user[avatar_url]"
           dataType: 'XML', // S3 returns XML if success_action_status is set to 201
-          replaceFileInput: false,
+          replaceFileInput: true,
           progressall: function (e, data) {
             var progress = parseInt(data.loaded / data.total * 100, 10)
             progressBar.css('width', progress + '%')
@@ -95,28 +96,14 @@ setupUploads = function () {
           },
           done: function (e, data) {
             submitButton.prop('disabled', false)
-            progressBar.text('')
             // extract key and generate URL from response
             var key = $(data.jqXHR.responseXML).find('Key').text()
-            var encoded_key = encodeURIComponent(key)
-            // var url   = '//' + form.data('host') + '/' + key;
-
+            progressBarLabel.text('Uploaded')
             // create hidden field
-            var input = $('<input />', { type: 'hidden', name: fileInput.attr('name'), value: key })
-            form.append(input)
-            $.ajax({
-              type: 'POST',
-              url: '/import',
-              data: 'file=' + encodeURIComponent(key),
-              success: function (data) {
-                console.log('success!')
-              }
-            })
-            pollImportStatus()
+            $('#filename').val(key)
           },
           fail: function (e, data) {
             submitButton.prop('disabled', false)
-
             progressBar
               .css('background', 'red')
               .text('Failed')
@@ -141,6 +128,49 @@ setupUploads = function () {
     }
   })
 }
+/* $('#import_form').on('submit', function (e) {
+  e.preventDefault();
+  $.ajax({
+    type: 'POST',
+    url: e.target.action,
+    data: $(form).serialize(),
+    dataType: 'script',
+    timeout: 3000,
+    success: function (data) {
+      console.log('success!')
+    },
+    error: function (xhr) {
+      console.log('error!')
+    },
+    complete: function(){
+      pollImportStatus()
+    }
+  })
+});
+ */
+/* var setupPartnerAPI
+setupPartnerAPI = function () {
+  $(function () {
+    if ($('#progress-bar-partner-api').length == 0) {
+      $('#partner_api_form').on('submit', function (e) {
+        e.preventDefault();
+        $.ajax({
+          type: 'POST',
+          url: e.target.action,
+          data: $(this).serialize(),
+          timeout: 3000,
+          success: function (data) {
+            console.log('success')
+            pollImportStatus()
+          },
+          error: function (xhr) {
+            console.log('error')
+          }
+        })
+      })
+    }
+  })
+} */
 
 var toggleLoading
 toggleLoading = function () {

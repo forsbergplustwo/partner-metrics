@@ -6,4 +6,8 @@ class User < ActiveRecord::Base
 
   has_many :payment_histories, dependent: :destroy
   has_many :metrics, dependent: :destroy
+
+  def has_partner_api_credentials?
+    partner_api_access_token.present? && partner_api_organization_id.present?
+  end
 end

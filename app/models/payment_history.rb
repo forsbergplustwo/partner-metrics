@@ -1,6 +1,141 @@
 require "zip"
+require "graphql/client"
+require "graphql/client/http"
 
 class PaymentHistory < ActiveRecord::Base
+  include ShopifyPartnerAPI
+
+  THROTTLE_MIN_TIME_PER_CALL = 0.3
+
+  TransactionsQuery = ShopifyPartnerAPI.client.parse <<-'GRAPHQL'
+    query($createdAtMin: DateTime, $cursor: String) {
+      transactions(createdAtMin: $createdAtMin, after: $cursor, first: 100) {
+        edges {
+          cursor
+          node {
+            id,
+            createdAt,
+            # Apps
+            ... on AppSubscriptionSale {
+              netAmount {
+                amount
+              },
+              app {
+                name
+              },
+              shop {
+                myshopifyDomain
+              }
+            },
+            ... on AppOneTimeSale {
+              netAmount {
+                amount
+              },
+              app {
+                name
+              },
+              shop {
+                myshopifyDomain
+              }
+            },
+            ... on AppSaleAdjustment {
+              netAmount {
+                amount
+              },
+              app {
+                name
+              },
+              shop {
+                myshopifyDomain
+              }
+            },
+            ... on AppSaleCredit {
+              netAmount {
+                amount
+              },
+              app {
+                name
+              },
+              shop {
+                myshopifyDomain
+              }
+            },
+            ... on AppUsageSale {
+              netAmount {
+                amount
+              },
+              app {
+                name
+              },
+              shop {
+                myshopifyDomain
+              }
+            },
+            # skipped LegacyTransaction, not sure what it is
+            ... on ReferralAdjustment {
+              amount {
+                amount
+              },
+              shop {
+                myshopifyDomain
+              }
+            },
+            ... on ReferralTransaction {
+              amount {
+                amount
+              },
+              shopNonNullable: shop {
+                myshopifyDomain
+              }
+            },
+            ... on ServiceSale {
+              netAmount {
+                amount
+              },
+              shop {
+                myshopifyDomain
+              }
+            },
+            ... on ServiceSaleAdjustment {
+              netAmount {
+                amount
+              },
+              shop {
+                myshopifyDomain
+              }
+            },
+            # skipped TaxTransaction
+            ... on ThemeSale {
+              netAmount {
+                amount
+              },
+              theme {
+                name # may not match CSV import behaviour
+              },
+              shop {
+                myshopifyDomain
+              }
+            },
+            ... on ThemeSaleAdjustment {
+              netAmount {
+                amount
+              },
+              theme {
+                name # may not match CSV import behaviour
+              },
+              shop {
+                myshopifyDomain
+              }
+            },
+          }
+        },
+        pageInfo {
+            hasNextPage
+        }
+      }
+    }
+  GRAPHQL
+
   belongs_to :user
   validates :user_id, presence: true
 
@@ -106,6 +241,80 @@ class PaymentHistory < ActiveRecord::Base
       current_user.update(import: "Failed", import_status: 100)
       Rails.logger.info(e.message)
       Rails.logger.info(e.backtrace.join("\n"))
+      raise e
+    end
+
+    def import_partner_api(current_user, last_calculated_metric_date)
+      current_user.payment_histories.where("payment_date > ?", last_calculated_metric_date).delete_all
+
+      cursor = ""
+      has_next_page = true
+      created_at_min = last_calculated_metric_date.strftime("%Y-%m-%dT%H:%M:%S.%L%z") # ISO-8601
+      throttle_start_time = Time.zone.now
+
+      while has_next_page == true
+        throttle_start_time = throttle(throttle_start_time)
+        transactions = []
+        records = []
+        results = ShopifyPartnerAPI.client.query(
+          TransactionsQuery,
+          variables: {createdAtMin: created_at_min, cursor: cursor},
+          context: {access_token: current_user.partner_api_access_token, organization_id: current_user.partner_api_organization_id}
+        )
+        raise StandardError.new(results.errors.messages.map { |k, v| "#{k}=#{v}" }.join("&")) if results.errors.any?
+        return if results.data.nil?
+        transactions = results.data.transactions.edges
+        Rails.logger.info("Number of Transactions: " + transactions.size.to_s)
+        has_next_page = results.data.transactions.page_info.has_next_page
+        cursor = results.data.transactions.edges.last.cursor
+        transactions.each do |transaction|
+          node = transaction.node
+
+          created_at = Date.parse(node.created_at)
+
+          next if created_at <= last_calculated_metric_date
+
+          record = PaymentHistory.new(user_id: current_user.id)
+
+          record.payment_date = created_at
+          record.charge_type = lookup_charge_type(node.__typename)
+
+          record.revenue = case node.__typename
+            when "ReferralAdjustment",
+              "ReferralTransaction"
+              node.amount.amount
+            else
+              node.net_amount.amount
+          end
+
+          record.app_title = case node.__typename
+            when "ReferralAdjustment",
+              "ReferralTransaction",
+              "ServiceSale",
+              "ServiceSaleAdjustment"
+              nil
+            when "ThemeSaleAdjustment",
+              "ThemeSale"
+              node.theme.name
+            else
+              node.app.name
+          end
+
+          record.shop = case node.__typename
+            when "ReferralTransaction"
+              node.shop_non_nullable.myshopify_domain
+            else
+              node.shop.myshopify_domain
+          end
+          records << record
+        end
+        PaymentHistory.import(records)
+      end
+    rescue => e
+      current_user.update(import: "Failed", import_status: 100)
+      Rails.logger.info(e.message)
+      Rails.logger.info(e.backtrace.join("\n"))
+      Rails.logger.info(transactions.to_json) if transactions.present?
       raise e
     end
 
@@ -227,6 +436,39 @@ class PaymentHistory < ActiveRecord::Base
       Rails.logger.info(e.message)
       Rails.logger.info(e.backtrace.join("\n"))
       raise e
+    end
+
+    private
+
+    def throttle(start_time)
+      stop_time = Time.zone.now
+      processing_duration = stop_time - start_time
+      wait_time = (THROTTLE_MIN_TIME_PER_CALL - processing_duration).round(1)
+      Rails.logger.info("THROTTLING: #{wait_time}")
+      sleep wait_time if wait_time > 0.0
+      Time.zone.now
+    end
+
+    def lookup_charge_type(api_type)
+      case api_type
+      when "AppSubscriptionSale",
+        "AppUsageSale"
+        "recurring_revenue"
+      when "AppOneTimeSale",
+        "ServiceSale",
+        "ThemeSale"
+        "onetime_revenue"
+      when "ReferralTransaction"
+        "affiliate_revenue"
+      when "AppSaleAdjustment",
+      "AppSaleCredit",
+        "ReferralAdjustment",
+        "ServiceSaleAdjustment",
+        "ThemeSaleAdjustment"
+        "refund"
+      else
+        api_type
+      end
     end
   end
 end

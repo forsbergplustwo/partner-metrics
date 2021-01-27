@@ -97,16 +97,26 @@ class HomeController < ApplicationController
     @payments_user_last_payment = payments.group(:shop).maximum(:payment_date)
   end
 
+  def app_store_analytics
+  end
+
   def chart_data
     @metrics = Metric.get_chart_data(current_user, params["date"], params["period"].to_i, params["chart_type"], params["app_title"])
     render json: @metrics
   end
 
   def import
-    filename = params[:file]
-    current_user.update(import: "Importing", import_status: 100)
-    Resque.enqueue(ImportWorker, current_user.id, filename)
-    head :ok
+    metrics = current_user.metrics.any?
+    save_partner_api_credentials
+    filename = params[:filename]
+    if filename.present?
+      current_user.update(import: "Importing", import_status: 0)
+      Resque.enqueue(ImportWorker, current_user.id, filename)
+    elsif metrics.present? && current_user.has_partner_api_credentials?
+      flash[:notice] = "Account connection updated! We will import your data automatically, at the end of each day."
+    else
+      flash[:errors] = "Something went wrong. You either need to add your Partner API credentials, or upload the file for the first import."
+    end
   end
 
   def import_status
@@ -122,7 +132,14 @@ class HomeController < ApplicationController
     elsif label.include?("Failed")
       amount_done = current_user.import_status
       reload = true
-      flash[:error] = "Something went wrong during import! Make sure the file you are uploading was exported using <a href='export-button.png' target='_blank'>this exact button</a> within your Shopify Partner Dashboard. Your Partner Dashboard in Shopify must be in English, otherwise Shopify changes the column names in the CSV files which causes problems.<br>If troubles continue, please feel free to get in contact on: <a href='mailto:bjorn@forsbergplustwo.com' target='_blank'>bjorn@forsbergplustwo.com</a>"
+      flash[:error] = <<-'HTML'
+        <h3><strong>Something went wrong during import!</strong></h3>
+        <h3>Partner API</h3>
+        <p>If you are using Partner API credentials, check the Organization ID and Access token you entered are correct.</p>
+        <h3>CSV export</h3>
+        <p>If you uploaded a CSV, make sure the file you are uploading was exported using <a href='export-button.png' target='_blank'>this exact button</a> within your Shopify Partner Dashboard. Your Partner Dashboard in Shopify must be in English, otherwise Shopify changes the column names in the CSV files which causes problems.</p>
+        <br>If troubles continue, please feel free to get in contact by clicking the message icon at the bottom of this page.
+      HTML
     end
     flash.keep
     render json: {
@@ -170,5 +187,14 @@ class HomeController < ApplicationController
 
   def set_s3_direct_post
     @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", success_action_status: "201")
+  end
+
+  def save_partner_api_credentials
+    if params[:partner_api_access_token].present? && params[:partner_api_organization_id].present?
+      current_user.update!(
+        partner_api_access_token: params[:partner_api_access_token],
+        partner_api_organization_id: params[:partner_api_organization_id],
+      )
+    end
   end
 end

@@ -35,6 +35,7 @@ gem "smarter_csv"
 gem "spring", group: :development
 gem "uglifier", ">= 1.3.0"
 gem "unicorn"
+gem "graphql-client"
 
 group :development, :test do
   # Code analysis / linters
@@ -44,6 +45,8 @@ group :development, :test do
   gem "lefthook"
   gem "rubocop"
   gem "rubocop-rails"
+  gem "rubocop-performance"
+  gem "rubocop-thread_safety"
 end
 
 group :development do
@@ -56,3 +59,5 @@ end
 group :production do
   gem "rails_12factor"
 end
+
+gem "graphiql-rails", group: :development

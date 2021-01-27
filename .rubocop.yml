@@ -1,1 +1,1 @@
-inherit_from: "../linter-configs/rubocop/.rubocop.yml"
+inherit_from: 'https://raw.githubusercontent.com/forsbergplustwo/style-guides/master/.rubocop.yml'
