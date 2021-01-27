@@ -20,12 +20,12 @@
  *= require_self
  */
 
-$brand-danger: #e83c19;
+$brand-danger: #d72c0d;
 $brand-success: #47c1bf;
-$brand-primary: #5c6ac4;
+$brand-primary: #007b5c;
 $state-success-text: #405352;
-$state-success-bg: #b7ecec;
-$state-success-border: #47c1bf;
+$state-success-bg: #ebf5fa;
+$state-success-border: #084e8a;
 
 @import 'bootstrap';
 
@@ -34,6 +34,7 @@ body {
   height: 100%;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
     Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol' !important;
+  font-weight: 400;
 }
 
 #wrap {
@@ -64,42 +65,42 @@ body {
   background: rgba(49, 55, 61, 1);
   background: -moz-linear-gradient(
     top,
-    rgba(49, 55, 61, 1) 0%,
+    rgba(32, 33, 35, 1) 0%,
     rgba(49, 55, 61, 1) 68%,
     rgba(17, 17, 17, 1) 100%
   );
   background: -webkit-gradient(
     left top,
     left bottom,
-    color-stop(0%, rgba(49, 55, 61, 1)),
+    color-stop(0%, rgba(32, 33, 35, 1)),
     color-stop(68%, rgba(49, 55, 61, 1)),
     color-stop(100%, rgba(17, 17, 17, 1))
   );
   background: -webkit-linear-gradient(
     top,
-    rgba(49, 55, 61, 1) 0%,
+    rgba(32, 33, 35, 1) 0%,
     rgba(49, 55, 61, 1) 68%,
     rgba(17, 17, 17, 1) 100%
   );
   background: -o-linear-gradient(
     top,
-    rgba(49, 55, 61, 1) 0%,
+    rgba(32, 33, 35, 1) 0%,
     rgba(49, 55, 61, 1) 68%,
     rgba(17, 17, 17, 1) 100%
   );
   background: -ms-linear-gradient(
     top,
-    rgba(49, 55, 61, 1) 0%,
+    rgba(32, 33, 35, 1) 0%,
     rgba(49, 55, 61, 1) 68%,
     rgba(17, 17, 17, 1) 100%
   );
   background: linear-gradient(
     to bottom,
-    rgba(49, 55, 61, 1) 0%,
+    rgba(32, 33, 35, 1) 0%,
     rgba(49, 55, 61, 1) 68%,
     rgba(17, 17, 17, 1) 100%
   );
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#31373d', endColorstr='#111111', GradientType=0 );
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#202123', endColorstr='#111111', GradientType=0 );
 }
 
 #main {
@@ -111,8 +112,9 @@ body {
 
 .panel {
   border: 0;
+  border-radius: 8px;
   box-shadow: 0 0 0 1px rgba(63, 63, 68, 0.05),
-    0 1px 3px 0 rgba(63, 63, 68, 0.15);
+    0 1px 8px 0 rgba(63, 63, 68, 0.15);
 }
 
 .footer {
@@ -123,16 +125,19 @@ body {
   padding-top: 20px;
 }
 .index .footer * {
-  color: #798c9c !important;
+  color: #6d7175 !important;
 }
 
 /* Align a bit with Shopify Admin */
 body {
-  background-color: #f4f6f8;
+  background-color: #f6f6f7;
   color: #212b35;
 }
 a {
-  color: #007ace;
+  color: #006fbb;
+}
+label {
+  font-weight: 500;
 }
 .container {
   position: relative;
@@ -143,30 +148,30 @@ a {
 }
 .alert {
   color: #212b36;
-  background-color: #f4f6f8;
-  box-shadow: inset 0 3px 0 0 #637381, inset 0 0 0 0 transparent,
-    0 0 0 1px rgba(63, 63, 68, 0.05), 0 1px 3px 0 rgba(63, 63, 68, 0.15);
+  background-color: #f6f6f7;
+  box-shadow: inset 0 4px 0 0 #637381, inset 0 0 0 0 transparent,
+    0 0 0 1px rgba(63, 63, 68, 0.05), 0 1px 8px 0 rgba(63, 63, 68, 0.15);
   padding: 24px;
   border: 0;
-  border-radius: 0 0 3px 3px;
+  border-radius: 0 0 8px 8px;
   -webkit-transition: box-shadow 0.2s cubic-bezier(0.64, 0, 0.35, 1);
   transition: box-shadow 0.2s cubic-bezier(0.64, 0, 0.35, 1);
 }
 .alert.alert-success {
-  color: #405352;
-  background-color: #e0f5f5;
-  box-shadow: inset 0 3px 0 0 #47c1bf, inset 0 0 0 0 transparent,
-    0 0 0 1px rgba(63, 63, 68, 0.05), 0 1px 3px 0 rgba(63, 63, 68, 0.15);
+  color: #202223;
+  background-color: #ebf9fc;
+  box-shadow: inset 0 4px 0 0 #00a0ac, inset 0 0 0 0 transparent,
+    0 0 0 1px rgba(63, 63, 68, 0.05), 0 1px 8px 0 rgba(63, 63, 68, 0.15);
 }
 .alert.alert-danger {
-  color: #583c35;
-  background-color: #fbeae5;
-  box-shadow: inset 0 3px 0 0 #ed6347, inset 0 0 0 0 transparent,
-    0 0 0 1px rgba(63, 63, 68, 0.05), 0 1px 3px 0 rgba(63, 63, 68, 0.15);
+  color: #202223;
+  background-color: #fff4f4;
+  box-shadow: inset 0 4px 0 0 #d82c0d, inset 0 0 0 0 transparent,
+    0 0 0 1px rgba(63, 63, 68, 0.05), 0 1px 8px 0 rgba(63, 63, 68, 0.15);
 }
 .alert-danger a,
 .alert-danger a:hover {
-  color: #583c35;
+  color: #202223;
   font-weight: bold;
   text-decoration: underline;
 }
@@ -178,8 +183,8 @@ a {
 }
 
 .navbar-inverse {
-  background-color: #31373d;
-  border-color: #31373d;
+  background-color: #202123;
+  border-color: #202123;
 }
 
 .navbar-inverse .navbar-nav > .active > a,
@@ -238,28 +243,21 @@ a {
 h1,
 h2,
 h3,
-.h1,
-.h2,
-.h3 {
-  font-weight: 200;
-  letter-spacing: 1px;
+h5 {
+  font-weight: 300;
 }
 h4,
-h5,
-h6,
-.h4,
-.h5,
-.h6 {
-  font-weight: 400;
+h6 {
+  font-weight: 500;
 }
 h1,
 .h1 {
-  font-size: 42px;
+  font-size: 22px;
+  margin-bottom: 15px;
 }
 h2,
 .h2 {
-  font-size: 42px;
-  color: #5c6ac4;
+  color: #202223;
 }
 h2.main-metric {
   font-weight: 500;
@@ -267,46 +265,52 @@ h2.main-metric {
 
 .panel h2,
 .panel .h2 {
-  margin-top: 15px;
+  margin-top: 5px;
   margin-bottom: 15px;
   line-height: 52px;
   font-weight: 300;
+  font-size: 32px;
 }
 #chart_tile h2 {
-  font-weight: 400;
+  font-size: 36px;
+  font-weight: 500;
 }
 #chart_tile h3 {
+  font-size: 24px;
   margin-top: 10px;
 }
 .panel h3,
 .panel .h3 {
   font-size: 24px;
   line-height: 22px;
-  text-transform: uppercase;
   text-align: center;
+  margin-top: 18px;
 }
 h3 small,
 .h3 .small {
+  text-transform: uppercase;
   font-size: 50%;
-  margin-right: 10px;
-  color: #c3cfd8;
+  margin-right: 4px;
+  color: #6d7175;
 }
 
 h4,
 .h4 {
-  color: #798c9c;
-  text-transform: uppercase;
 }
 
 h5,
 .h5 {
-  color: #c3cfd8;
-  text-transform: uppercase;
-  font-weight: 300;
+  font-size: 16px;
+  color: #6d7175;
+}
+
+#chart_tile h5 {
+  font-size: 14px;
+  text-transform: none;
 }
 
 #filter_form {
-  margin-top: 2em;
+  margin-top: 1em;
   .form-control {
     height: 33px;
   }
@@ -321,17 +325,16 @@ h5,
 
 .btn-primary,
 .submit {
-  background-color: #5c6ac4;
+  background-color: #007b5c;
 }
 .text-success {
-  color: #96bf48;
+  color: #008060;
 }
 .text-danger {
   color: #ff5d5d;
 }
 .panel-footer {
   background: #fff;
-  text-transform: uppercase;
 }
 .directUpload .progress {
   max-width: 600px;
@@ -353,11 +356,11 @@ h5,
 .index #by-line {
   margin-top: 30px;
   margin-bottom: 30px;
-  color: #798c9c;
+  color: #6d7175;
 }
 .index #by-line-security {
   margin: 15px 20% 30px 20%;
-  color: #798c9c;
+  color: #6d7175;
   text-align: left;
 }
 
@@ -388,8 +391,8 @@ h5,
   color: #d9534f;
 }
 .btn-danger:hover {
-  background-color: #e83c19;
-  border-color: #e83c19;
+  background-color: #d72c0d;
+  border-color: #d72c0d;
 }
 
 .btn-primary.btn-outline:hover,
@@ -446,7 +449,7 @@ h5,
   }
   .index #by-line-security {
     margin: 30px 5%;
-    color: #798c9c;
+    color: #6d7175;
     text-align: left;
   }
 

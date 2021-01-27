@@ -25,7 +25,7 @@
                   <%= password_field_tag 'partner_api_access_token', current_user.partner_api_access_token, class: "form-control", placeholder: "", required: true %>
                 </div>
 
-                <% if @metrics.blank? || !current_user.has_partner_api_credentials? %>
+                <% if current_user.metrics.none? || !current_user.has_partner_api_credentials? %>
                   <div class="alert alert-info">
                     <h3>First import requires CSV</h3>
                     <p>To import all your historical data, the Payouts CSV file is required as it is much much faster. In your Shopify Partners Dashboard, click the <b>Export payouts as csv</b> button on the <b>Payouts</b> page. Then drop the received ZIP file here:</p>
