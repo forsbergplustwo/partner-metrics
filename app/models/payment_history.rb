@@ -186,10 +186,8 @@ class PaymentHistory < ActiveRecord::Base
             csv[:app_title] = "Unknown" if csv[:app_title].blank?
             csv[:charge_type] =
               case csv[:charge_type]
-
               when "RecurringApplicationFee",
                     "Recurring application fee",
-                    "Usage application fee",
                     "App sale – recurring",
                     "App sale – usage",
                     "App sale – subscription",
@@ -197,11 +195,17 @@ class PaymentHistory < ActiveRecord::Base
                     "App sale – yearly subscription"
                 "recurring_revenue"
               when "OneTimeApplicationFee",
+                    "Usage application fee",
                     "ThemePurchaseFee",
                     "One time application fee",
                     "Theme purchase fee",
                     "App sale – one-time"
-                "onetime_revenue"
+                # STUPID: For my apps, I want Usage charges counted as "recurring" and not "one_time", others's don't
+                if current_user.email.include?("forsbergplustwo.com") && csv[:charge_type] == "Usage application fee"
+                  "recurring_revenue"
+                else
+                  "onetime_revenue"
+                end
               when "AffiliateFee",
                     "Affiliate fee",
                     "Development store referral commission",
@@ -278,6 +282,11 @@ class PaymentHistory < ActiveRecord::Base
 
           record.payment_date = created_at
           record.charge_type = lookup_charge_type(node.__typename)
+
+          # STUPID: For my apps, I want Usage charges counted as "recurring" and not "one_time", others's don't
+          if current_user.email.include?("forsbergplustwo.com") && node.__typename == "AppUsageSale"
+            record.charge_type = "recurring_revenue"
+          end
 
           record.revenue = case node.__typename
             when "ReferralAdjustment",
@@ -451,10 +460,10 @@ class PaymentHistory < ActiveRecord::Base
 
     def lookup_charge_type(api_type)
       case api_type
-      when "AppSubscriptionSale",
-        "AppUsageSale"
+      when "AppSubscriptionSale"
         "recurring_revenue"
       when "AppOneTimeSale",
+        "AppUsageSale",
         "ServiceSale",
         "ThemeSale"
         "onetime_revenue"
