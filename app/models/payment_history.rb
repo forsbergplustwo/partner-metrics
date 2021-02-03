@@ -7,6 +7,12 @@ class PaymentHistory < ActiveRecord::Base
 
   THROTTLE_MIN_TIME_PER_CALL = 0.3
 
+  USAGE_CHARGE_TYPES = [
+    "App sale – usage",
+    "Usage application fee",
+    "AppUsageSale",
+  ].freeze
+
   TransactionsQuery = ShopifyPartnerAPI.client.parse <<-'GRAPHQL'
     query($createdAtMin: DateTime, $cursor: String) {
       transactions(createdAtMin: $createdAtMin, after: $cursor, first: 100) {
@@ -189,7 +195,6 @@ class PaymentHistory < ActiveRecord::Base
               when "RecurringApplicationFee",
                     "Recurring application fee",
                     "App sale – recurring",
-                    "App sale – usage",
                     "App sale – subscription",
                     "App sale – 30-day subscription",
                     "App sale – yearly subscription"
@@ -199,9 +204,10 @@ class PaymentHistory < ActiveRecord::Base
                     "ThemePurchaseFee",
                     "One time application fee",
                     "Theme purchase fee",
-                    "App sale – one-time"
+                    "App sale – one-time",
+                    "App sale – usage"
                 # STUPID: For my apps, I want Usage charges counted as "recurring" and not "one_time", others's don't
-                if current_user.email.include?("forsbergplustwo.com") && csv[:charge_type] == "Usage application fee"
+                if current_user.email.include?("forsbergplustwo.com") && USAGE_CHARGE_TYPES.include?(csv[:charge_type])
                   "recurring_revenue"
                 else
                   "onetime_revenue"
@@ -284,7 +290,7 @@ class PaymentHistory < ActiveRecord::Base
           record.charge_type = lookup_charge_type(node.__typename)
 
           # STUPID: For my apps, I want Usage charges counted as "recurring" and not "one_time", others's don't
-          if current_user.email.include?("forsbergplustwo.com") && node.__typename == "AppUsageSale"
+          if current_user.email.include?("forsbergplustwo.com") && USAGE_CHARGE_TYPES.include?(node.__typename)
             record.charge_type = "recurring_revenue"
           end
 
