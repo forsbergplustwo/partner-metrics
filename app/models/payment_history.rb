@@ -180,7 +180,7 @@ class PaymentHistory < ActiveRecord::Base
       options = {
         key_mapping: key_mappings,
         remove_unmapped_keys: true,
-        chunk_size: 1000,
+        chunk_size: 500,
         force_utf8: true,
       }
       chunk_count = 0
@@ -239,6 +239,7 @@ class PaymentHistory < ActiveRecord::Base
         PaymentHistory.import chunk_payments
         current_user.update(import: "Importing (#{chunk_count},000 rows processed)", import_status: 100)
         Rails.logger.info("Chunk: #{chunk_count}")
+        chunk_payments = nil
         if chunk_count % 10 == 0
           GC.start
           Rails.logger.info("GC Started on Payments")
@@ -324,6 +325,7 @@ class PaymentHistory < ActiveRecord::Base
           records << record
         end
         PaymentHistory.import(records)
+        records = nil
       end
     rescue => e
       current_user.update(import: "Failed", import_status: 100)
@@ -439,6 +441,7 @@ class PaymentHistory < ActiveRecord::Base
           days_processed += 1
           import_status = ((days_processed.to_f / total_days.to_f) * 100.0).to_i
           current_user.update(import: "Calculating metrics (#{date} processed)", import_status: import_status)
+          metrics_for_date = nil
           if days_processed % 30 == 0
             GC.start
             Rails.logger.info("GC Started on Metrics")
