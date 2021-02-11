@@ -284,6 +284,7 @@ class PaymentHistory < ActiveRecord::Base
           created_at = Date.parse(node.created_at)
 
           next if created_at <= last_calculated_metric_date
+          next if node.__typename == "TaxTransaction"
 
           record = PaymentHistory.new(user_id: current_user.id)
 
