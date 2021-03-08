@@ -190,7 +190,7 @@ class HomeController < ApplicationController
   end
 
   def save_partner_api_credentials
-    if params[:partner_api_access_token].present? && params[:partner_api_organization_id].present? && params[:count_usage_charges_as_recurring]
+    if params[:partner_api_access_token].present? && params[:partner_api_organization_id].present? && params[:count_usage_charges_as_recurring].present?
       current_user.update!(
         partner_api_access_token: params[:partner_api_access_token],
         partner_api_organization_id: params[:partner_api_organization_id],
