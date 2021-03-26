@@ -9,7 +9,7 @@ class Metric < ActiveRecord::Base
     {"type" => "affiliate_revenue", "title" => "Affiliate Revenue", "calculation" => "sum", "metric_type" => "affiliate_revenue", "column" => "revenue", "display" => "currency", "direction_good" => "up"},
     {"type" => "refund", "column" => "revenue", "title" => "Refunds", "calculation" => "sum", "metric_type" => "refund", "display" => "currency", "direction_good" => "down"},
     {"type" => "avg_revenue_per_shop", "title" => "Avg. Revenue per User", "calculation" => "average", "metric_type" => "any", "column" => "average_revenue_per_shop", "display" => "currency", "direction_good" => "up"},
-  ]
+  ].freeze
 
   RECURRING_TILES = [
     {"type" => "recurring_revenue", "title" => "Revenue", "calculation" => "sum", "metric_type" => "recurring_revenue", "column" => "revenue", "display" => "currency", "direction_good" => "up"},
@@ -18,7 +18,7 @@ class Metric < ActiveRecord::Base
     {"type" => "shop_churn", "title" => "User Churn (30 Day Lag)", "calculation" => "average", "metric_type" => "recurring_revenue", "column" => "shop_churn", "display" => "percentage", "direction_good" => "down"},
     {"type" => "revenue_churn", "title" => "Revenue Churn (30 Day Lag)", "calculation" => "average", "metric_type" => "recurring_revenue", "column" => "revenue_churn", "display" => "percentage", "direction_good" => "down"},
     {"type" => "lifetime_value", "title" => "Lifetime Value (30 Day Lag)", "calculation" => "average", "metric_type" => "recurring_revenue", "column" => "lifetime_value", "display" => "currency", "direction_good" => "up"},
-  ]
+  ].freeze
 
   ONETIME_TILES = [
     {"type" => "onetime_revenue", "title" => "Revenue", "calculation" => "sum", "metric_type" => "onetime_revenue", "column" => "revenue", "display" => "currency", "direction_good" => "up"},
@@ -33,9 +33,9 @@ class Metric < ActiveRecord::Base
     {"type" => "affiliate_revenue", "title" => "Revenue", "calculation" => "sum", "metric_type" => "affiliate_revenue", "column" => "revenue", "display" => "currency", "direction_good" => "up"},
     {"type" => "affiliate_number_of_charges", "title" => "Number of Affiliates", "calculation" => "sum", "metric_type" => "affiliate_revenue", "column" => "number_of_charges", "display" => "number", "direction_good" => "up"},
     {"type" => "affiliate_avg_revenue_per_shop", "title" => "Avg. Revenue per User", "calculation" => "average", "metric_type" => "affiliate_revenue", "column" => "average_revenue_per_shop", "display" => "currency", "direction_good" => "up"},
-  ]
+  ].freeze
 
-  MONTHS_AGO = [1, 2, 3, 6, 12]
+  MONTHS_AGO = [1, 2, 3, 6, 12].freeze
 
   class << self
     def calculate_value(current_user, type)

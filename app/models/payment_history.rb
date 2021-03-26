@@ -321,6 +321,7 @@ class PaymentHistory < ActiveRecord::Base
             when "ReferralTransaction"
               node.shop_non_nullable.myshopify_domain
             else
+              next if node.shop.nil?
               node.shop.myshopify_domain
           end
           records << record
@@ -329,7 +330,7 @@ class PaymentHistory < ActiveRecord::Base
         records = nil
       end
     rescue => e
-      current_user.update(import: "Failed", import_status: 100)
+      current_user.update(partner_api_errors: "Error importing your data: #{e.message} - Please check your Account connection settings", import: "Failed", import_status: 100)
       Rails.logger.info(e.message)
       Rails.logger.info(e.backtrace.join("\n"))
       Rails.logger.info(transactions.to_json) if transactions.present?

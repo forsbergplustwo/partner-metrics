@@ -194,6 +194,7 @@ class HomeController < ApplicationController
       current_user.update!(
         partner_api_access_token: params[:partner_api_access_token],
         partner_api_organization_id: params[:partner_api_organization_id],
+        partner_api_errors: "",
       )
     end
   end
