@@ -207,7 +207,7 @@ class PaymentHistory < ActiveRecord::Base
                     "App sale – one-time",
                     "App sale – usage"
                 # STUPID: For my apps, I want Usage charges counted as "recurring" and not "one_time", others's don't
-                if current_user.email.include?("forsbergplustwo.com") && USAGE_CHARGE_TYPES.include?(csv[:charge_type])
+                if USAGE_CHARGE_TYPES.include?(csv[:charge_type]) && current_user.count_usage_charges_as_recurring == true
                   "recurring_revenue"
                 else
                   "onetime_revenue"
@@ -292,7 +292,7 @@ class PaymentHistory < ActiveRecord::Base
           record.charge_type = lookup_charge_type(node.__typename)
 
           # STUPID: For my apps, I want Usage charges counted as "recurring" and not "one_time", others's don't
-          if current_user.email.include?("forsbergplustwo.com") && USAGE_CHARGE_TYPES.include?(node.__typename)
+          if USAGE_CHARGE_TYPES.include?(node.__typename) && current_user.count_usage_charges_as_recurring == true
             record.charge_type = "recurring_revenue"
           end
 

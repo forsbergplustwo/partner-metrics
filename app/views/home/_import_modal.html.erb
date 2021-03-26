@@ -26,6 +26,14 @@
                   <%= password_field_tag 'partner_api_access_token', current_user.partner_api_access_token, class: "form-control", placeholder: "", required: true %>
                 </div>
 
+                <label>Usage charge revenue (if you have them), should be counted as: </label>
+                <div class="radio">
+                  <label><%= radio_button_tag('count_usage_charges_as_recurring', "0", current_user.count_usage_charges_as_recurring == false) %>One-time revenue</label>
+                </div>
+                <div class="radio">
+                  <label><%= radio_button_tag('count_usage_charges_as_recurring', "1", current_user.count_usage_charges_as_recurring == true ) %>Recurring revenue</label>
+                </div>
+
                 <% if current_user.metrics.none? || !current_user.has_partner_api_credentials? %>
                   <div class="alert alert-info">
                     <h3>First import requires CSV</h3>
