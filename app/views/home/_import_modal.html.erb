@@ -2,7 +2,7 @@
   <!-- Modal -->
   <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-      <div class="modal-content text-center">
+      <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <h4 class="modal-title" id="myModalLabel">Account connection</h4>
@@ -14,7 +14,9 @@
             <div class="row">
               <div class="col-xs-12">
                 <p>At the end of each day, we'll automatically import data and calculate metrics using the new Partner API.</p>
-                <p><b>IMPORTANT</b> To connect your account, go to your Shopify Partners Dashboard, <a href="https://shopify.dev/docs/partner-api/getting-started#create-an-api-client" target="_blank">create an API client</a>, with <b>View financials</b> and <b>Manage apps</b> permissions. Also add "Manage themes" and "Manage Jobs" permission, if you have any revenue from those. Then enter the details here:</p>
+                <% if !current_user.has_partner_api_credentials? %>
+                  <p><b>IMPORTANT</b> To connect your account, go to your Shopify Partners Dashboard, <a href="https://shopify.dev/docs/partner-api/getting-started#create-an-api-client" target="_blank">create an API client</a>, with <b>View financials</b> and <b>Manage apps</b> permissions. Also add "Manage themes" and "Manage Jobs" permission, if you have any revenue from those. Then enter the details here:</p>
+                <% end %>
 
                 <div class="form-group">
                   <label for="partner_api_organization_id">Shopify Partner Organization ID</label>
@@ -33,13 +35,17 @@
                 <div class="radio">
                   <label><%= radio_button_tag('count_usage_charges_as_recurring', "1", current_user.count_usage_charges_as_recurring == true ) %>Recurring revenue</label>
                 </div>
-
-                <% if current_user.metrics.none? || !current_user.has_partner_api_credentials? %>
+                <% if current_user.metrics.any? %><p><a role="button" data-toggle="collapse" href="#collapseCSV" aria-expanded="false" aria-controls="collapseExample">Import via CSV <span class="caret"></span></a></p><% end %>
+                <div id="collapseCSV" class="<%= "collapse" if current_user.metrics.any? %>">
                   <div class="alert alert-info">
-                    <h3>First import requires CSV</h3>
-                    <p>To import all your historical data, the Payouts CSV file is required as it is much much faster. In your Shopify Partners Dashboard, click the <b>Export payouts as csv</b> button on the <b>Payouts</b> page. Then drop the received ZIP file here:</p>
-
-                    <div class="dropzone">
+                    <% if current_user.metrics.none? || !current_user.has_partner_api_credentials? %>
+                      <h3>First import requires CSV</h3>
+                      <p>To import all your historical data, the Payouts CSV file is required as it is much much faster. In your Shopify Partners Dashboard, click the <b>Export payouts as csv</b> button on the <b>Payouts</b> page. Then drop the received ZIP file here:</p>
+                    <% else %>
+                      <h3>Import via CSV</h3>
+                      <p>To import historical data, the Payouts CSV file is recommended as it is much much faster. In your Shopify Partners Dashboard, click the <b>Export payouts as csv</b> button on the <b>Payouts</b> page. Then drop the received ZIP file here:</p>
+                    <% end %>
+                    <div class="dropzone text-center">
                       <span class="btn btn-default btn-file">
                         Select ZIP or CSV file<%= file_field_tag :file %>
                       </span>
@@ -48,15 +54,9 @@
                     <div style="margin: 10px 0;">
                       <div id="progressPlaceholder"></div>
                     </div>
-                    <%= submit_tag "Connect account and import", class: "btn btn-primary", disabled: true %>
                   </div>
-                <% else %>
-                  <div class="alert alert-success">
-                    <p>Your account is connected.<br>We will automatically import your data, at the end of each day.</p>
-                  </div>
-                  <%= submit_tag "Update connection", class: "btn btn-primary" %>
-                <% end %>
-
+                </div>
+                <%= submit_tag (current_user.metrics.none? ? "Connect and import" : "Update"), class: "btn btn-primary", disabled: current_user.metrics.none? %>
               </div>
             </div>
 
