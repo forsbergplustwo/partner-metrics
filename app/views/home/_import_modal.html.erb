@@ -50,7 +50,7 @@
                         Select ZIP or CSV file<%= file_field_tag :file %>
                       </span>
                     </div>
-                    <%= hidden_field_tag 'filename', "", required: true %>
+                    <%= hidden_field_tag 'filename', "", required: current_user.metrics.none? %>
                     <div style="margin: 10px 0;">
                       <div id="progressPlaceholder"></div>
                     </div>
