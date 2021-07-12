@@ -205,7 +205,8 @@ class PaymentHistory < ActiveRecord::Base
                     "One time application fee",
                     "Theme purchase fee",
                     "App sale – one-time",
-                    "App sale – usage"
+                    "App sale – usage",
+                    "Service sale"
                 # STUPID: For my apps, I want Usage charges counted as "recurring" and not "one_time", others's don't
                 if USAGE_CHARGE_TYPES.include?(csv[:charge_type]) && current_user.count_usage_charges_as_recurring == true
                   "recurring_revenue"
@@ -215,7 +216,9 @@ class PaymentHistory < ActiveRecord::Base
               when "AffiliateFee",
                     "Affiliate fee",
                     "Development store referral commission",
-                    "Affiliate referral commission"
+                    "Affiliate referral commission",
+                    "Development store referral commission",
+                    "Shopify Plus referral commission"
                 "affiliate_revenue"
               when "Manual",
                     "ApplicationDowngradeAdjustment",
@@ -227,8 +230,10 @@ class PaymentHistory < ActiveRecord::Base
                     "App credit",
                     "App refund",
                     "App credit refund",
+                    "Development store commission adjustment",
                     "Payout correction",
-                    "App downgrade"
+                    "App downgrade",
+                    "Service refund"
                 "refund"
               else
                 csv[:charge_type]
