@@ -156,6 +156,18 @@ class HomeController < ApplicationController
     redirect_to root_path
   end
 
+  def rename_app
+    from_name = params["rename_from"]
+    to_name = params["rename_to"]
+    if from_name.present? && to_name.present? && from_name != to_name
+      current_user.metrics.where(app_title: from_name).update_all(app_title: to_name)
+      flash[:notice] = "App successfully renamed!"
+    else
+      flash[:errors] = "Failed to rename app!"
+    end
+    redirect_to :back
+  end
+
   private
 
   def set_params

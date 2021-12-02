@@ -19,4 +19,5 @@ Rails.application.routes.draw do
   get "app_store_analytics" => "home#app_store_analytics"
 
   get "reset_metrics" => "home#reset_metrics"
+  post "rename_app" => "home#rename_app"
 end

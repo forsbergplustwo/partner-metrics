@@ -1,0 +1,53 @@
+<% if user_signed_in? %>
+  <!-- Modal -->
+  <div class="modal fade" id="rename-app-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Rename app / merge data</h4>
+        </div>
+        <div class="modal-body">
+
+          <%= form_tag(rename_app_path, id: "rename-app-form") do %>
+            <% renamable_app_titles = @app_titles - ["All"] %>
+            <div class="row">
+              <div class="col-xs-12">
+                <p>If your app/theme has changed name, you can merge the data together. Make sure to choose your old app name in FROM and the new app name in TO. This ensures new data imported in the future will also match.</p>
+
+                <div class="form-group">
+                  <label for="rename_from">Rename FROM:</label><br>
+                  <select id="rename_from" class="form-control" name="rename_from">
+                    <%= options_for_select(renamable_app_titles, @app_title) %>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="rename_to">Rename TO:</label><br>
+                  <select id="rename_to" class="form-control" name="rename_to">
+                    <%= options_for_select(renamable_app_titles, @app_title) %>
+                  </select>
+                </div>
+
+                <div class="alert alert-info">Note: Do not merge different apps together. Only merge the same app because it's name changed.</div>
+
+              </div>
+            </div>
+
+          <% end %>
+        </div>
+        <div class="modal-footer">
+          <%= submit_tag("Rename app",
+              form: 'rename-app-form',
+              data: {
+                confirm: 'This cannot be undone. Are you sure?',
+                disable_with: 'Renaming app...'
+              },
+              class: "btn btn-warning", disabled: current_user.metrics.none?
+            ) %>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

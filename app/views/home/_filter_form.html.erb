@@ -3,9 +3,11 @@
     <div class="form-group">
       <input name="utf8" type="hidden" value="✓">
       <% if !@app_titles.blank? %>
-      <select id="app_title" data-width="195px" class="form-control" name="app_title" onchange="$('#filter_form').submit();">
-        <%= options_for_select(@app_titles, @app_title) %>
-      </select>
+        <select id="app_title" data-width="195px" class="form-control" name="app_title" data-tick-icon="">
+          <%= options_for_select(@app_titles, @app_title) %>
+          <option data-divider="true">
+          <option value="" data-content="<a href='#' data-toggle='modal' data-target='#rename-app-modal'>Rename app / merge data</a>">Rename app / merge data</option>
+        </select>
       <% end %>
     </div>
       <div class="form-group">
@@ -33,4 +35,15 @@
       <input type="submit" value="Filter" style="display: none;">
     </div>
   </form>
+  <script>
+    $(document).on('change', '#app_title', function(event) {
+      if(event.target.value !== '') {
+        $('#filter_form').submit();
+      } else {
+        event.target.selected = false;
+        $('#app_title').val('<%= @app_title || "All" %>');
+        $('#app_title').selectpicker('render');
+      }
+    });
+  </script>
 <% end %>
