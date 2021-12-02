@@ -165,7 +165,7 @@ class HomeController < ApplicationController
     else
       flash[:errors] = "Failed to rename app!"
     end
-    redirect_to root_path
+    redirect_to URI(request.referer).path
   end
 
   private
