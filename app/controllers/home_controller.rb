@@ -161,6 +161,7 @@ class HomeController < ApplicationController
     to_name = params["rename_to"]
     if from_name.present? && to_name.present? && from_name != to_name
       current_user.metrics.where(app_title: from_name).update_all(app_title: to_name)
+      current_user.payment_histories.where(app_title: from_name).update_all(app_title: to_name)
       flash[:notice] = "App successfully renamed!"
     else
       flash[:errors] = "Failed to rename app!"
