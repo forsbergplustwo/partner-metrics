@@ -26,10 +26,7 @@
     <div class="col-sm-12">
       <div class="panel panel-default animated fadeIn">
         <div class="panel-body">
-          <%= column_chart current_user.metrics.where(
-              charge_type: "recurring_revenue",
-              metric_date: 12.months.ago..@date
-            ).group(:app_title).sum(:revenue) %>
+          <%= column_chart current_user.yearly_revenue_per_product(charge_type: "recurring_revenue", date: @date) %>
         </div>
         <div class="panel-footer text-center">
           <h5>Recurring Revenue (Last 12 Months)</h5>
@@ -39,7 +36,7 @@
     <div class="col-sm-6">
       <div class="panel panel-default animated fadeIn">
         <div class="panel-body">
-          <%= pie_chart current_user.metrics.where(charge_type: "recurring_revenue", metric_date: 12.months.ago..@date).group(:app_title).sum(:revenue) %>
+          <%= pie_chart current_user.yearly_revenue_per_product(charge_type: "recurring_revenue", date: @date) %>
         </div>
         <div class="panel-footer text-center">
           <h5>Recurring Split (Last 12 Months)</h5>
@@ -49,7 +46,7 @@
     <div class="col-sm-6">
       <div class="panel panel-default animated fadeIn">
         <div class="panel-body">
-          <%= pie_chart current_user.payment_histories.where(charge_type: "recurring_revenue",payment_date: 12.months.ago..@date).group(:shop_country).order('sum_revenue DESC').sum(:revenue) %>
+          <%= pie_chart current_user.yearly_revenue_per_country(date: @date, charge_type: "recurring_revenue") %>
         </div>
         <div class="panel-footer text-center">
           <h5>Revenue per Country (Last 12 Months)</h5>
@@ -61,10 +58,7 @@
     <div class="col-sm-12">
       <div class="panel panel-default animated fadeIn">
         <div class="panel-body">
-          <%= column_chart current_user.metrics.where(
-              charge_type: "recurring_revenue",
-              metric_date: @first_metric_date..@date
-            ).group(:app_title).sum(:revenue) %>
+          <%= column_chart current_user.total_revenue_per_app(from_date: @first_metric_date, date: @date, charge_type: "recurring_revenue") %>
         </div>
         <div class="panel-footer text-center">
           <h5>Recurring Revenue (TOTAL)</h5>

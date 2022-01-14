@@ -57,6 +57,7 @@ class HomeController < ApplicationController
   end
 
   def affiliate
+    @app_titles = ["All"]
     if params["app_title"].blank? || params["app_title"] == "All"
       m = current_user.metrics.where(charge_type: "affiliate_revenue")
     else
