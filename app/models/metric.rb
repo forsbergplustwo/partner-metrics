@@ -47,8 +47,7 @@ class Metric < ActiveRecord::Base
       value = if type["calculation"] == "sum"
         value.sum(type["column"])
       elsif type["calculation"] == "time_average"
-        app_titles = value.pluck(:app_title).uniq.size
-        value.sum(type["column"]) / (period.to_i * app_titles)
+        time_avarage(value, type["column"], period)
       else
         value.average(type["column"])
       end
@@ -67,10 +66,8 @@ class Metric < ActiveRecord::Base
         current = current.sum(type["column"])
         previous = previous.sum(type["column"])
       elsif type["calculation"] == "time_average"
-        current_app_titles = current.pluck(:app_title).uniq.size
-        previous_app_titles = previous.pluck(:app_title).uniq.size
-        current = current.sum(type["column"]) / (period.to_i * current_app_titles)
-        previous = previous.sum(type["column"]) / (period.to_i * previous_app_titles)
+        current = time_avarage(current, type["column"], period)
+        previous = time_avarage(previous, type["column"], period)
       else
         current = current.average(type["column"]) || 0
         previous = previous.average(type["column"]) || 0
@@ -98,8 +95,7 @@ class Metric < ActiveRecord::Base
       metrics = if type["calculation"] == "sum"
         metrics.sum(type["column"])
       elsif type["calculation"] == "time_average"
-        app_titles = value.pluck(:app_title).uniq.size
-        value.sum(type["column"]) / (period.to_i * app_titles)
+        time_avarage(metrics, type["column"], period)
       else
         metrics.average(type["column"])
       end
@@ -135,11 +131,17 @@ class Metric < ActiveRecord::Base
       if type["calculation"] == "sum"
         value.sum(type["column"])
       elsif type["calculation"] == "time_average"
-        app_titles = value.pluck(:app_title).uniq.size
-        value.sum(type["column"]) / (period.to_i * app_titles)
+        time_avarage(value, type["column"], period)
       else
         value.average(type["column"])
       end
+    end
+
+    private
+
+    def time_average(value, column, period)
+      app_titles = value.pluck(:app_title).uniq.size
+      value.sum(column) / (period * app_titles)
     end
   end
 end
