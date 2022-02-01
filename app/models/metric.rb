@@ -15,9 +15,9 @@ class Metric < ActiveRecord::Base
     {"type" => "recurring_revenue", "title" => "Revenue", "calculation" => "sum", "metric_type" => "recurring_revenue", "column" => "revenue", "display" => "currency", "direction_good" => "up"},
     {"type" => "number_of_shops", "title" => "Paying Users", "calculation" => "sum", "metric_type" => "recurring_revenue", "column" => "number_of_shops", "display" => "number", "direction_good" => "up"},
     {"type" => "recurring_avg_revenue_per_shop", "title" => "Avg. Revenue per User", "calculation" => "average", "metric_type" => "recurring_revenue", "column" => "average_revenue_per_shop", "display" => "currency", "direction_good" => "up"},
-    {"type" => "shop_churn", "title" => "User Churn (30 Day Lag)", "calculation" => "average", "metric_type" => "recurring_revenue", "column" => "shop_churn", "display" => "percentage", "direction_good" => "down"},
-    {"type" => "revenue_churn", "title" => "Revenue Churn (30 Day Lag)", "calculation" => "average", "metric_type" => "recurring_revenue", "column" => "revenue_churn", "display" => "percentage", "direction_good" => "down"},
-    {"type" => "lifetime_value", "title" => "Lifetime Value (30 Day Lag)", "calculation" => "average", "metric_type" => "recurring_revenue", "column" => "lifetime_value", "display" => "currency", "direction_good" => "up"},
+    {"type" => "shop_churn", "title" => "User Churn (30 Day Lag)", "calculation" => "time_average", "metric_type" => "recurring_revenue", "column" => "shop_churn", "display" => "percentage", "direction_good" => "down"},
+    {"type" => "revenue_churn", "title" => "Revenue Churn (30 Day Lag)", "calculation" => "time_average", "metric_type" => "recurring_revenue", "column" => "revenue_churn", "display" => "percentage", "direction_good" => "down"},
+    {"type" => "lifetime_value", "title" => "Lifetime Value (30 Day Lag)", "calculation" => "time_average", "metric_type" => "recurring_revenue", "column" => "lifetime_value", "display" => "currency", "direction_good" => "up"},
   ].freeze
 
   ONETIME_TILES = [
@@ -27,7 +27,7 @@ class Metric < ActiveRecord::Base
     {"type" => "onetime_number_of_charges", "title" => "Number of Sales", "calculation" => "sum", "metric_type" => "onetime_revenue", "column" => "number_of_charges", "display" => "number", "direction_good" => "up"},
     {"type" => "repeat_customers", "title" => "Repeat Customers", "calculation" => "sum", "metric_type" => "onetime_revenue", "column" => "repeat_customers", "display" => "number", "direction_good" => "up"},
     {"type" => "repeat_vs_new_customers", "title" => "Repeat vs New Customers", "calculation" => "average", "metric_type" => "onetime_revenue", "column" => "repeat_vs_new_customers", "display" => "percentage", "direction_good" => "up"},
-  ]
+  ].freeze
 
   AFFILIATE_TILES = [
     {"type" => "affiliate_revenue", "title" => "Revenue", "calculation" => "sum", "metric_type" => "affiliate_revenue", "column" => "revenue", "display" => "currency", "direction_good" => "up"},
@@ -38,7 +38,7 @@ class Metric < ActiveRecord::Base
   MONTHS_AGO = [1, 2, 3, 6, 12].freeze
 
   class << self
-    def calculate_value(current_user, type)
+    def calculate_value(current_user, type, period)
       value = if type["metric_type"] == "any"
         where(user_id: current_user.id)
       else
@@ -46,13 +46,15 @@ class Metric < ActiveRecord::Base
       end
       value = if type["calculation"] == "sum"
         value.sum(type["column"])
+      elsif type["calculation"] == "time_average"
+        value.sum(type["column"]) / period.to_i
       else
         value.average(type["column"])
       end
       value
     end
 
-    def calculate_change(current_user, type, previous_metrics)
+    def calculate_change(current_user, type, previous_metrics, period)
       if type["metric_type"] == "any"
         current = where(user_id: current_user.id)
         previous = previous_metrics
@@ -63,6 +65,9 @@ class Metric < ActiveRecord::Base
       if type["calculation"] == "sum"
         current = current.sum(type["column"])
         previous = previous.sum(type["column"])
+      elsif type["calculation"] == "time_average"
+        current = current.sum(type["column"]) / period.to_i
+        previous = previous.sum(type["column"]) / period.to_i
       else
         current = current.average(type["column"]) || 0
         previous = previous.average(type["column"]) || 0
@@ -89,6 +94,8 @@ class Metric < ActiveRecord::Base
       end
       metrics = if type["calculation"] == "sum"
         metrics.sum(type["column"])
+      elsif type["calculation"] == "time_average"
+        value.sum(type["column"]) / period.to_i
       else
         metrics.average(type["column"])
       end
@@ -123,6 +130,8 @@ class Metric < ActiveRecord::Base
       end
       if type["calculation"] == "sum"
         value.sum(type["column"])
+      elsif type["calculation"] == "time_average"
+        value.sum(type["column"]) / period.to_i
       else
         value.average(type["column"])
       end

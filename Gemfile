@@ -1,5 +1,5 @@
 source "https://rubygems.org"
-ruby "2.4.5"
+ruby "2.6.8"
 
 gem "activerecord-import"
 gem "aws-sdk", "~> 2"
@@ -38,6 +38,8 @@ gem "unicorn"
 gem "graphql-client"
 
 group :development, :test do
+  gem "puma" # temporary until we can remove unicorn
+  gem "foreman"
   # Code analysis / linters
   gem "brakeman"
   gem "bullet"

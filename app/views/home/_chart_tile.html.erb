@@ -1,5 +1,5 @@
-<% metric_value = @metrics.calculate_value(current_user, @chart_tile) %>
-<% metric_change = @metrics.calculate_change(current_user, @chart_tile, @previous_metrics) %>
+<% metric_value = @metrics.calculate_value(current_user, @chart_tile, @period) %>
+<% metric_change = @metrics.calculate_change(current_user, @chart_tile, @previous_metrics, @period) %>
 <div class="col-sm-12">
   <div class="panel panel-default metric_tile">
     <div class="panel-body">

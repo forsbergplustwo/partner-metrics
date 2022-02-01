@@ -1,5 +1,5 @@
-<% metric_value = @metrics.calculate_value(current_user, tile) %>
-<% metric_change = @metrics.calculate_change(current_user, tile, @previous_metrics) %>
+<% metric_value = @metrics.calculate_value(current_user, tile, @period) %>
+<% metric_change = @metrics.calculate_change(current_user, tile, @previous_metrics, @period) %>
 <div class="col-md-4 col-sm-6">
   <a title="Click to View Chart" data-toggle="tooltip" data-placement="top" href='<%= url_for(action: action_name, anchor: "top", date: @date, period: @period, chart: tile["type"], app_title: @app_title) %>'>
     <div class="panel panel-default metric_tile">
