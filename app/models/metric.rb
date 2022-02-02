@@ -47,7 +47,7 @@ class Metric < ActiveRecord::Base
       value = if type["calculation"] == "sum"
         value.sum(type["column"])
       elsif type["calculation"] == "time_average"
-        time_avarage(value, type["column"], period)
+        time_average(value, type["column"], period)
       else
         value.average(type["column"])
       end
@@ -66,8 +66,8 @@ class Metric < ActiveRecord::Base
         current = current.sum(type["column"])
         previous = previous.sum(type["column"])
       elsif type["calculation"] == "time_average"
-        current = time_avarage(current, type["column"], period)
-        previous = time_avarage(previous, type["column"], period)
+        current = time_average(current, type["column"], period)
+        previous = time_average(previous, type["column"], period)
       else
         current = current.average(type["column"]) || 0
         previous = previous.average(type["column"]) || 0
@@ -95,7 +95,7 @@ class Metric < ActiveRecord::Base
       metrics = if type["calculation"] == "sum"
         metrics.sum(type["column"])
       elsif type["calculation"] == "time_average"
-        time_avarage(metrics, type["column"], period)
+        time_average(metrics, type["column"], period)
       else
         metrics.average(type["column"])
       end
@@ -131,7 +131,7 @@ class Metric < ActiveRecord::Base
       if type["calculation"] == "sum"
         value.sum(type["column"])
       elsif type["calculation"] == "time_average"
-        time_avarage(value, type["column"], period)
+        time_average(value, type["column"], period)
       else
         value.average(type["column"])
       end
