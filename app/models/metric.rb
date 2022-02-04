@@ -114,7 +114,7 @@ class Metric < ActiveRecord::Base
 
     def group_options(date, first_date, period)
       counter_date = date
-      group_options = {metric_date: {}, app_title: {}}
+      group_options = {metric_date: {}}
       until counter_date < first_date
         group_options[:metric_date][counter_date] = counter_date.beginning_of_day - period.days + 1.day..counter_date.end_of_day
         counter_date -= period.days
