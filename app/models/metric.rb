@@ -142,7 +142,7 @@ class Metric < ActiveRecord::Base
 
     def time_average(value, column, period, app_title_count = nil)
       app_title_count = value.pluck(:app_title).uniq.size if app_title_count.nil?
-      value.sum(column) / (period * app_titles)
+      value.sum(column) / (period * app_title_count)
     end
   end
 end
