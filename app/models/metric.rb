@@ -94,8 +94,8 @@ class Metric < ActiveRecord::Base
       end
       metrics = if type["calculation"] == "sum"
         metrics.sum(type["column"])
-      elsif type["calculation"] == "time_average"
-        time_average(metrics, type["column"], period)
+      # elsif type["calculation"] == "time_average"
+      #   time_average(metrics, type["column"], period)
       else
         metrics.average(type["column"])
       end
