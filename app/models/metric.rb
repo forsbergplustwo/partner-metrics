@@ -83,6 +83,7 @@ class Metric < ActiveRecord::Base
       else
         where(user_id: current_user.id, app_title: app_title)
       end
+      app_title_count = metrics.pluck(:app_title).uniq.size
       if type["metric_type"] == "any"
         first_date = metrics.order("metric_date").first.metric_date
         group_options = group_options(date, first_date, period)
@@ -95,7 +96,7 @@ class Metric < ActiveRecord::Base
       metrics = if type["calculation"] == "sum"
         metrics.sum(type["column"])
       elsif type["calculation"] == "time_average"
-        time_average(metrics, type["column"], period)
+        time_average(metrics, type["column"], period, app_title_count)
       else
         metrics.average(type["column"])
       end
@@ -139,9 +140,8 @@ class Metric < ActiveRecord::Base
 
     private
 
-    def time_average(value, column, period)
-      Rails.logger.info(value)
-      app_titles = value.pluck(:app_title).uniq.size
+    def time_average(value, column, period, app_title_count = nil)
+      app_title_count = value.pluck(:app_title).uniq.size if app_title_count.nil?
       value.sum(column) / (period * app_titles)
     end
   end
