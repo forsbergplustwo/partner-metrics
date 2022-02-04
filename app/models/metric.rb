@@ -78,12 +78,13 @@ class Metric < ActiveRecord::Base
 
     def get_chart_data(current_user, date, period, type, app_title)
       date = Date.parse(date)
+
       metrics = if app_title.blank?
         where(user_id: current_user.id)
       else
         where(user_id: current_user.id, app_title: app_title)
       end
-      app_title_count = metrics.pluck(:app_title).uniq.size
+
       if type["metric_type"] == "any"
         first_date = metrics.order("metric_date").first.metric_date
         group_options = group_options(date, first_date, period)
@@ -93,24 +94,27 @@ class Metric < ActiveRecord::Base
         group_options = group_options(date, first_date, period)
         metrics = metrics.where(charge_type: type["metric_type"]).group(group_options, restrict: true)
       end
+
       metrics = if type["calculation"] == "sum"
         metrics.sum(type["column"])
       elsif type["calculation"] == "time_average"
-        time_average(metrics, type["column"], period, app_title_count)
+        time_average(metrics, type["column"], period)
       else
         metrics.average(type["column"])
       end
+
       group_options[:metric_date].each do |g|
         gf = g.first.to_date
         metrics[gf.to_s] = 0 if metrics[gf.to_s].blank?
       end
+
       metrics.sort_by { |h| h[0].to_datetime }
       metrics
     end
 
     def group_options(date, first_date, period)
       counter_date = date
-      group_options = {metric_date: {}}
+      group_options = {metric_date: {}, app_title: {}}
       until counter_date < first_date
         group_options[:metric_date][counter_date] = counter_date.beginning_of_day - period.days + 1.day..counter_date.end_of_day
         counter_date -= period.days
