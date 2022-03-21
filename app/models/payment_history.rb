@@ -180,7 +180,7 @@ class PaymentHistory < ActiveRecord::Base
       options = {
         key_mapping: key_mappings,
         remove_unmapped_keys: true,
-        chunk_size: 500,
+        chunk_size: 1000,
         force_utf8: true,
       }
       chunk_count = 0
