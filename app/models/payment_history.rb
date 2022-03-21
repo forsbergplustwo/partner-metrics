@@ -217,7 +217,6 @@ class PaymentHistory < ActiveRecord::Base
                     "Affiliate fee",
                     "Development store referral commission",
                     "Affiliate referral commission",
-                    "Development store referral commission",
                     "Shopify Plus referral commission"
                 "affiliate_revenue"
               when "Manual",
@@ -334,12 +333,12 @@ class PaymentHistory < ActiveRecord::Base
         PaymentHistory.import(records)
         records = nil
       end
-      # rescue => e
-      #   current_user.update(partner_api_errors: "Error importing your data: #{e.message} - Please check your Account connection settings", import: "Failed", import_status: 100)
-      #   Rails.logger.info(e.message)
-      #   Rails.logger.info(e.backtrace.join("\n"))
-      #   Rails.logger.info(transactions.to_json) if transactions.present?
-      #   raise e
+    rescue => e
+      current_user.update(partner_api_errors: "Error importing your data: #{e.message} - Please check your Account connection settings", import: "Failed", import_status: 100)
+      Rails.logger.info(e.message)
+      Rails.logger.info(e.backtrace.join("\n"))
+      Rails.logger.info(transactions.to_json) if transactions.present?
+      raise e
     end
 
     def calculate_metrics(current_user)
