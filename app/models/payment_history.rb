@@ -240,14 +240,14 @@ class PaymentHistory < ActiveRecord::Base
             chunk_payments << current_user.payment_histories.new(csv)
           end
         end
-        PaymentHistory.import chunk_payments
-        current_user.update(import: "Importing (#{chunk_count},000 rows processed)", import_status: 100)
-        Rails.logger.info("Chunk: #{chunk_count}")
+        PaymentHistory.import(chunk_payments, validate: false, no_returning: true)
         chunk_payments = nil
         if chunk_count % 10 == 0
           GC.start
           Rails.logger.info("GC Started on Payments")
         end
+        current_user.update(import: "Importing (#{chunk_count},000 rows processed)", import_status: 100)
+        Rails.logger.info("Chunk: #{chunk_count}")
       end
       temp.close
       file.close
@@ -327,7 +327,7 @@ class PaymentHistory < ActiveRecord::Base
           end
           records << record
         end
-        PaymentHistory.import(records)
+        PaymentHistory.import(records, validate: false, no_returning: true)
         records = nil
       end
     rescue => e
