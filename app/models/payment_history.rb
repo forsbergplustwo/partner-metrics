@@ -288,12 +288,14 @@ class PaymentHistory < ActiveRecord::Base
           created_at = Date.parse(node.created_at)
 
           next if created_at <= last_calculated_metric_date
-          next if node.__typename == "TaxTransaction"
+          charge_type = lookup_charge_type(node.__typename)
+          next if charge_type.nil?
 
-          record = PaymentHistory.new(user_id: current_user.id)
-
-          record.payment_date = created_at
-          record.charge_type = lookup_charge_type(node.__typename)
+          record = PaymentHistory.new(
+            user_id: current_user.id,
+            charge_type: charge_type,
+            payment_date: created_at
+          )
 
           # STUPID: For my apps, I want Usage charges counted as "recurring" and not "one_time", others's don't
           if USAGE_CHARGE_TYPES.include?(node.__typename) && current_user.count_usage_charges_as_recurring == true
@@ -301,21 +303,16 @@ class PaymentHistory < ActiveRecord::Base
           end
 
           record.revenue = case node.__typename
-            when "ReferralAdjustment",
-              "ReferralTransaction"
+            when "ReferralAdjustment", "ReferralTransaction"
               node.amount.amount
             else
               node.net_amount.amount
           end
 
           record.app_title = case node.__typename
-            when "ReferralAdjustment",
-              "ReferralTransaction",
-              "ServiceSale",
-              "ServiceSaleAdjustment"
+            when "ReferralAdjustment", "ReferralTransaction", "ServiceSale", "ServiceSaleAdjustment"
               nil
-            when "ThemeSaleAdjustment",
-              "ThemeSale"
+            when "ThemeSaleAdjustment", "ThemeSale"
               node.theme.name
             else
               node.app.name
@@ -477,21 +474,12 @@ class PaymentHistory < ActiveRecord::Base
       case api_type
       when "AppSubscriptionSale"
         "recurring_revenue"
-      when "AppOneTimeSale",
-        "AppUsageSale",
-        "ServiceSale",
-        "ThemeSale"
+      when "AppOneTimeSale", "AppUsageRecord", "AppUsageSale", "ServiceSale", "ThemeSale"
         "onetime_revenue"
       when "ReferralTransaction"
         "affiliate_revenue"
-      when "AppSaleAdjustment",
-      "AppSaleCredit",
-        "ReferralAdjustment",
-        "ServiceSaleAdjustment",
-        "ThemeSaleAdjustment"
+      when "AppCredit", "AppSaleAdjustment", "AppSaleCredit", "ReferralAdjustment", "ServiceSaleAdjustment", "ThemeSaleAdjustment"
         "refund"
-      else
-        api_type
       end
     end
   end
