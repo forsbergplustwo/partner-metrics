@@ -253,7 +253,7 @@ class PaymentHistory < ActiveRecord::Base
       file.close
       Rails.logger.info("Total chunks: #{chunk_count}")
     rescue => e
-      current_user.update(import: "Failed", import_status: 100)
+      current_user.update(import: "Failed", import_status: 100, partner_api_errors: "Error: #{e.message}")
       Rails.logger.info(e.message)
       Rails.logger.info(e.backtrace.join("\n"))
       raise e
@@ -451,9 +451,9 @@ class PaymentHistory < ActiveRecord::Base
           end
         end
       end
-      current_user.update(import: "Complete", import_status: 100)
+      current_user.update(import: "Complete", import_status: 100, partner_api_errors: "")
     rescue => e
-      current_user.update(import: "Failed", import_status: 100)
+      current_user.update(import: "Failed", import_status: 100, partner_api_errors: "Error: #{e.message}")
       Rails.logger.info(e.message)
       Rails.logger.info(e.backtrace.join("\n"))
       raise e
