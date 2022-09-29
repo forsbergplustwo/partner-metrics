@@ -31,7 +31,7 @@ gem "resque-web", require: "resque_web"
 gem "rubyzip"
 gem "sass-rails", "~> 4.0.3"
 gem "sdoc", "~> 0.4.0", group: :doc
-gem "smarter_csv"
+gem "csvreader"
 gem "spring", group: :development
 gem "uglifier", ">= 1.3.0"
 gem "unicorn"
