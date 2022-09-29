@@ -202,7 +202,7 @@ class PaymentHistory < ActiveRecord::Base
         shop: csv[:shop],
         shop_country: csv[:shop_country],
         payment_date: csv[:charge_creation_time],
-        app_title: csv[:app_title].presense || "Unknown",
+        app_title: csv[:app_title].presence || "Unknown",
         revenue: csv[:partner_share],
       )
       record[:charge_type] =
