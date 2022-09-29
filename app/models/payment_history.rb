@@ -184,7 +184,8 @@ class PaymentHistory < ActiveRecord::Base
       }
       chunk_count = 0
       chunk_payments = []
-      SmarterCSV.process(file, options) do |csv|
+      SmarterCSV.process(file, options) do |csv_array|
+        csv = csv_array.first
         chunk_count += 1
         if csv[:payment_date].present? && !csv[:revenue].to_f != 0.0 && (Date.parse(csv[:payment_date]) > last_calculated_metric_date)
           csv[:app_title] = "Unknown" if csv[:app_title].blank?
