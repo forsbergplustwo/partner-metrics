@@ -176,7 +176,7 @@ class PaymentHistory < ActiveRecord::Base
       chunk_count = 0
       chunk_payments = []
       CsvHashReader.foreach(file, options) do |csv|
-        next if csv[:charge_creation_time].blank? || csv[:partner_share].to_f == 0.0 || csv[:charge_creation_time] > last_calculated_metric_date
+        next if csv[:charge_creation_time].blank? || csv[:partner_share].to_f == 0.0 || Date.parse(csv[:charge_creation_time]) > last_calculated_metric_date
         chunk_payments << process_csv_row(csv, current_user)
         chunk_count += 1
         if chunk_count % 3000 == 0
