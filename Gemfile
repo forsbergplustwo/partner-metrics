@@ -1,5 +1,5 @@
 source "https://rubygems.org"
-ruby "2.4.5"
+ruby "2.6.8"
 
 gem "activerecord-import"
 gem "aws-sdk", "~> 2"
