@@ -180,75 +180,71 @@ class PaymentHistory < ActiveRecord::Base
       options = {
         key_mapping: key_mappings,
         remove_unmapped_keys: true,
-        chunk_size: 1000,
         force_utf8: true,
       }
       chunk_count = 0
-      SmarterCSV.process(file, options) do |csv_chunk|
-        chunk_payments = []
+      chunk_payments = []
+      SmarterCSV.process(file, options) do |csv|
         chunk_count += 1
-        csv_chunk.each do |csv|
-          if csv[:payment_date].present? && !csv[:revenue].to_f != 0.0 && (Date.parse(csv[:payment_date]) > last_calculated_metric_date)
-            csv[:app_title] = "Unknown" if csv[:app_title].blank?
-            csv[:charge_type] =
-              case csv[:charge_type]
-              when "RecurringApplicationFee",
-                    "Recurring application fee",
-                    "App sale – recurring",
-                    "App sale – subscription",
-                    "App sale – 30-day subscription",
-                    "App sale – yearly subscription"
+        if csv[:payment_date].present? && !csv[:revenue].to_f != 0.0 && (Date.parse(csv[:payment_date]) > last_calculated_metric_date)
+          csv[:app_title] = "Unknown" if csv[:app_title].blank?
+          csv[:charge_type] =
+            case csv[:charge_type]
+            when "RecurringApplicationFee",
+                  "Recurring application fee",
+                  "App sale – recurring",
+                  "App sale – subscription",
+                  "App sale – 30-day subscription",
+                  "App sale – yearly subscription"
+              "recurring_revenue"
+            when "OneTimeApplicationFee",
+                  "Usage application fee",
+                  "ThemePurchaseFee",
+                  "One time application fee",
+                  "Theme purchase fee",
+                  "App sale – one-time",
+                  "App sale – usage",
+                  "Service sale"
+              # STUPID: For my apps, I want Usage charges counted as "recurring" and not "one_time", others's don't
+              if USAGE_CHARGE_TYPES.include?(csv[:charge_type]) && current_user.count_usage_charges_as_recurring == true
                 "recurring_revenue"
-              when "OneTimeApplicationFee",
-                    "Usage application fee",
-                    "ThemePurchaseFee",
-                    "One time application fee",
-                    "Theme purchase fee",
-                    "App sale – one-time",
-                    "App sale – usage",
-                    "Service sale"
-                # STUPID: For my apps, I want Usage charges counted as "recurring" and not "one_time", others's don't
-                if USAGE_CHARGE_TYPES.include?(csv[:charge_type]) && current_user.count_usage_charges_as_recurring == true
-                  "recurring_revenue"
-                else
-                  "onetime_revenue"
-                end
-              when "AffiliateFee",
-                    "Affiliate fee",
-                    "Development store referral commission",
-                    "Affiliate referral commission",
-                    "Shopify Plus referral commission"
-                "affiliate_revenue"
-              when "Manual",
-                    "ApplicationDowngradeAdjustment",
-                    "ApplicationCredit",
-                    "AffiliateFeeRefundAdjustment",
-                    "Application credit",
-                    "Application downgrade adjustment",
-                    "Application fee refund adjustment",
-                    "App credit",
-                    "App refund",
-                    "App credit refund",
-                    "Development store commission adjustment",
-                    "Payout correction",
-                    "App downgrade",
-                    "Service refund"
-                "refund"
               else
-                csv[:charge_type]
+                "onetime_revenue"
               end
-            chunk_payments << current_user.payment_histories.new(csv)
-          end
+            when "AffiliateFee",
+                  "Affiliate fee",
+                  "Development store referral commission",
+                  "Affiliate referral commission",
+                  "Shopify Plus referral commission"
+              "affiliate_revenue"
+            when "Manual",
+                  "ApplicationDowngradeAdjustment",
+                  "ApplicationCredit",
+                  "AffiliateFeeRefundAdjustment",
+                  "Application credit",
+                  "Application downgrade adjustment",
+                  "Application fee refund adjustment",
+                  "App credit",
+                  "App refund",
+                  "App credit refund",
+                  "Development store commission adjustment",
+                  "Payout correction",
+                  "App downgrade",
+                  "Service refund"
+              "refund"
+            else
+              csv[:charge_type]
+            end
+          chunk_payments << current_user.payment_histories.new(csv)
         end
-        PaymentHistory.import(chunk_payments, validate: false, no_returning: true)
-        chunk_payments = nil
-        if chunk_count % 10 == 0
+        if chunk_count % 3000 == 0
+          PaymentHistory.import(chunk_payments, validate: false, no_returning: true)
+          chunk_payments = []
+          current_user.update(import: "Importing (#{chunk_count} rows processed)", import_status: 100)
           GC.start
-          Rails.logger.info("GC Started on Payments")
         end
-        current_user.update(import: "Importing (#{chunk_count},000 rows processed)", import_status: 100)
-        Rails.logger.info("Chunk: #{chunk_count}")
       end
+      PaymentHistory.import(chunk_payments, validate: false, no_returning: true) if chunk_payments.present?
       temp.close
       file.close
       Rails.logger.info("Total chunks: #{chunk_count}")
