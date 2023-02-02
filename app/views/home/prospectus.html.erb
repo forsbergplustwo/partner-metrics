@@ -47,7 +47,7 @@
                   <%= number_to_currency(@payments_revenue[date], precision: 0) %>
                 </td>
                 <td>
-                  <%= number_to_currency((@payments_revenue[date] / users), precision: 0) rescue 0 %>
+                  <%= number_to_currency((@payments_revenue[date] / users), precision: 2) rescue 0 %>
                 </td>
                 <td>
                   <%= number_to_percentage(@metrics_user_churn[date], precision: 1) %>
