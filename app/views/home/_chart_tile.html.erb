@@ -1,87 +1,76 @@
 <% metric_value = @metrics.calculate_value(current_user, @chart_tile) %>
 <% metric_change = @metrics.calculate_change(current_user, @chart_tile, @previous_metrics) %>
+
 <div class="col-sm-12">
   <div class="panel panel-default metric_tile">
     <div class="panel-body">
-      <div class="col-xs-12 col-sm-3 hidden-xs">
-        <% if @chart_tile["display"] == "number" %>
-          <h2 class="main-metric"><%= number_with_delimiter(metric_value, delimiter: ',') %></h2>
-        <% elsif @chart_tile["display"] == "percentage" %>
-          <h2 class="main-metric"><%= number_to_percentage(metric_value, precision: 2) %></h2>
+      <div class="row">
+        <div class="col-xs-12 col-sm-12">
+          <h3 class="title"><%= @chart_tile["title"] %></h3>
+        </div>
+
+        <div class="col-xs-8">
+          <h2 class="main-metric">
+            <% if @chart_tile["display"] == "number" %>
+              <%= number_with_delimiter(metric_value, delimiter: ',') %>
+            <% elsif @chart_tile["display"] == "percentage" %>
+              <%= number_to_percentage(metric_value, precision: 2) %>
+            <% else %>
+              <%= number_to_currency_with_precision(metric_value) %>
+            <% end %>
+          </h2>
+        </div>
+
+        <div class="col-xs-4">
+          <h4 class="pull-right text-right <%= metric_change_color(metric_change, @chart_tile["direction_good"]) %>">
+            <%= number_to_percentage_with_precision(metric_change) %>
+            <br>
+            <small><%= pluralize(@period, 'day') %> ago</small>
+          </h4>
+        </div>
+
+        <div class="col-xs-12">
+          <%= area_chart chart_data_path(date: @date, period: @period, chart_type: @chart_tile, app_title: @app_title), download: true, library: {animation: {startup: true, duration: 1200, easing: 'inAndOut'}, lineWidth: 4, colors: ["#5912D5"], explorer: { keepInBounds: true , axis: 'horizontal', maxZoomIn: 0.5, maxZoomOut: 1, zoomDelta: 1.1 }, vAxis: {format: 'short', gridlines: {color: "#F1F2F4"}},chartArea: {width: '100%', height: '80%', left: '5%'}} %>
+          <hr>
+        </div>
+        <% if show_averages(@period, @chart_tile) %>
+          <% column_size = "col-xs-6 col-sm-2"%>
+          <div class="<%= column_size %>">
+            <h5>Daily Avg</h5>
+            <% value = metric_value / @period * 1 %>
+            <h3 class="meta-amount">
+              <% if @chart_tile["display"] == "number" %>
+                <%= number_with_delimiter(value, delimiter: ',') %>
+              <% elsif @chart_tile["display"] == "percentage" %>
+                <%= number_to_percentage(value, precision: 2) %>
+              <% else %>
+                <%= number_to_currency_with_precision(value) %>
+              <% end %>
+            </h3>
+          </div>
         <% else %>
-          <h2 class="main-metric"><%= number_to_currency_with_precision(metric_value) %></h2>
+          <% column_size = "col-xs-6 col-sm-2"%>
+          <div class="<%= column_size %>"></div>
         <% end %>
-      </div>
-      <div class="col-xs-12 col-sm-6 text-center">
-        <h3><%= @chart_tile["title"] %></h3>
-      </div>
-      <div class="col-xs-12 col-sm-3 hidden-xs">
-        <h3 class="pull-right text-right <%= metric_change_color(metric_change, @chart_tile["direction_good"]) %>">
-          <%= number_to_percentage_with_precision(metric_change) %>
-          <br>
-          <small><%= pluralize(@period, 'day') %> ago</small>
-        </h3>
-      </div>
-      <div class="col-xs-12">
-        <%= area_chart chart_data_path(date: @date, period: @period, chart_type: @chart_tile, app_title: @app_title), download: true, library: {animation: {startup: true, duration: 1200, easing: 'inAndOut'}, lineWidth: 4, colors: ["#007b5c"], explorer: { keepInBounds: true , axis: 'horizontal', maxZoomIn: 0.5, maxZoomOut: 1, zoomDelta: 1.1 }, vAxis: {format: 'short', gridlines: {color: "#F1F3F5"}},chartArea: {width: '100%', height: '80%', left: '5%'}} %>
-        <hr class="hidden-xs">
-      </div>
-      <div class="col-xs-12 text-center visible-xs">
-        <h5>Current</h5>
-        <% value = metric_value %>
-        <% if @chart_tile["display"] == "number" %>
-        <h2><%= number_with_delimiter(value, delimiter: ',') %></h2>
-        <% elsif @chart_tile["display"] == "percentage" %>
-        <h2><%= number_to_percentage(value, precision: 2) %></h2>
-        <% else %>
-        <h2><%= number_to_currency_with_precision(value) %></h2>
-        <% end %>
-      </div>
-      <% if show_averages(@period, @chart_tile) %>
-        <% column_size = "col-xs-6 col-sm-2"%>
-        <div class="<%= column_size %> text-center">
-          <h5>Daily Avg</h5>
-          <% value = metric_value / @period * 1 %>
-          <% if @chart_tile["display"] == "number" %>
-          <h3><%= number_with_delimiter(value, delimiter: ',') %></h3>
-          <% elsif @chart_tile["display"] == "percentage" %>
-          <h3><%= number_to_percentage(value, precision: 2) %></h3>
-          <% else %>
-          <h3><%= number_to_currency_with_precision(value) %></h3>
+          <% periods_ago(@period).each do |period_ago| %>
+          <div class="<%= column_size %>">
+            <% value = Metric.calculate_value_period_ago(current_user, period_ago, @date, @period, @chart_tile, @app_title) || 0 %>
+            <% change = value == 0 ? 0 : (metric_value.to_f / value * 100) - 100 %>
+            <h5><%= distance_of_time_in_words(@date, (@date - (@period * period_ago).days)).gsub('about', '').gsub('almost', '') %> before</h5>
+            <h3 class="meta-amount">
+              <% if @chart_tile["display"] == "number" %>
+                <%= number_with_delimiter(value, delimiter: ',') %>
+              <% elsif @chart_tile["display"] == "percentage" %>
+                <%= number_to_percentage(value, precision: 2) %>
+              <% else %>
+                <%= number_to_currency_with_precision(value) %>
+              <% end %>
+            </h3>
+            <h6 class="meta-change <%= metric_change_color(change, @chart_tile["direction_good"]) %>">
+            <%= number_to_percentage_with_precision(change) %></h6>
+          </div>
           <% end %>
         </div>
-<!--         <div class="<%= column_size %> text-center">
-          <h5>Weekly Avg</h5>
-          <% value = metric_value / @period * 7 %>
-          <% if @chart_tile["display"] == "number" %>
-          <h3><%= value %></h3>
-          <% elsif @chart_tile["display"] == "percentage" %>
-          <h3><%= number_to_percentage(value, precision: 2) %></h3>
-          <% else %>
-          <h3><%= number_to_currency_with_precision(value) %></h3>
-          <% end %>
-        </div>
--->
-      <% else %>
-        <% column_size = "col-xs-6 col-sm-2"%>
-        <div class="<%= column_size %> text-center"></div>
-      <% end %>
-        <% periods_ago(@period).each do |period_ago| %>
-        <div class="<%= column_size %> text-center">
-          <% value = Metric.calculate_value_period_ago(current_user, period_ago, @date, @period, @chart_tile, @app_title) || 0 %>
-          <% change = value == 0 ? 0 : (metric_value.to_f / value * 100) - 100 %>
-          <h5><%= distance_of_time_in_words(@date, (@date - (@period * period_ago).days)).gsub('about', '').gsub('almost', '') %> before</h5>
-          <% if @chart_tile["display"] == "number" %>
-          <h3><%= number_with_delimiter(value, delimiter: ',') %></h3>
-          <% elsif @chart_tile["display"] == "percentage" %>
-          <h3><%= number_to_percentage(value, precision: 2) %></h3>
-          <% else %>
-          <h3><%= number_to_currency_with_precision(value) %></h3>
-          <% end %>
-          <h5 class="<%= metric_change_color(change, @chart_tile["direction_good"]) %>">
-          <%= number_to_percentage_with_precision(change) %></h5>
-        </div>
-        <% end %>
     </div>
   </div>
 </div>

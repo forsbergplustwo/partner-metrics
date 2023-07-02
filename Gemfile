@@ -12,7 +12,6 @@ gem "convenient_grouper"
 gem "devise"
 gem "devise-bootstrap-views"
 gem "font-awesome-rails"
-gem "foreman"
 gem "groupdate"
 gem "high_voltage"
 gem "intercom-rails"
@@ -38,6 +37,9 @@ gem "unicorn"
 gem "graphql-client"
 
 group :development, :test do
+  gem "puma"
+  gem "foreman"
+
   # Code analysis / linters
   gem "brakeman"
   gem "bullet"
