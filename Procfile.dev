@@ -1,0 +1,2 @@
+web: puma-dev -stop && tail -f log/development.log
+worker: bundle exec rake environment resque:pool
