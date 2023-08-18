@@ -14,6 +14,7 @@
   <%= javascript_include_tag "https://www.gstatic.com/charts/loader.js" %>
   <%= javascript_include_tag 'application' %>
   <%= csrf_meta_tags %>
+
   <% if !current_user.blank? %>
     <%= intercom_script_tag({
       :app_id => 'gworkb82',
@@ -27,7 +28,8 @@
     }) %>
   <% end %>
 </head>
-<body class="<%= params[:action] %>">
+
+<body class="<%= "#{params[:controller]}-#{params[:action]}" %>">
   <div id="wrap">
     <header>
       <%= render 'layouts/navigation' %>
@@ -35,7 +37,14 @@
     <main id="main" role="main">
       <div class="container">
         <%= render 'layouts/messages', locals: {current_user: current_user} %>
+
         <%= yield %>
+
+        <% if current_user.present? %>
+          <%= render 'layouts/import_modal' %>
+          <%= render 'layouts/rename_app_modal' %>
+        <% end %>
+
       </div>
     </main>
   </div>

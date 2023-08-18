@@ -1,5 +1,5 @@
   <div id="heading_row" class="row">
-    <%= render "heading_row", title: "One-Time Revenue" %>
+    <%= render "metrics/heading", title: "One-Time Revenue" %>
   </div>
 
   <% if !@metrics.blank? %>
@@ -72,6 +72,3 @@
       </div>
     </div>
   <% end %>
-
-  <%= render partial: 'import_modal' %>
-  <%= render partial: 'rename_app_modal' %>

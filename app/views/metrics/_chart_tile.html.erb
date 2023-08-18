@@ -30,7 +30,7 @@
         </div>
 
         <div class="col-xs-12">
-          <%= area_chart chart_data_path(date: @date, period: @period, chart_type: @chart_tile, app_title: @app_title), download: true, library: {pointSize: 2, animation: {startup: true, duration: 1200, easing: 'inAndOut'}, lineWidth: 4, colors: ["#5912D5"], explorer: { keepInBounds: true , axis: 'horizontal', maxZoomIn: 0.5, maxZoomOut: 1, zoomDelta: 1.1 }, vAxis: {format: 'short', gridlines: {color: "#F1F2F4"}},chartArea: {width: '100%', height: '80%', left: '5%'}} %>
+          <%= area_chart metrics_charts_path(date: @date, period: @period, chart_type: @chart_tile, app_title: @app_title), download: true, library: {pointSize: 2, animation: {startup: true, duration: 1200, easing: 'inAndOut'}, lineWidth: 4, colors: ["#5912D5"], explorer: { keepInBounds: true , axis: 'horizontal', maxZoomIn: 0.5, maxZoomOut: 1, zoomDelta: 1.1 }, vAxis: {format: 'short', gridlines: {color: "#F1F2F4"}},chartArea: {width: '100%', height: '80%', left: '5%'}} %>
           <hr>
         </div>
         <% if show_averages(@period, @chart_tile) %>
