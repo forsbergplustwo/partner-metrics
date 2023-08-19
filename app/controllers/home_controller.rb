@@ -1,76 +1,9 @@
 class HomeController < ApplicationController
-  before_action :authenticate_user!, except: :index
-  before_action :set_params, except: [:index, :chart_data, :import, :prospectus]
-  before_action :set_s3_direct_post, except: [:chart_data, :import]
+
 
   def index
     if current_user.present?
-      redirect_to overview_path
-    end
-  end
-
-  def overview
-    @metrics = current_user.metrics.where(metric_date: @date_last..@date)
-    @previous_metrics = current_user.metrics.where(metric_date: @previous_date_last..@previous_date)
-    @tiles = Metric::OVERVIEW_TILES
-    @chart_tile = if params["chart"].present?
-      @tiles.find { |t| t["type"] == params["chart"] }
-    else
-      @tiles.first
-    end
-  end
-
-  def recurring
-    @app_titles = ["All"] + current_user.metrics.where(charge_type: "recurring_revenue").uniq.pluck(:app_title)
-    if params["app_title"].blank? || params["app_title"] == "All"
-      m = current_user.metrics.where(charge_type: "recurring_revenue")
-    else
-      @app_title = params["app_title"]
-      m = current_user.metrics.where(app_title: params["app_title"], charge_type: "recurring_revenue")
-    end
-    @metrics = m.where(metric_date: @date_last..@date)
-    @previous_metrics = m.where(metric_date: @previous_date_last..@previous_date)
-    @tiles = Metric::RECURRING_TILES
-    @chart_tile = if params["chart"].present?
-      @tiles.find { |t| t["type"] == params["chart"] }
-    else
-      @tiles.first
-    end
-  end
-
-  def onetime
-    @app_titles = ["All"] + current_user.metrics.where(charge_type: "onetime_revenue").uniq.pluck(:app_title)
-    if params["app_title"].blank? || params["app_title"] == "All"
-      m = current_user.metrics.where(charge_type: "onetime_revenue")
-    else
-      @app_title = params["app_title"]
-      m = current_user.metrics.where(app_title: params["app_title"], charge_type: "onetime_revenue")
-    end
-    @metrics = m.where(metric_date: @date_last..@date)
-    @previous_metrics = m.where(metric_date: @previous_date_last..@previous_date)
-    @tiles = Metric::ONETIME_TILES
-    @chart_tile = if params["chart"].present?
-      @tiles.find { |t| t["type"] == params["chart"] }
-    else
-      @tiles.first
-    end
-  end
-
-  def affiliate
-    @app_titles = ["All"]
-    if params["app_title"].blank? || params["app_title"] == "All"
-      m = current_user.metrics.where(charge_type: "affiliate_revenue")
-    else
-      @app_title = params["app_title"]
-      m = current_user.metrics.where(app_title: params["app_title"], charge_type: "affiliate_revenue")
-    end
-    @metrics = m.where(metric_date: @date_last..@date)
-    @previous_metrics = m.where(metric_date: @previous_date_last..@previous_date)
-    @tiles = Metric::AFFILIATE_TILES
-    @chart_tile = if params["chart"].present?
-      @tiles.find { |t| t["type"] == params["chart"] }
-    else
-      @tiles.first
+      redirect_to metrics_path
     end
   end
 
@@ -99,11 +32,6 @@ class HomeController < ApplicationController
   end
 
   def app_store_analytics
-  end
-
-  def chart_data
-    @metrics = Metric.get_chart_data(current_user, params["date"], params["period"].to_i, params["chart_type"], params["app_title"])
-    render json: @metrics
   end
 
   def import
@@ -172,36 +100,6 @@ class HomeController < ApplicationController
 
   private
 
-  def set_params
-    calculated_metrics = current_user.metrics.order("metric_date")
-    if calculated_metrics.present?
-      @first_metric_date = calculated_metrics.first.metric_date
-      @latest_metric_date = calculated_metrics.last.metric_date
-      @range = params[:date]
-      if @range.blank?
-        @date = @latest_metric_date
-        @period = 30
-      else
-        @date = Date.parse(@range)
-        @period = params[:period].to_i
-      end
-      @date_last = @date - @period.days + 1.day
-      @range = "#{@date_last.strftime("%b %d, %Y")} - #{@date.strftime("%b %d, %Y")}"
-      @previous_date = @date - @period.days
-      @previous_date_last = @previous_date - @period.days + 1.day
-    else
-      @first_metric_date = Time.zone.now.to_date
-      @latest_metric_date = Time.zone.now.to_date
-      @date = @latest_metric_date
-      @period = 30
-      @date_last = @date - @period.days + 1.day
-      @range = "#{@date_last.strftime("%b %d, %Y")} - #{@date.strftime("%b %d, %Y")}"
-    end
-  end
-
-  def set_s3_direct_post
-    @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", success_action_status: "201")
-  end
 
   def save_partner_api_credentials
     if params[:partner_api_access_token].present? && params[:partner_api_organization_id].present? && params[:count_usage_charges_as_recurring].present?

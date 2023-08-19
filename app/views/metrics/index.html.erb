@@ -1,5 +1,5 @@
 <div id="heading_row" class="row">
-    <%= render "heading_row", title: "Overview" %>
+    <%= render "metrics/heading", title: "Overview" %>
   </div>
 
   <% if !@metrics.blank? %>
@@ -69,5 +69,3 @@
       </div>
     </div>
   <% end %>
-
-  <%= render partial: 'import_modal' %>
