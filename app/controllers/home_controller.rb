@@ -1,5 +1,4 @@
 class HomeController < ApplicationController
-
   def index
     if current_user.present?
       redirect_to metrics_path
@@ -49,7 +48,7 @@ class HomeController < ApplicationController
     render json: {
       reload: reload,
       label: label,
-      amount_done: amount_done,
+      amount_done: amount_done
     }
   end
 
@@ -74,7 +73,6 @@ class HomeController < ApplicationController
   end
 
   private
-
 
   def save_partner_api_credentials
     if params[:partner_api_access_token].present? && params[:partner_api_organization_id].present? && params[:count_usage_charges_as_recurring].present?

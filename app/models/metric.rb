@@ -8,7 +8,7 @@ class Metric < ActiveRecord::Base
     {"type" => "onetime_revenue", "title" => "One-Time Revenue", "calculation" => "sum", "metric_type" => "onetime_revenue", "column" => "revenue", "display" => "currency", "direction_good" => "up"},
     {"type" => "affiliate_revenue", "title" => "Affiliate Revenue", "calculation" => "sum", "metric_type" => "affiliate_revenue", "column" => "revenue", "display" => "currency", "direction_good" => "up"},
     {"type" => "refund", "column" => "revenue", "title" => "Refunds", "calculation" => "sum", "metric_type" => "refund", "display" => "currency", "direction_good" => "down"},
-    {"type" => "avg_revenue_per_shop", "title" => "Avg. Revenue per User", "calculation" => "average", "metric_type" => "any", "column" => "average_revenue_per_shop", "display" => "currency", "direction_good" => "up"},
+    {"type" => "avg_revenue_per_shop", "title" => "Avg. Revenue per User", "calculation" => "average", "metric_type" => "any", "column" => "average_revenue_per_shop", "display" => "currency", "direction_good" => "up"}
   ].freeze
 
   RECURRING_TILES = [
@@ -17,7 +17,7 @@ class Metric < ActiveRecord::Base
     {"type" => "recurring_avg_revenue_per_shop", "title" => "Avg. Revenue per User", "calculation" => "average", "metric_type" => "recurring_revenue", "column" => "average_revenue_per_shop", "display" => "currency", "direction_good" => "up"},
     {"type" => "shop_churn", "title" => "User Churn (30 Day Lag)", "calculation" => "average", "metric_type" => "recurring_revenue", "column" => "shop_churn", "display" => "percentage", "direction_good" => "down"},
     {"type" => "revenue_churn", "title" => "Revenue Churn (30 Day Lag)", "calculation" => "average", "metric_type" => "recurring_revenue", "column" => "revenue_churn", "display" => "percentage", "direction_good" => "down"},
-    {"type" => "lifetime_value", "title" => "Lifetime Value (30 Day Lag)", "calculation" => "average", "metric_type" => "recurring_revenue", "column" => "lifetime_value", "display" => "currency", "direction_good" => "up"},
+    {"type" => "lifetime_value", "title" => "Lifetime Value (30 Day Lag)", "calculation" => "average", "metric_type" => "recurring_revenue", "column" => "lifetime_value", "display" => "currency", "direction_good" => "up"}
   ].freeze
 
   ONETIME_TILES = [
@@ -26,13 +26,13 @@ class Metric < ActiveRecord::Base
     {"type" => "onetime_avg_revenue_per_shop", "title" => "Avg. Revenue per User", "calculation" => "average", "metric_type" => "onetime_revenue", "column" => "average_revenue_per_shop", "display" => "currency", "direction_good" => "up"},
     {"type" => "onetime_number_of_charges", "title" => "Number of Sales", "calculation" => "sum", "metric_type" => "onetime_revenue", "column" => "number_of_charges", "display" => "number", "direction_good" => "up"},
     {"type" => "repeat_customers", "title" => "Repeat Customers", "calculation" => "sum", "metric_type" => "onetime_revenue", "column" => "repeat_customers", "display" => "number", "direction_good" => "up"},
-    {"type" => "repeat_vs_new_customers", "title" => "Repeat vs New Customers", "calculation" => "average", "metric_type" => "onetime_revenue", "column" => "repeat_vs_new_customers", "display" => "percentage", "direction_good" => "up"},
+    {"type" => "repeat_vs_new_customers", "title" => "Repeat vs New Customers", "calculation" => "average", "metric_type" => "onetime_revenue", "column" => "repeat_vs_new_customers", "display" => "percentage", "direction_good" => "up"}
   ]
 
   AFFILIATE_TILES = [
     {"type" => "affiliate_revenue", "title" => "Revenue", "calculation" => "sum", "metric_type" => "affiliate_revenue", "column" => "revenue", "display" => "currency", "direction_good" => "up"},
     {"type" => "affiliate_number_of_charges", "title" => "Number of Affiliates", "calculation" => "sum", "metric_type" => "affiliate_revenue", "column" => "number_of_charges", "display" => "number", "direction_good" => "up"},
-    {"type" => "affiliate_avg_revenue_per_shop", "title" => "Avg. Revenue per User", "calculation" => "average", "metric_type" => "affiliate_revenue", "column" => "average_revenue_per_shop", "display" => "currency", "direction_good" => "up"},
+    {"type" => "affiliate_avg_revenue_per_shop", "title" => "Avg. Revenue per User", "calculation" => "average", "metric_type" => "affiliate_revenue", "column" => "average_revenue_per_shop", "display" => "currency", "direction_good" => "up"}
   ].freeze
 
   MONTHS_AGO = [1, 2, 3, 6, 12].freeze
@@ -44,12 +44,11 @@ class Metric < ActiveRecord::Base
       else
         where(user_id: current_user.id, charge_type: type["metric_type"])
       end
-      value = if type["calculation"] == "sum"
+      if type["calculation"] == "sum"
         value.sum(type["column"])
       else
         value.average(type["column"])
       end
-      value
     end
 
     def calculate_change(current_user, type, previous_metrics)
@@ -67,8 +66,7 @@ class Metric < ActiveRecord::Base
         current = current.average(type["column"]) || 0
         previous = previous.average(type["column"]) || 0
       end
-      change = current.blank? || previous.blank? ? 0 : (current.to_f / previous * 100) - 100
-      change
+      current.blank? || previous.blank? ? 0 : (current.to_f / previous * 100) - 100
     end
 
     def get_chart_data(current_user, date, period, type, app_title)

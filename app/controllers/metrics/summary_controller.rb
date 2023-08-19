@@ -1,5 +1,4 @@
 class Metrics::SummaryController < MetricsController
-
   def index
     @app_titles = ["All"] + current_user.payment_histories.pluck(:app_title).uniq
     if params["app_title"].blank? || params["app_title"] == "All"
@@ -11,10 +10,10 @@ class Metrics::SummaryController < MetricsController
       metrics = current_user.metrics.where(app_title: params["app_title"])
     end
     @latest_metric_date = begin
-                            metrics.last.payment_date
-                          rescue
-                            Time.zone.now
-                          end
+      metrics.last.payment_date
+    rescue
+      Time.zone.now
+    end
     @payments_count = payments.group_by_month(:payment_date, reverse: true, last: 36).count
     @payments_revenue = payments.group_by_month(:payment_date, reverse: true, last: 36).sum(:revenue)
     @metrics_revenue_churn = metrics.group_by_month(:metric_date, reverse: true, last: 36).average(:revenue_churn)

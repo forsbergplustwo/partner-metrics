@@ -5,6 +5,6 @@ Chartkick.options = {
 
     vAxis: {textStyle: {color: "#616a75", fontSize: "14", paddingRight: "100", marginRight: "100"}, format: "short", gridlines: {color: "#F1F2F4"}},
     hAxis: {textStyle: {color: "#616a75", fontSize: "14", paddingRight: "100", marginRight: "100"}},
-    chartArea: {width: "100%", left: "10%"},
-  },
+    chartArea: {width: "100%", left: "10%"}
+  }
 }

@@ -1,5 +1,4 @@
 class Metrics::RecurringController < MetricsController
-
   def index
     @app_titles = ["All"] + current_user.metrics.where(charge_type: "recurring_revenue").uniq.pluck(:app_title)
     if params["app_title"].blank? || params["app_title"] == "All"

@@ -10,7 +10,7 @@ class PaymentHistory < ActiveRecord::Base
   USAGE_CHARGE_TYPES = [
     "App sale – usage",
     "Usage application fee",
-    "AppUsageSale",
+    "AppUsageSale"
   ].freeze
 
   TransactionsQuery = ShopifyPartnerAPI.client.parse <<-'GRAPHQL'
@@ -151,7 +151,7 @@ class PaymentHistory < ActiveRecord::Base
       s3 = Aws::S3::Client.new
       file = s3.get_object(
         {bucket: "partner-metrics",
-         key: filename,}, target: temp.path
+         key: filename}, target: temp.path
       )
       if filename.include?(".zip")
         Zip.on_exists_proc = true
@@ -171,7 +171,7 @@ class PaymentHistory < ActiveRecord::Base
       current_user.payment_histories.where("payment_date > ?", last_calculated_metric_date).delete_all
       options = {
         converters: :all,
-        header_converters: :symbol,
+        header_converters: :symbol
       }
       chunk_count = 0
       chunk_payments = []
@@ -201,7 +201,7 @@ class PaymentHistory < ActiveRecord::Base
         shop_country: csv[:shop_country],
         payment_date: csv[:charge_creation_time],
         app_title: csv[:app_title].presence || "Unknown",
-        revenue: csv[:partner_share],
+        revenue: csv[:partner_share]
       )
       record[:charge_type] =
         case csv[:charge_type]
@@ -302,27 +302,27 @@ class PaymentHistory < ActiveRecord::Base
           end
 
           record.revenue = case node.__typename
-            when "ReferralAdjustment", "ReferralTransaction"
-              node.amount.amount
-            else
-              node.net_amount.amount
+          when "ReferralAdjustment", "ReferralTransaction"
+            node.amount.amount
+          else
+            node.net_amount.amount
           end
 
           record.app_title = case node.__typename
-            when "ReferralAdjustment", "ReferralTransaction", "ServiceSale", "ServiceSaleAdjustment"
-              nil
-            when "ThemeSaleAdjustment", "ThemeSale"
-              node.theme.name
-            else
-              node.app.name
+          when "ReferralAdjustment", "ReferralTransaction", "ServiceSale", "ServiceSaleAdjustment"
+            nil
+          when "ThemeSaleAdjustment", "ThemeSale"
+            node.theme.name
+          else
+            node.app.name
           end
 
           record.shop = case node.__typename
-            when "ReferralTransaction"
-              node.shop_non_nullable.myshopify_domain
-            else
-              next if node.shop.nil?
-              node.shop.myshopify_domain
+          when "ReferralTransaction"
+            node.shop_non_nullable.myshopify_domain
+          else
+            next if node.shop.nil?
+            node.shop.myshopify_domain
           end
           records << record
         end
