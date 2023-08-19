@@ -76,7 +76,3 @@ pickle-email-*.html
 
 # Environment files that may contain sensitive data
 .env
-.powenv
-
-# Ignore rubocop caching of external ruleset
-.rubocop-https*

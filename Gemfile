@@ -45,11 +45,12 @@ group :development, :test do
   gem "brakeman"
   gem "bullet"
   gem "bundle-audit"
-  gem "lefthook"
-  gem "rubocop"
-  gem "rubocop-rails"
-  gem "rubocop-performance"
-  gem "rubocop-thread_safety"
+  gem "standard"
+
+  # TODO: Add these back when Ruby 2.7+ is supported
+  # gem "standard-rails"
+  # gem "standard-minitest"
+  # gem "standard-thread_safety"
 end
 
 group :development do
