@@ -12,6 +12,7 @@ Rails.application.routes.draw do
     resources :recurring, only: [:index]
     resources :onetime, only: [:index]
     resources :affiliate, only: [:index]
+    resources :summary, only: [:index]
 
     resource :charts do
       get :show, on: :member
@@ -22,7 +23,6 @@ Rails.application.routes.draw do
   post "import" => "home#import"
   post "import_status" => "home#import_status"
 
-  get "prospectus" => "home#prospectus"
   get "app_store_analytics" => "home#app_store_analytics"
 
   get "reset_metrics" => "home#reset_metrics"

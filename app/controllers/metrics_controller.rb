@@ -1,6 +1,6 @@
 class MetricsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_base_variables, except: [:import, :prospectus]
+  before_action :set_base_variables
   include Importable
 
   def index
