@@ -9,7 +9,7 @@ module ShopifyPartnerAPI
       initialize_client_cache
       cached_client = @_client_cache
 
-      if cached_client != nil
+      if !cached_client.nil?
         cached_client
       else
         initialize_client

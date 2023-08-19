@@ -11,7 +11,7 @@ module ActiveRecord
     module PostgreSQL
       module SchemaStatements
         # Resets the sequence of a table's primary key to the maximum value.
-        def reset_pk_sequence!(table, pk = nil, sequence = nil) #:nodoc:
+        def reset_pk_sequence!(table, pk = nil, sequence = nil) # :nodoc:
           unless pk && sequence
             default_pk, default_sequence = pk_and_sequence_for(table)
 

@@ -94,6 +94,6 @@ Rails.application.configure do
     user_name: ENV["SENDGRID_USERNAME"],
     password: ENV["SENDGRID_PASSWORD"],
     enable_starttls_auto: true,
-    from: "hello@email.forsbergplustwo.com",
+    from: "hello@email.forsbergplustwo.com"
   }
 end

@@ -1,5 +1,4 @@
 class Metrics::AffiliateController < MetricsController
-
   def index
     @app_titles = ["All"]
     if params["app_title"].blank? || params["app_title"] == "All"
