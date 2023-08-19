@@ -38,7 +38,6 @@ gem "unicorn"
 gem "graphql-client"
 
 group :development, :test do
-  gem "puma"
   gem "foreman"
 
   # Code analysis / linters

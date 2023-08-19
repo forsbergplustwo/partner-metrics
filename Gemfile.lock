@@ -165,7 +165,6 @@ GEM
       timeout
     net-smtp (0.3.3)
       net-protocol
-    nio4r (2.5.9)
     nokogiri (1.13.10)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
@@ -176,8 +175,6 @@ GEM
       racc
     pg (0.21.0)
     pkg-config (1.5.2)
-    puma (6.3.1)
-      nio4r (~> 2.0)
     quiet_assets (1.1.0)
       railties (>= 3.1, < 5.0)
     racc (1.7.1)
@@ -347,7 +344,6 @@ DEPENDENCIES
   jquery-tablesorter
   pg (< 1.0.0)
   pkg-config
-  puma
   quiet_assets
   rack-timeout
   rails (~> 4.2)
@@ -370,4 +366,4 @@ RUBY VERSION
    ruby 2.6.8p205
 
 BUNDLED WITH
-   2.3.9
+   2.3.22
