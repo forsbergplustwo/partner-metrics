@@ -7,8 +7,6 @@ class ImportMetricsWorker
     PaymentHistory.calculate_metrics(current_user)
   rescue => e
     current_user.update(import: "Failed", import_status: 100)
-    Rails.logger.error(e.message)
-    Rails.logger.error(e.backtrace.join("\n"))
     raise e
   end
 end
