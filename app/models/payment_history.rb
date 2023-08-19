@@ -192,8 +192,6 @@ class PaymentHistory < ActiveRecord::Base
       Rails.logger.info("Total chunks: #{chunk_count}")
     rescue => e
       current_user.update(import: "Failed", import_status: 100, partner_api_errors: "Error: #{e.message}")
-      Rails.logger.info(e.message)
-      Rails.logger.info(e.backtrace.join("\n"))
       raise e
     end
 
@@ -333,9 +331,6 @@ class PaymentHistory < ActiveRecord::Base
       end
     rescue => e
       current_user.update(partner_api_errors: "Error importing your data: #{e.message} - Please check your Account connection settings", import: "Failed", import_status: 100)
-      Rails.logger.info(e.message)
-      Rails.logger.info(e.backtrace.join("\n"))
-      Rails.logger.info(transactions.to_json) if transactions.present?
       raise e
     end
 
@@ -455,8 +450,6 @@ class PaymentHistory < ActiveRecord::Base
       current_user.update(import: "Complete", import_status: 100, partner_api_errors: "")
     rescue => e
       current_user.update(import: "Failed", import_status: 100, partner_api_errors: "Error: #{e.message}")
-      Rails.logger.info(e.message)
-      Rails.logger.info(e.backtrace.join("\n"))
       raise e
     end
 
