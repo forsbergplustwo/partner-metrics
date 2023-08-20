@@ -1,7 +1,7 @@
+# TODO: Refactor this controller to not use so many instance variables
 class MetricsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_data
-  include Importable
 
   def index
   end
@@ -13,7 +13,6 @@ class MetricsController < ApplicationController
   end
 
   def set_data
-    # This still needs rectoring to a PORO, so we avoid all the instance variables
     set_dates
     set_app_titles
     set_metrics
@@ -35,7 +34,7 @@ class MetricsController < ApplicationController
   end
 
   def set_metrics
-    metrics_filterer = Metrics::Filterer.new(
+    metrics_filterer = Metric::Filterer.new(
       user: current_user,
       date: date_param,
       period: period_param,

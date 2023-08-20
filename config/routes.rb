@@ -19,7 +19,6 @@ Rails.application.routes.draw do
     end
   end
 
-  post "partner_api_credentials" => "home#save_partner_api_credentials"
   post "import" => "home#import"
   post "import_status" => "home#import_status"
 

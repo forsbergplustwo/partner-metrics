@@ -1,3 +1,8 @@
+# TODO: Refactor this class to be more readable and maintainable
+# 1. Move the logic for calculating the metrics into a metric::calculator PORO model
+# 2. Split the CSV import into separate class
+# 3. Split the Partner API import into separate class
+
 require "zip"
 require "graphql/client"
 require "graphql/client/http"

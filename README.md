@@ -22,7 +22,7 @@ Visit `localhost:4000`
 To run tests:
 
 ```bash
-rake
+bin/rake
 ```
 
 ## Contributing
@@ -35,9 +35,10 @@ In general, please follow the "fork-and-pull" Git workflow.
 1. Check out the Issues page, feel free to pick an existing issue or add a new one with clear title and description.
 2. Fork and clone the repo on GitHub
 3. Create a new branch for your fix or code improvement
-4. Commit changes to your own branch
-5. Push your work back up to your fork
-6. Submit a Pull request so that @forsbergplustwo can review your changes. Please link your PR to the existing issue if you are solving one.
+4. Run `standardrb --fix` to safely-autofix any linter or formatter corrections
+5. Commit changes to your own branch
+6. Push your work back up to your fork
+7. Submit a Pull request so that @forsbergplustwo can review your changes. Please link your PR to the existing issue if you are solving one.
 
 ## Testing
 We have a handful of MiniTests and Fixtures in the codebase, and welcome more. Please write MiniTests for new code you create.

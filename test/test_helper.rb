@@ -2,7 +2,7 @@ ENV["RAILS_ENV"] ||= "test"
 require File.expand_path("../../config/environment", __FILE__)
 require "rails/test_help"
 
-# TODO: Remove this when Rails 4 is no longer supported.
+# TODO: Remove this when Rails 4 is no longer used
 require_relative "./support/rails_4_thread_error_fix"
 
 class ActiveSupport::TestCase
