@@ -67,7 +67,11 @@ jobs:
           REDIS_URL: redis://localhost:6379/0
           SECRET_KEY_BASE: ${{ secrets.master_key }}
         run: |
+<<<<<<< Updated upstream
           bin/rake test -e test
+=======
+          bin/rake test
+>>>>>>> Stashed changes
       - name: Upload artifacts
         if: failure()
         uses: actions/upload-artifact@v3
