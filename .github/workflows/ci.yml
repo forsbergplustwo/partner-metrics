@@ -57,7 +57,7 @@ jobs:
       - name: Setup test database
         env:
           RAILS_ENV: test
-          SECRET_KEY_BASE: ${{ secrets.master_key }}
+          SECRET_KEY_BASE: ${{ secrets.secret_key_base }}
         run: |
           bin/rake db:create
           bin/rake db:schema:load
@@ -65,9 +65,9 @@ jobs:
       - name: Run tests
         env:
           REDIS_URL: redis://localhost:6379/0
-          SECRET_KEY_BASE: ${{ secrets.master_key }}
+          SECRET_KEY_BASE: ${{ secrets.secret_key_base }}
         run: |
-          bin/rake test:all
+          bin/rake test
       - name: Upload artifacts
         if: failure()
         uses: actions/upload-artifact@v3
