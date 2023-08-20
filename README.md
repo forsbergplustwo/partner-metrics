@@ -2,7 +2,7 @@
 
 Partner Metrics provides an easy way to see useful metrics of your apps, themes and affiliate revenue from the Shopify Partner program. Currently Parnter Metrics provides metrics calculated on the Payouts data from Shopify, meaning we can see revenue related details.
 
-## Signup and Usage
+## Usage
 
 Parnter Metrics is hosted by @forsbergplustwo and free to use at:
 
