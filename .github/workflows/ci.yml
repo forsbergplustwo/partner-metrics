@@ -1,0 +1,76 @@
+name: Tests
+
+on:
+  push:
+    inputs:
+      app_name:
+        required: true
+        type: string
+        default: partner-metrics
+      use_node:
+        type: boolean
+        required: false
+        default: false
+    secrets:
+      secret_key_base:
+        required: true
+      bundle_token:
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:11
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: ${{ inputs.app_name }}-test
+          POSTGRES_PASSWORD: ""
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      redis:
+        image: redis
+        ports: ['6379:6379']
+        options: --entrypoint redis-server
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Node
+        if: ${{ inputs.use_node == true }}
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.node-version'
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        env:
+          BUNDLE_GITHUB__COM: x-access-token:${{ secrets.bundle_token }}
+        with:
+          bundler-cache: true
+      - name: Copy .env sample
+        run: |
+          cp .env.example .env
+      - name: Setup test database
+        env:
+          RAILS_ENV: test
+          SECRET_KEY_BASE: ${{ secrets.master_key }}
+        run: |
+          bin/rake db:create
+          bin/rake db:schema:load
+          bin/rake db:migrate
+      - name: Run tests
+        env:
+          REDIS_URL: redis://localhost:6379/0
+          SECRET_KEY_BASE: ${{ secrets.master_key }}
+        run: |
+          bin/rake test:all
+      - name: Upload artifacts
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: screenshots
+          path: /home/runner/work/${{ inputs.app_name }}/${{ inputs.app_name }}/tmp/screenshots/
