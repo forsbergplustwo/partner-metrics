@@ -67,7 +67,7 @@ jobs:
           REDIS_URL: redis://localhost:6379/0
           SECRET_KEY_BASE: ${{ secrets.master_key }}
         run: |
-          bin/rake test -e test
+          bin/rake test
       - name: Upload artifacts
         if: failure()
         uses: actions/upload-artifact@v3
