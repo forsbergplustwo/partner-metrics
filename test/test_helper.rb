@@ -13,7 +13,6 @@ class ActiveSupport::TestCase
   fixtures :all
 
   # Add more helper methods to be used by all tests here...
-
 end
 
 class ActionController::TestCase
