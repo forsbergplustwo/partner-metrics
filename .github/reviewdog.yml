@@ -1,0 +1,9 @@
+name: Reviewdog
+
+on: [pull_request]
+
+jobs:
+  standard:
+    uses: forsbergplustwo/github-actions/.github/workflows/standard.yml@main
+    secrets:
+      bundle_token: ${{ secrets.BUNDLE_TOKEN }}

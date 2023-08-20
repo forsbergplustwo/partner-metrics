@@ -1,0 +1,13 @@
+name: Tests
+
+on: [push]
+
+jobs:
+  build:
+    uses: forsbergplustwo/github-actions/.github/workflows/ci.yml@main
+    with:
+      app_name: partner-metrics-saas
+      use_node: false
+    secrets:
+      master_key: ${{ secrets.MASTER_KEY }}
+      bundle_token: ${{ secrets.BUNDLE_TOKEN }}
