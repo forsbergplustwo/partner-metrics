@@ -1,7 +1,10 @@
 require "test_helper"
 
 class MetricsControllerTest < ActionController::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  test "should get index" do
+    sign_in users(:regular)
+
+    get :index
+    assert_response :success
+  end
 end

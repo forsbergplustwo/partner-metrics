@@ -21,8 +21,13 @@ class MetricsController < ApplicationController
   end
 
   def set_dates
-    @first_metric_date = current_user.oldest_metric_date
-    @latest_metric_date = current_user.newest_metric_date
+    if current_user.metrics.any?
+      @first_metric_date = current_user.oldest_metric_date
+      @latest_metric_date = current_user.newest_metric_date
+    else
+      @first_metric_date = Date.today
+      @latest_metric_date = Date.today
+    end
   end
 
   def set_app_titles
