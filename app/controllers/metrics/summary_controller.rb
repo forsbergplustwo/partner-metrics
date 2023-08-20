@@ -1,4 +1,7 @@
 class Metrics::SummaryController < MetricsController
+  skip_before_action :set_tiles
+
+  # This one is different from the others and needs re-thinking separately
   def index
     @app_titles = ["All"] + current_user.payment_histories.pluck(:app_title).uniq
     if params["app_title"].blank? || params["app_title"] == "All"
