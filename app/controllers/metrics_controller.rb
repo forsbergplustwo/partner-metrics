@@ -13,6 +13,7 @@ class MetricsController < ApplicationController
   end
 
   def set_data
+    # This still needs rectoring to a PORO, so we avoid all the instance variables
     set_dates
     set_app_titles
     set_metrics

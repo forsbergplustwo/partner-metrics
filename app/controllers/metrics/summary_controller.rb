@@ -1,4 +1,5 @@
 class Metrics::SummaryController < MetricsController
+  skip_before_action :set_tiles
 
   # This one is different from the others and needs re-thinking separately
   def index
@@ -23,11 +24,5 @@ class Metrics::SummaryController < MetricsController
     @payments_users = payments.group(:shop).count(:payment_date)
     @payments_user_revenue = payments.group(:shop).sum(:revenue)
     @payments_user_last_payment = payments.group(:shop).maximum(:payment_date)
-  end
-
-  private
-
-  def charge_type
-    nil
   end
 end
