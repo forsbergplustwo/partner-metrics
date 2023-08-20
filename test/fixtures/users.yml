@@ -4,5 +4,17 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
+
 regular:
-  email: test@example.com
+  email: regular@example.com
+  import: Complete
+  import_status: 100
+  partner_api_access_token: "abcdefg"
+  partner_api_organization_id: 123456
+
+new:
+  email: new@example.com
+  import:
+  import_status:
+  partner_api_access_token:
+  partner_api_organization_id:

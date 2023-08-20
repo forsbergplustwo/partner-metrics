@@ -1,13 +1,17 @@
 class HomeController < ApplicationController
+
+
   def index
     if current_user.present?
       redirect_to metrics_path
     end
   end
 
+  # TODO: Find a better place for this
   def app_store_analytics
   end
 
+  # TODO: Move to payment_histories::uploads#create & refactor + add tests
   def import
     metrics = current_user.metrics.any?
     save_partner_api_credentials
@@ -22,6 +26,7 @@ class HomeController < ApplicationController
     end
   end
 
+  # TODO: Move to payment_histories::uploads#show & refactor + add tests
   def import_status
     render nothing: true unless request.xhr?
     label = current_user.import
@@ -52,6 +57,7 @@ class HomeController < ApplicationController
     }
   end
 
+  # TODO: Move to metrics#destroy & refactor + add tests
   def reset_metrics
     current_user.metrics.delete_all
     current_user.payment_histories.delete_all
@@ -59,6 +65,7 @@ class HomeController < ApplicationController
     redirect_to root_path
   end
 
+  # TODO: Move to metrics::app_names#update & refactor + add tests
   def rename_app
     from_name = params["rename_from"]
     to_name = params["rename_to"]

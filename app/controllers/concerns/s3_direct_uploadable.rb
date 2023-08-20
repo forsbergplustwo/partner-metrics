@@ -1,8 +1,8 @@
-module Importable
+module S3DirectUploadable
   extend ActiveSupport::Concern
 
   included do
-    before_action :set_s3_direct_post, only: [:index]
+    before_action :set_s3_direct_post, only: [:index, :app_store_analytics]
   end
 
   private

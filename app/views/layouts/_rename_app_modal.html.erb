@@ -10,7 +10,7 @@
         <div class="modal-body">
 
           <%= form_tag(rename_app_path, id: "rename-app-form") do %>
-            <% renamable_app_titles = @app_titles - ["All"] %>
+            <% renamable_app_titles = current_user.app_titles(nil) %>
             <div class="row">
               <div class="col-xs-12">
                 <p>If your app/theme has changed name, you can merge the data together. Make sure to choose your old app name in FROM and the new app name in TO. This ensures new data imported in the future will also match.</p>
