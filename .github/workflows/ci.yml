@@ -22,10 +22,10 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres:13
+        image: postgres:11
         env:
           POSTGRES_USER: postgres
-          POSTGRES_DB: ${{ inputs.app_name }}_test
+          POSTGRES_DB: ${{ inputs.app_name }}-test
           POSTGRES_PASSWORD: ""
           POSTGRES_HOST_AUTH_METHOD: trust
         ports: ["5432:5432"]
