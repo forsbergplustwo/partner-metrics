@@ -1,2 +1,2 @@
-web: puma-dev -stop && tail -f log/development.log
-worker: bundle exec rake environment resque:pool
+web: bundle exec unicorn -p $PORT -c ./config/unicorn.rb
+worker: bundle exec rake environment resque:pool --trace
