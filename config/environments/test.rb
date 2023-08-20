@@ -36,4 +36,7 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+
+  # TODO: This is needed for CI.. failing to pick it up from the environment
+  config.secret_token = SecureRandom.hex(64)
 end
