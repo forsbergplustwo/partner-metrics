@@ -6,4 +6,3 @@
 #
 regular:
   email: test@example.com
-  encrypted_password: <%= User.new.send(:password_digest, '123greetings') %>
