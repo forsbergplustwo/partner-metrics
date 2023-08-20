@@ -1,9 +1,7 @@
 name: Tests
 
-on: [push]
-
 on:
-  workflow_call:
+  push:
     inputs:
       app_name:
         required: true
