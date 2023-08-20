@@ -50,14 +50,12 @@ class MetricsController < ApplicationController
   def app_title_param
     @app_title = if params[:app_title].present? && params[:app_title] != "All"
       params[:app_title].to_s
-    else
-      nil
     end
   end
 
   def period_param
     @period = if params[:period].present?
-     params[:period].to_i
+      params[:period].to_i
     else
       30
     end
@@ -78,5 +76,4 @@ class MetricsController < ApplicationController
       tiles.first
     end
   end
-
 end

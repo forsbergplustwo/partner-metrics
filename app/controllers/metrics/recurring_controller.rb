@@ -1,5 +1,4 @@
 class Metrics::RecurringController < MetricsController
-
   def index
   end
 

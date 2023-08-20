@@ -1,5 +1,5 @@
 class Metrics::Filterer
-  def initialize(user:, date:, period:, app_title: , charge_type:)
+  def initialize(user:, date:, period:, app_title:, charge_type:)
     @user = user
     @date = date.present? ? Date.parse(date.to_s) : @user.latest_metric_date
     @period = period
@@ -8,7 +8,6 @@ class Metrics::Filterer
   end
 
   def metrics
-    Rails.logger.info "Metrics::Filterer#metrics" + self.inspect
     previous_period = @date - @period.days + 1.day
     metrics_for_range(@date, previous_period)
   end
@@ -30,5 +29,4 @@ class Metrics::Filterer
     metrics = metrics.where(charge_type: @charge_type) if @charge_type.present?
     metrics
   end
-
 end

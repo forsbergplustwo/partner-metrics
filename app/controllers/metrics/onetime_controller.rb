@@ -1,5 +1,4 @@
 class Metrics::OnetimeController < MetricsController
-
   def index
   end
 
