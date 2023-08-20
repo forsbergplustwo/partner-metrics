@@ -1,52 +1,79 @@
 class MetricsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_base_variables
+  before_action :set_data
   include Importable
 
   def index
-    if params["app_title"].blank? || params["app_title"] == "All"
-      m = current_user.metrics
-    else
-      @app_title = params["app_title"]
-      m = current_user.metrics.where(app_title: params["app_title"])
-    end
-    @metrics = m.where(metric_date: @date_last..@date)
-    @previous_metrics = current_user.metrics.where(metric_date: @previous_date_last..@previous_date)
-    @tiles = Metric::OVERVIEW_TILES
-    @chart_tile = if params["chart"].present?
-      @tiles.find { |t| t["type"] == params["chart"] }
-    else
-      @tiles.first
-    end
   end
 
   private
 
-  def set_base_variables
-    @app_titles = ["All"] + current_user.metrics.where(charge_type: "recurring_revenue").uniq.pluck(:app_title)
-    calculated_metrics = current_user.metrics.order("metric_date")
-    if calculated_metrics.present?
-      @first_metric_date = calculated_metrics.first.metric_date
-      @latest_metric_date = calculated_metrics.last.metric_date
-      @range = params[:date]
-      if @range.blank?
-        @date = @latest_metric_date
-        @period = 30
-      else
-        @date = Date.parse(@range)
-        @period = params[:period].to_i
-      end
-      @date_last = @date - @period.days + 1.day
-      @range = "#{@date_last.strftime("%b %d, %Y")} - #{@date.strftime("%b %d, %Y")}"
-      @previous_date = @date - @period.days
-      @previous_date_last = @previous_date - @period.days + 1.day
+  def charge_type
+    nil
+  end
+
+  def set_data
+    # This still needs rectoring to a PORO, so we avoid all the instance variables
+    set_dates
+    set_app_titles
+    set_metrics
+    set_tiles
+  end
+
+  def set_dates
+    @first_metric_date = current_user.oldest_metric_date
+    @latest_metric_date = current_user.newest_metric_date
+  end
+
+  def set_app_titles
+    @app_titles = ["All"] + current_user.app_titles(charge_type)
+  end
+
+  def set_metrics
+    metrics_filterer = Metrics::Filterer.new(
+      user: current_user,
+      date: date_param,
+      period: period_param,
+      app_title: app_title_param,
+      charge_type: charge_type
+    )
+
+    @metrics = metrics_filterer.metrics
+    @previous_metrics = metrics_filterer.previous_metrics
+  end
+
+  def set_tiles
+    @tiles = Metric::OVERVIEW_TILES
+    @chart_tile = chart_tile(tiles: @tiles, selected: params["chart"])
+  end
+
+  def app_title_param
+    @app_title = if params[:app_title].present? && params[:app_title] != "All"
+      params[:app_title].to_s
+    end
+  end
+
+  def period_param
+    @period = if params[:period].present?
+      params[:period].to_i
     else
-      @first_metric_date = Time.zone.now.to_date
-      @latest_metric_date = Time.zone.now.to_date
-      @date = @latest_metric_date
-      @period = 30
-      @date_last = @date - @period.days + 1.day
-      @range = "#{@date_last.strftime("%b %d, %Y")} - #{@date.strftime("%b %d, %Y")}"
+      30
+    end
+  end
+
+  def date_param
+    @date = if params[:date].present?
+      Date.parse(params[:date].to_s)
+    else
+      @latest_metric_date
+    end
+  end
+
+  def chart_tile(tiles:, selected: nil)
+    if selected.present?
+      tiles.find { |t| t["type"] == selected }
+    else
+      tiles.first
     end
   end
 end
