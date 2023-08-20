@@ -22,4 +22,10 @@ class Metrics::SummaryController < MetricsController
     @payments_user_revenue = payments.group(:shop).sum(:revenue)
     @payments_user_last_payment = payments.group(:shop).maximum(:payment_date)
   end
+
+  private
+
+  def charge_type
+    nil
+  end
 end

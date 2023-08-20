@@ -7,6 +7,10 @@ class User < ActiveRecord::Base
   has_many :payment_histories, dependent: :delete_all
   has_many :metrics, dependent: :delete_all
 
+  def app_titles(charge_type)
+    metrics.where(charge_type: charge_type).uniq.pluck(:app_title)
+  end
+
   def has_partner_api_credentials?
     partner_api_access_token.present? && partner_api_organization_id.present?
   end

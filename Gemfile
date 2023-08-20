@@ -39,6 +39,7 @@ gem "graphql-client"
 
 group :development, :test do
   gem "foreman"
+  gem "dotenv-rails"
 
   # Code analysis / linters
   gem "brakeman"
@@ -53,7 +54,7 @@ group :development, :test do
 end
 
 group :development do
-  # gem 'better_errors'
+  gem 'better_errors'
   gem "binding_of_caller"
   gem "hub", require: nil
   gem "quiet_assets"
