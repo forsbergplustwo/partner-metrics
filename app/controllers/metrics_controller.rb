@@ -8,6 +8,10 @@ class MetricsController < ApplicationController
 
   private
 
+  def charge_type
+    nil
+  end
+
   def set_data
     set_dates
     set_app_titles
@@ -15,62 +19,13 @@ class MetricsController < ApplicationController
     set_tiles
   end
 
-  def app_title_param
-    params[:app_title].presence || "All"
-  end
-
-  def period_param
-    params[:period].presence || 30
-  end
-
-  def date_param
-    params[:date].presence || @latest_metric_date
-  end
-
-  def chart_tile(tiles:, selected: nil)
-    if selected.present?
-      tiles.find { |t| t["type"] == selected }
-    else
-      tiles.first
-    end
-  end
-
-  def charge_type
-    nil
-  end
-
-
-  # TODO: Refactor this to PORO
   def set_dates
-    calculated_metrics = current_user.metrics.order("metric_date")
-    #Dates
-    if calculated_metrics.present?
-      @first_metric_date = calculated_metrics.first.metric_date
-      @latest_metric_date = calculated_metrics.last.metric_date
-      @range = params[:date]
-      if @range.blank?
-        @date = @latest_metric_date
-        @period = 30
-      else
-        @date = Date.parse(@range)
-        @period = params[:period].to_i
-      end
-      @date_last = @date - @period.days + 1.day
-      @range = "#{@date_last.strftime("%b %d, %Y")} - #{@date.strftime("%b %d, %Y")}"
-      @previous_date = @date - @period.days
-      @previous_date_last = @previous_date - @period.days + 1.day
-    else
-      @first_metric_date = Time.zone.now.to_date
-      @latest_metric_date = Time.zone.now.to_date
-      @date = @latest_metric_date
-      @period = 30
-      @date_last = @date - @period.days + 1.day
-      @range = "#{@date_last.strftime("%b %d, %Y")} - #{@date.strftime("%b %d, %Y")}"
-    end
+    @first_metric_date = current_user.oldest_metric_date
+    @latest_metric_date = current_user.newest_metric_date
   end
 
   def set_app_titles
-    @app_titles = ["All"] + current_user.metrics.where(charge_type: charge_type).uniq.pluck(:app_title)
+    @app_titles = ["All"] + current_user.app_titles(charge_type)
   end
 
   def set_metrics
@@ -83,13 +38,44 @@ class MetricsController < ApplicationController
     )
 
     @metrics = metrics_filterer.metrics
-    Rails.logger.info @metrics.inspect
     @previous_metrics = metrics_filterer.previous_metrics
   end
 
   def set_tiles
     @tiles = Metric::OVERVIEW_TILES
     @chart_tile = chart_tile(tiles: @tiles, selected: params["chart"])
+  end
+
+  def app_title_param
+    @app_title = if params[:app_title].present? && params[:app_title] != "All"
+      params[:app_title].to_s
+    else
+      nil
+    end
+  end
+
+  def period_param
+    @period = if params[:period].present?
+     params[:period].to_i
+    else
+      30
+    end
+  end
+
+  def date_param
+    @date = if params[:date].present?
+      Date.parse(params[:date].to_s)
+    else
+      @latest_metric_date
+    end
+  end
+
+  def chart_tile(tiles:, selected: nil)
+    if selected.present?
+      tiles.find { |t| t["type"] == selected }
+    else
+      tiles.first
+    end
   end
 
 end

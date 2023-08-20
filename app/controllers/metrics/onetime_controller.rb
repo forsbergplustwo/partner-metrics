@@ -5,6 +5,6 @@ class Metrics::OnetimeController < MetricsController
   private
 
   def charge_type
-    "one_time_revenue"
+    "onetime_revenue"
   end
 end

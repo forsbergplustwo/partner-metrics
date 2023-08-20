@@ -8,7 +8,20 @@ class User < ActiveRecord::Base
   has_many :metrics, dependent: :delete_all
 
   def app_titles(charge_type)
-    metrics.where(charge_type: charge_type).uniq.pluck(:app_title)
+    if charge_type.present?
+      metrics.where(charge_type: charge_type)
+    else
+      metrics
+    end.pluck(:app_title).uniq
+  end
+
+  # These should probably be in Metric.rb
+  def newest_metric_date
+    metrics.order("metric_date").last.metric_date
+  end
+
+  def oldest_metric_date
+    metrics.order("metric_date").first.metric_date
   end
 
   def has_partner_api_credentials?
