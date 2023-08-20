@@ -1,5 +1,5 @@
 class Metrics::Filterer
-  def initialize(user:, date:, period:, app_title: , charge_type:)
+  def initialize(user:, date:, period:, app_title:, charge_type:)
     @user = user
     @date = date.present? ? Date.parse(date.to_s) : @user.latest_metric_date
     @period = period
