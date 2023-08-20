@@ -26,5 +26,4 @@ class Metrics::ChartsControllerTest < ActionController::TestCase
     json_response = JSON.parse(response.body)
     assert_equal "30.0", json_response["2023-01-01"]
   end
-
 end
