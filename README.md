@@ -1,12 +1,16 @@
 # Partner Metrics
 
-Partner Metrics provides an easy way to see useful metrics of your apps, themes and affiliate revenue from the Shopify Partner program. Currently Parnter Metrics provides metrics calculated on the Payouts data from Shopify, meaning we can see revenue related details.
+Partner Metrics is an open-source project providing you with metrics of your app, theme and affiliate revenue from the Shopify Partner program. Currently it calculates metrics based on the Payouts data from Shopify.
+
+This project is not officially related to Shopify in any way.
+
+*Disclaimer: IThis project was created over about a week in 2015 when I was new to programming. We've added a few features over the years and kept it running, but other than that it's kind of a time capsule. I am proud that it's proved so useful to so many over the years, but be warned.. there is still code in this repo that could be better organized and structured.*
 
 ## Usage
 
-Parnter Metrics is hosted by @forsbergplustwo and free to use at:
+Partner Metrics was created by [@forsbergplustwo](@forsbergplustwo), and will remain free to use at:
 
-https://partnermetrics.io
+##### https://partnermetrics.io
 
 ## Development
 
@@ -25,8 +29,10 @@ To run tests:
 bin/rake
 ```
 
+*Note: As uploads use S3, you'll need to add details to the .env file for them to work. Alternatively, [replace S3 with ActiveStorage](https://github.com/forsbergplustwo/partner-metrics/issues/20).*
+
 ## Contributing
-We'd love for you to contribute to Partner Metrics, join us in making it better!
+We'd love for you to contribute join us in making it better!
 
 The codebase could use some updates, so small PRs improving small things like code structure, readability and test of simple scenarios are more than welcome. It would be great to build up the test suite to make future development easier for everyone.
 
@@ -48,4 +54,4 @@ Everyone interacting in Partner Metrics repository is expected to follow the [Co
 
 ## License
 
-Parnter Metrics is released under the [GPLv3 License](https://github.com/forsbergplustwo/partner-metrics-saas/blob/main/LICENSE.md).
+Partner Metrics is released under the [GPLv3 License](https://github.com/forsbergplustwo/partner-metrics-saas/blob/main/LICENSE.md).
