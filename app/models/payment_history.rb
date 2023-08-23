@@ -3,7 +3,6 @@
 # 2. Split the CSV import into separate class
 # 3. Split the Partner API import into separate class
 
-require "zip"
 require "graphql/client"
 require "graphql/client/http"
 
@@ -11,6 +10,8 @@ class PaymentHistory < ActiveRecord::Base
   include ShopifyPartnerAPI
 
   THROTTLE_MIN_TIME_PER_CALL = 0.3
+
+  YEARS_TO_IMPORT = 4.years.freeze
 
   USAGE_CHARGE_TYPES = [
     "App sale – usage",
@@ -152,119 +153,7 @@ class PaymentHistory < ActiveRecord::Base
 
   class << self
     def default_start_date
-      4.years.ago.to_date
-    end
-
-    def import_csv(current_user, last_calculated_metric_date, filename)
-      temp = Tempfile.new("import")
-      s3 = Aws::S3::Client.new
-      file = s3.get_object(
-        {bucket: "partner-metrics",
-         key: filename}, target: temp.path
-      )
-      if filename.include?(".zip")
-        Zip.on_exists_proc = true
-        Zip.continue_on_exists_proc = true
-        Zip::File.open(temp.path) do |zip_file|
-          # Handle entries one by one
-          zip_file.each do |entry|
-            file = Tempfile.new("extracted")
-            # Extract to file/directory/symlink
-            Rails.logger.info("Extracting #{entry.name}")
-            entry.extract(file)
-          end
-        end
-      else
-        file = temp
-      end
-      current_user.payment_histories.where("payment_date > ?", last_calculated_metric_date).delete_all
-      options = {
-        converters: :all,
-        header_converters: :symbol
-      }
-      chunk_count = 0
-      chunk_payments = []
-      CsvHashReader.foreach(file, options) do |csv|
-        next if csv[:charge_creation_time].blank? || csv[:partner_share].to_f == 0.0 || Date.parse(csv[:charge_creation_time]) < last_calculated_metric_date
-        chunk_payments << process_csv_row(csv, current_user)
-        chunk_count += 1
-        if chunk_count % 3000 == 0
-          save_chunk(chunk_payments, current_user)
-          chunk_payments = []
-          current_user.update(import: "Importing (#{chunk_count} rows processed)", import_status: 100)
-          GC.start
-        end
-      end
-      save_chunk(chunk_payments, current_user)
-      temp.close
-      file.close
-      Rails.logger.info("Total chunks: #{chunk_count}")
-    rescue => e
-      current_user.update(import: "Failed", import_status: 100, partner_api_errors: "Error: #{e.message}")
-      raise e
-    end
-
-    def process_csv_row(csv, current_user)
-      record = current_user.payment_histories.new(
-        shop: csv[:shop],
-        shop_country: csv[:shop_country],
-        payment_date: csv[:charge_creation_time],
-        app_title: csv[:app_title].presence || "Unknown",
-        revenue: csv[:partner_share]
-      )
-      record[:charge_type] =
-        case csv[:charge_type]
-        when "RecurringApplicationFee",
-              "Recurring application fee",
-              "App sale – recurring",
-              "App sale – subscription",
-              "App sale – 30-day subscription",
-              "App sale – yearly subscription"
-          "recurring_revenue"
-        when "OneTimeApplicationFee",
-              "Usage application fee",
-              "ThemePurchaseFee",
-              "One time application fee",
-              "Theme purchase fee",
-              "App sale – one-time",
-              "App sale – usage",
-              "Service sale"
-          # STUPID: For my apps, I want Usage charges counted as "recurring" and not "one_time", others's don't
-          if USAGE_CHARGE_TYPES.include?(csv[:charge_type]) && current_user.count_usage_charges_as_recurring == true
-            "recurring_revenue"
-          else
-            "onetime_revenue"
-          end
-        when "AffiliateFee",
-              "Affiliate fee",
-              "Development store referral commission",
-              "Affiliate referral commission",
-              "Shopify Plus referral commission"
-          "affiliate_revenue"
-        when "Manual",
-              "ApplicationDowngradeAdjustment",
-              "ApplicationCredit",
-              "AffiliateFeeRefundAdjustment",
-              "Application credit",
-              "Application downgrade adjustment",
-              "Application fee refund adjustment",
-              "App credit",
-              "App refund",
-              "App credit refund",
-              "Development store commission adjustment",
-              "Payout correction",
-              "App downgrade",
-              "Service refund"
-          "refund"
-        else
-          csv[:charge_type]
-        end
-      record
-    end
-
-    def save_chunk(chunk_payments, current_user)
-      PaymentHistory.import(chunk_payments, validate: false, no_returning: true) if chunk_payments.present?
-      true
+      YEARS_TO_IMPORT.ago.to_date
     end
 
     def import_partner_api(current_user, last_calculated_metric_date)

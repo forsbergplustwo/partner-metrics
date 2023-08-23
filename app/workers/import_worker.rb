@@ -1,5 +1,4 @@
 # TODO: Convert to ActiveJob -> Sidekiq
-# Split into two workers: ImportCsvJob and ImportPartnerApiJob
 
 class ImportWorker
   @queue = :import_queue
@@ -11,7 +10,7 @@ class ImportWorker
     last_calculated_metric = current_user.newest_metric_date || PaymentHistory.default_start_date
 
     if !filename.nil?
-      PaymentHistory.import_csv(current_user, last_calculated_metric, filename)
+      PaymentHistory::CsvImporter.new(user: current_user, filename: filename).import!
     else
       PaymentHistory.import_partner_api(current_user, last_calculated_metric)
     end
