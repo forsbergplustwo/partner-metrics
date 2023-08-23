@@ -94,12 +94,12 @@ class PaymentHistory::CsvImporter
 
       @rows_processed_count += 1
       if @rows_processed_count % SAVE_EVERY_N_ROWS == 0
-        save_chunk(@batch_of_payments)
+        save_and_reset_batch(@batch_of_payments)
         user.update(import: "Importing (#{@rows_processed_count} rows processed)", import_status: 100)
       end
     end
     # Save any remaining rows
-    save_chunk(@batch_of_payments)
+    save_and_reset_batch(@batch_of_payments)
     true
   end
 
@@ -114,7 +114,7 @@ class PaymentHistory::CsvImporter
     )
   end
 
-  def save_chunk(payments)
+  def save_and_reset_batch(payments)
     # Uses "activerecord-import", which is much faster than saving each row individually
     PaymentHistory.import(payments, validate: false, no_returning: true) if payments.present?
     @batch_of_payments = []
