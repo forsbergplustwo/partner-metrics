@@ -151,6 +151,11 @@ class PaymentHistory < ActiveRecord::Base
   validates :user_id, presence: true
 
   class << self
+
+    def default_start_date
+      4.years.ago.to_date
+    end
+
     def import_csv(current_user, last_calculated_metric_date, filename)
       temp = Tempfile.new("import")
       s3 = Aws::S3::Client.new
@@ -349,7 +354,7 @@ class PaymentHistory < ActiveRecord::Base
       elsif current_user.payment_histories.any?
         current_user.payment_histories.order("payment_date").first.payment_date
       else
-        6.months.ago.to_date
+        PaymentHistory.default_start_date
       end
       Rails.logger.info(calculate_from)
       last_imported_payment = current_user.payment_histories.maximum(:payment_date)

@@ -8,7 +8,7 @@ class ImportWorker
     return unless current_user_id
 
     current_user = User.find(current_user_id)
-    last_calculated_metric = current_user.newest_metric_date || 48.months.ago.to_date
+    last_calculated_metric = current_user.newest_metric_date || PaymentHistory.default_start_date
 
     if !filename.nil?
       PaymentHistory.import_csv(current_user, last_calculated_metric, filename)
