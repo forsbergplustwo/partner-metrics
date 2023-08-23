@@ -27,7 +27,6 @@ class PaymentHistory::CsvImporter
       "One time application fee",
       "Theme purchase fee",
       "App sale – one-time",
-      "App sale – usage",
       "Service sale"
     ],
     "affiliate_revenue" => [
@@ -100,7 +99,6 @@ class PaymentHistory::CsvImporter
     end
     # Save any remaining rows
     save_and_reset_batch(@batch_of_payments)
-    true
   end
 
   def new_payment(csv_row)
@@ -131,7 +129,7 @@ class PaymentHistory::CsvImporter
   def calculate_charge_type(csv_row)
     charge_type = CSV_REVENUE_TYPES.find { |_key, value| value.include?(csv_row[:charge_type]) }&.first
     if charge_type == "usage_revenue"
-      charge_type = user.count_usage_charges_as_recurring ? "recurring_revenue" : "onetime_revenue"
+      charge_type = user.count_usage_charges_as_recurring == true ? "recurring_revenue" : "onetime_revenue"
     end
     charge_type
   end
