@@ -31,6 +31,60 @@ bin/rake
 
 *Note: As uploads use S3, you'll need to add details to the .env file for them to work. Alternatively, [replace S3 with ActiveStorage](https://github.com/forsbergplustwo/partner-metrics/issues/20).*
 
+## S3 - Minimum setup guide
+
+### 1. Sign up for or login to [Amazon AWS](https://aws.amazon.com)
+### 2. Create an S3 Bucket:
+* In the AWS console, search for S3 and click the offering in the drop down menu. 
+* In the S3 Management Console, click the "Create Bucket" button. 
+* In the bucket creation wizard - name it something cool. (eg... "ice-bucket")
+* Take note of the region your bucket is in. In my case I used the default presented ("us-east-2").
+* Leave all other default settings alone. Click create to finalize the creation of the bucket. 
+
+### 2b. Allow CORS
+* While looking at the individual bucket overview of the bucket you just created, click into the "Permissions" tab. Scroll down to "Cross-origin resource sharing (CORS)" and paste in the following:
+```
+[
+    {
+        "AllowedHeaders": [
+            "*"
+        ],
+        "AllowedMethods": [
+            "GET",
+            "HEAD",
+            "POST",
+            "PUT",
+            "DELETE"
+        ],
+        "AllowedOrigins": [
+            "*"
+        ],
+        "ExposeHeaders": [],
+        "MaxAgeSeconds": 3000
+    }
+]
+```            
+
+### 3. Create a user in IAM:
+* Go back to the AWS console. This time search for IAM (Identity access management) and click it in the dropdown. 
+* Click "Add User"
+* Name your user something cool and give it only programmatic access. 
+* On the next screen you'll set the permissions. Click the tab for "Attach Existing Policies Directly". Next, search for S3 and click the checkbox next to AmazonS3FullAccess.
+* Leave all the other settings alone and create the new user. 
+* Take note of the access key ID and secret access key.
+
+
+### 4. Add credentials to .env
+* Go to your .env file and adjust the 4 AWS relevant definitions
+```
+AWS_REGION="us-east-2"
+AWS_ACCESS_KEY_ID=[access key id from step 3]
+AWS_SECRET_ACCESS_KEY=[secret access key from step 3]
+S3_BUCKET=ice-bucket
+```
+* Restart your server if running just to be safe. 
+
+
 ## Contributing
 We'd love for you to contribute join us in making it better!
 
