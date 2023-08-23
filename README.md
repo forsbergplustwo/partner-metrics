@@ -53,8 +53,7 @@ bin/rake
             "GET",
             "HEAD",
             "POST",
-            "PUT",
-            "DELETE"
+            "PUT"
         ],
         "AllowedOrigins": [
             "*"
@@ -64,11 +63,12 @@ bin/rake
     }
 ]
 ```            
+Note: *Make sure to update the `AllowedOrigins` details above with your production app details, if your app is being made public.*
 
 ### 3. Create a user in IAM:
 * Go back to the AWS console. This time search for IAM (Identity access management) and click it in the dropdown. 
 * Click "Add User"
-* Name your user something cool and give it only programmatic access. 
+* Name your user `Partner Metrics S3 User` (or something else if you'd like) and give it only programmatic access. 
 * On the next screen you'll set the permissions. Click the tab for "Attach Existing Policies Directly". Next, search for S3 and click the checkbox next to AmazonS3FullAccess.
 * Leave all the other settings alone and create the new user. 
 * Take note of the access key ID and secret access key.
@@ -77,10 +77,10 @@ bin/rake
 ### 4. Add credentials to .env
 * Go to your .env file and adjust the 4 AWS relevant definitions
 ```
-AWS_REGION="us-east-2"
+S3_BUCKET=[aws bucket handle from step 2]
+AWS_REGION=[aws bucket region from step 2]
 AWS_ACCESS_KEY_ID=[access key id from step 3]
 AWS_SECRET_ACCESS_KEY=[secret access key from step 3]
-S3_BUCKET=ice-bucket
 ```
 * Restart your server if running just to be safe. 
 
