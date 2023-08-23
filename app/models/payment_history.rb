@@ -151,7 +151,6 @@ class PaymentHistory < ActiveRecord::Base
   validates :user_id, presence: true
 
   class << self
-
     def default_start_date
       4.years.ago.to_date
     end
