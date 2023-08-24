@@ -9,6 +9,13 @@ development:
   <<: *default
   database: partner-metrics-dev
 
+docker:
+  <<: *default
+  host: db
+  database: partnermetrics_db
+  username: partnermetrics_user
+  password: partnermetrics_pass
+
 test:
   <<: *default
   database: partner-metrics-test

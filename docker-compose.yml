@@ -1,0 +1,56 @@
+version: "3.8"
+
+services:
+  web:
+    build: .
+    container_name: partnermetrics_web
+    command:
+      - /bin/sh
+      - -c
+      - |
+        rake db:migrate
+        bin/dev
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    environment:
+      REDIS_URL: redis://redis:6379/0
+    ports:
+      - "4000:4000"
+    networks:
+      - partnermetrics_net
+    depends_on:
+      - db
+
+  db:
+    image: postgres:14
+    container_name: partnermetrics_db
+    networks:
+      - partnermetrics_net
+    environment:
+      POSTGRES_DB: partnermetrics_db
+      POSTGRES_USER: partnermetrics_user
+      POSTGRES_PASSWORD: partnermetrics_pass
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+      PGDATA: /var/lib/postgresql/data/data/
+    volumes:
+      - pg_data:/var/lib/postgresql/data/pgdata
+
+  redis:
+    image: redis:latest
+    container_name: partnermetrics_redis
+    networks:
+      - partnermetrics_net
+    ports:
+      - 6379:6379
+    volumes:
+      - redis_data:/data
+
+networks:
+  partnermetrics_net:
+
+volumes:
+  pg_data: null
+  redis_data: null
