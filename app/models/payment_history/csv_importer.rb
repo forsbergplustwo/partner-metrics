@@ -1,7 +1,7 @@
 require "zip"
 
 class PaymentHistory::CsvImporter
-  attr_accessor :user, :calculate_from_date, :temp_files
+  attr_accessor :user, :calculate_from_date, :filename, :temp_files
 
   CSV_READER_OPTIONS = {
     converters: :all,
@@ -62,13 +62,14 @@ class PaymentHistory::CsvImporter
   def initialize(user:, filename:)
     @user = user
     @calculate_from_date = user.calculate_from_date
+    @filename = filename
     @temp_files = {}
-    @temp_files[:csv] = prepare_csv_file(filename)
     @rows_processed_count = 0
     @batch_of_payments = []
   end
 
   def import!
+    prepare_csv_file
     clear_old_payments
     import_new_payments
   rescue => e
@@ -78,6 +79,10 @@ class PaymentHistory::CsvImporter
   end
 
   private
+
+  def prepare_csv_file
+    @temp_files[:csv] = prepare_csv_file(@filename)
+  end
 
   def clear_old_payments
     user.payment_histories.where("payment_date > ?", calculate_from_date).delete_all
