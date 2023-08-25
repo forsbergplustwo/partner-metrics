@@ -31,6 +31,14 @@ bin/rake
 
 *Note: As uploads use S3, you'll need to add details to the .env file for them to work. Alternatively, [replace S3 with ActiveStorage](https://github.com/forsbergplustwo/partner-metrics/issues/20).*
 
+### Docker
+
+This repository also has a Dockerfile that you can use with Docker Compose to run a development environment:
+
+1. Rename `.env.example` to `.env` and add details
+2. Run `docker-compose up` and wait for the containers to build
+3. Go to `http://localhost:4000`
+
 ## S3 - Minimum setup guide
 
 ### 1. Sign up for or login to [Amazon AWS](https://aws.amazon.com)
