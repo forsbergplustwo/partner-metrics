@@ -8,6 +8,7 @@ module S3DirectUploadable
   private
 
   def set_s3_direct_post
-    @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", success_action_status: "201")
+    s3 = Aws::S3::Resource.new.bucket(ENV["S3_BUCKET"])
+    @s3_direct_post = s3.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", success_action_status: "201")
   end
 end
