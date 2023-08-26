@@ -59,14 +59,13 @@ class PaymentHistory::CsvImporter
 
   def initialize(user:, filename:)
     @user = user
-    @calculate_from_date = user.calculate_from_date
     @filename = filename
     @temp_files = {}
     @rows_processed_count = 0
     @batch_of_payments = []
   end
 
-  attr_accessor :user, :calculate_from_date, :filename, :temp_files
+  attr_accessor :user, :filename, :temp_files
 
   def import!
     prepare_csv_file
@@ -130,7 +129,7 @@ class PaymentHistory::CsvImporter
   end
 
   def row_too_old?(csv_row)
-    csv_row[:charge_creation_time] < calculate_from_date.to_s
+    csv_row[:charge_creation_time] < user.calculate_from_date.to_s
   end
 
   def lookup_charge_type(csv_row)
