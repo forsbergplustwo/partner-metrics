@@ -1,17 +1,14 @@
 require "zip"
 
 class PaymentHistory::CsvImporter
-  attr_accessor :user, :calculate_from_date, :filename, :temp_files
+
+  SAVE_EVERY_N_ROWS = 1000
 
   CSV_READER_OPTIONS = {
     converters: :all,
     header_converters: :symbol,
     encoding: "UTF-8"
   }.freeze
-
-  SAVE_EVERY_N_ROWS = 1000
-
-  UNKNOWN_APP_TITLE = "Unknown".freeze
 
   CSV_REVENUE_TYPES = {
     "recurring_revenue" => [
@@ -69,12 +66,15 @@ class PaymentHistory::CsvImporter
     @batch_of_payments = []
   end
 
+  attr_accessor :user, :calculate_from_date, :filename, :temp_files
+
   def import!
     prepare_csv_file
-    clear_old_payments
+    user.clear_old_payments
     import_new_payments
-  rescue => e
-    handle_import_error(e)
+  rescue => error
+    handle_import_error(error)
+    raise error
   ensure
     close_and_unlink_temp_files
   end
@@ -83,20 +83,16 @@ class PaymentHistory::CsvImporter
 
   def prepare_csv_file
     file = fetch_from_s3(filename)
-    @temp_files[:csv] = if zipped?(filename)
+    temp_files[:csv] = if zipped?(filename)
       extracted_zip_file(file)
     else
       file
     end
   end
 
-  def clear_old_payments
-    user.payment_histories.where("payment_date > ?", calculate_from_date).delete_all
-  end
-
   def import_new_payments
     # Loops through CSV file, saving in chunks of N rows
-    CsvHashReader.foreach(@temp_files[:csv], CSV_READER_OPTIONS) do |csv_row|
+    CsvHashReader.foreach(temp_files[:csv], CSV_READER_OPTIONS) do |csv_row|
       next if irrelevant_row?(csv_row)
       break if row_too_old?(csv_row)
 
@@ -114,8 +110,8 @@ class PaymentHistory::CsvImporter
 
   def new_payment(csv_row)
     user.payment_histories.new(
-      app_title: csv_row[:app_title].presence || UNKNOWN_APP_TITLE,
-      charge_type: calculate_charge_type(csv_row),
+      app_title: csv_row[:app_title].presence || PaymentHistory::UNKNOWN_APP_TITLE,
+      charge_type: lookup_charge_type(csv_row),
       shop: csv_row[:shop],
       shop_country: csv_row[:shop_country],
       payment_date: csv_row[:charge_creation_time],
@@ -137,7 +133,7 @@ class PaymentHistory::CsvImporter
     csv_row[:charge_creation_time] < calculate_from_date.to_s
   end
 
-  def calculate_charge_type(csv_row)
+  def lookup_charge_type(csv_row)
     charge_type = CSV_REVENUE_TYPES.find { |_key, value| value.include?(csv_row[:charge_type]) }&.first
     if charge_type == "usage_revenue"
       charge_type = user.count_usage_charges_as_recurring == true ? "recurring_revenue" : "onetime_revenue"
@@ -172,13 +168,16 @@ class PaymentHistory::CsvImporter
     temp_files[:unzipped]
   end
 
-  def handle_import_error(e)
-    # TODO: Create a generic import status class
-    user.update(import: "Failed", import_status: 100, partner_api_errors: "Error: #{e.message}")
+  # TODO: Create a generic import status class
+  def handle_import_error(error)
+    user.update(
+      import: "Failed",
+      import_status: 100,
+      partner_api_errors: "Error: #{e.message}"
+    )
     # Resque swallows errors, so we need to log them here
-    Rails.logger.error("Error importing CSV: #{e.message}")
-    Rails.logger.error(e.backtrace.join("\n"))
-    raise e
+    Rails.logger.error("Error importing CSV: #{error.message}")
+    Rails.logger.error(error.backtrace.join("\n"))
   end
 
   def close_and_unlink_temp_files
