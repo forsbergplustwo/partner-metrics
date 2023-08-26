@@ -1,4 +1,5 @@
 # TODO: Convert to ActiveJob -> Sidekiq
+
 class ImportMetricsWorker
   @queue = :import_queue
 

@@ -1,0 +1,9 @@
+Payout Period,Payout Date,Shop,Shop Country,Charge Creation Time,Charge Type,Category,Partner Sale,Shopify Fee,Processing Fee,Regulatory Operating Fee,Partner Share,App Title,Theme Name,Tax Description,Charge ID,Partner Sale Currency,Partner Sale In Payout Currency,Payout Currency
+,2023-01-01 00:00:00 UTC,usage.myshopify.com,LV,2023-01-01 00:00:00 UTC,App sale – usage,App revenue,10.0,1.5,0.29,0.0,8.21,Usage Payment App,,,gid://shopify/AppUsageRecord/1146294337865,USD,10.0,USD
+,2023-02-01 00:00:00 UTC,usage.myshopify.com,LV,2023-02-01 00:00:00 UTC,App sale – usage,App revenue,10.0,1.5,0.29,0.0,8.21,Usage Payment App,,,gid://shopify/AppUsageRecord/1141874917712,USD,10.0,USD
+,2023-03-01 00:00:00 UTC,yearly.myshopify.com,DE,2023-03-01 00:00:00 UTC,App sale – yearly subscription,App revenue,99.0,14.85,2.87,0.0,81.28,Yearly Subscription App,,,gid://shopify/AppSubscription/30374166812,USD,99.0,USD
+,2023-04-01 00:00:00 UTC,refund.myshopify.com,CH,2023-04-01 00:00:00 UTC,App refund,App revenue,-99.0,-14.85,0.0,0.0,-84.15,Yearly Subscription App,,,,USD,-99.0,USD
+,2023-05-01 00:00:00 UTC,monthly.myshopify.com,US,2023-05-01 00:00:00 UTC,App sale – 30-day subscription,App revenue,29.0,4.35,0.84,0.0,23.81,Recurring Subscription App,,,gid://shopify/AppSubscription/29942382912,USD,29.0,USD
+,2023-06-01 00:00:00 UTC,monthly.myshopify.com,US,2023-06-01 00:00:00 UTC,App sale – 30-day subscription,App revenue,29.0,4.35,0.84,0.0,23.81,Recurring Subscription App,,,gid://shopify/AppSubscription/29942382912,USD,29.0,USD
+,2023-07-01 00:00:00 UTC,onetime.myshopify.com,US,2023-07-01 00:00:00 UTC,App sale – one-time,App revenue,29.0,4.35,0.84,0.0,23.81,Onetime Payment App,,,gid://shopify/AppPurchaseOneTime/3087335705,USD,29.0,USD
+,2023-07-01 00:00:00 UTC,monthly.myshopify.com,US,2023-07-01 00:00:00 UTC,App sale – 30-day subscription,App revenue,29.0,4.35,0.84,0.0,23.81,Recurring Subscription App,,,gid://shopify/AppSubscription/29942382912,USD,29.0,USD
