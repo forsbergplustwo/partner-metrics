@@ -1,7 +1,6 @@
 require "zip"
 
 class PaymentHistory::CsvImporter
-
   SAVE_EVERY_N_ROWS = 1000
 
   CSV_READER_OPTIONS = {

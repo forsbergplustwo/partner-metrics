@@ -30,7 +30,7 @@ class PaymentHistory::ApiImporter
       "App sale – usage",
       "Usage application fee",
       "AppUsageRecord",
-      "AppUsageSale",
+      "AppUsageSale"
     ]
   }.freeze
 
@@ -157,5 +157,4 @@ class PaymentHistory::ApiImporter
     Rails.logger.error("Error importing API: #{error.message}")
     Rails.logger.error(error.backtrace.join("\n"))
   end
-
 end

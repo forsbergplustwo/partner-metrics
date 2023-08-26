@@ -1,128 +1,128 @@
-Graphql::TransactionsQuery = ShopifyPartnerAPI.client.parse <<-'GRAPHQL'
-query($createdAtMin: DateTime, $cursor: String) {
-  transactions(createdAtMin: $createdAtMin, after: $cursor, first: 100) {
-    edges {
-      cursor
-      node {
-        id,
-        createdAt,
-        # Apps
-        ... on AppSubscriptionSale {
-          netAmount {
-            amount
+Graphql::TransactionsQuery = ShopifyPartnerAPI.client.parse <<~'GRAPHQL'
+  query($createdAtMin: DateTime, $cursor: String) {
+    transactions(createdAtMin: $createdAtMin, after: $cursor, first: 100) {
+      edges {
+        cursor
+        node {
+          id,
+          createdAt,
+          # Apps
+          ... on AppSubscriptionSale {
+            netAmount {
+              amount
+            },
+            app {
+              name
+            },
+            shop {
+              myshopifyDomain
+            }
           },
-          app {
-            name
+          ... on AppOneTimeSale {
+            netAmount {
+              amount
+            },
+            app {
+              name
+            },
+            shop {
+              myshopifyDomain
+            }
           },
-          shop {
-            myshopifyDomain
-          }
-        },
-        ... on AppOneTimeSale {
-          netAmount {
-            amount
+          ... on AppSaleAdjustment {
+            netAmount {
+              amount
+            },
+            app {
+              name
+            },
+            shop {
+              myshopifyDomain
+            }
           },
-          app {
-            name
+          ... on AppSaleCredit {
+            netAmount {
+              amount
+            },
+            app {
+              name
+            },
+            shop {
+              myshopifyDomain
+            }
           },
-          shop {
-            myshopifyDomain
-          }
-        },
-        ... on AppSaleAdjustment {
-          netAmount {
-            amount
+          ... on AppUsageSale {
+            netAmount {
+              amount
+            },
+            app {
+              name
+            },
+            shop {
+              myshopifyDomain
+            }
           },
-          app {
-            name
+          # skipped LegacyTransaction, not sure what it is
+          ... on ReferralAdjustment {
+            amount {
+              amount
+            },
+            shop {
+              myshopifyDomain
+            }
           },
-          shop {
-            myshopifyDomain
-          }
-        },
-        ... on AppSaleCredit {
-          netAmount {
-            amount
+          ... on ReferralTransaction {
+            amount {
+              amount
+            },
+            shopNonNullable: shop {
+              myshopifyDomain
+            }
           },
-          app {
-            name
+          ... on ServiceSale {
+            netAmount {
+              amount
+            },
+            shop {
+              myshopifyDomain
+            }
           },
-          shop {
-            myshopifyDomain
-          }
-        },
-        ... on AppUsageSale {
-          netAmount {
-            amount
+          ... on ServiceSaleAdjustment {
+            netAmount {
+              amount
+            },
+            shop {
+              myshopifyDomain
+            }
           },
-          app {
-            name
+          # skipped TaxTransaction
+          ... on ThemeSale {
+            netAmount {
+              amount
+            },
+            theme {
+              name # may not match CSV import behaviour
+            },
+            shop {
+              myshopifyDomain
+            }
           },
-          shop {
-            myshopifyDomain
-          }
-        },
-        # skipped LegacyTransaction, not sure what it is
-        ... on ReferralAdjustment {
-          amount {
-            amount
+          ... on ThemeSaleAdjustment {
+            netAmount {
+              amount
+            },
+            theme {
+              name # may not match CSV import behaviour
+            },
+            shop {
+              myshopifyDomain
+            }
           },
-          shop {
-            myshopifyDomain
-          }
-        },
-        ... on ReferralTransaction {
-          amount {
-            amount
-          },
-          shopNonNullable: shop {
-            myshopifyDomain
-          }
-        },
-        ... on ServiceSale {
-          netAmount {
-            amount
-          },
-          shop {
-            myshopifyDomain
-          }
-        },
-        ... on ServiceSaleAdjustment {
-          netAmount {
-            amount
-          },
-          shop {
-            myshopifyDomain
-          }
-        },
-        # skipped TaxTransaction
-        ... on ThemeSale {
-          netAmount {
-            amount
-          },
-          theme {
-            name # may not match CSV import behaviour
-          },
-          shop {
-            myshopifyDomain
-          }
-        },
-        ... on ThemeSaleAdjustment {
-          netAmount {
-            amount
-          },
-          theme {
-            name # may not match CSV import behaviour
-          },
-          shop {
-            myshopifyDomain
-          }
-        },
+        }
+      },
+      pageInfo {
+          hasNextPage
       }
-    },
-    pageInfo {
-        hasNextPage
     }
   }
-}
 GRAPHQL

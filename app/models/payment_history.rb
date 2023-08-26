@@ -4,7 +4,6 @@
 # 3. Split the Partner API import into separate class
 
 class PaymentHistory < ActiveRecord::Base
-
   YEARS_TO_IMPORT = 4.years.freeze
 
   UNKNOWN_APP_TITLE = "Unknown".freeze
@@ -135,6 +134,5 @@ class PaymentHistory < ActiveRecord::Base
       current_user.update(import: "Failed", import_status: 100, partner_api_errors: "Error: #{e.message}")
       raise e
     end
-
   end
 end

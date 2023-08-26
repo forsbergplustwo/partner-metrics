@@ -27,5 +27,4 @@ class PaymentHistory::ApiImporterTest < ActiveSupport::TestCase
       importer.import!
     end
   end
-
 end
