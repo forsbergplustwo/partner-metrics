@@ -47,6 +47,8 @@ group :development, :test do
   gem "bundle-audit"
   gem "standard"
 
+  gem "mocha"
+
   # TODO: Add these back when Ruby 2.7+ is supported
   # gem "standard-rails"
   # gem "standard-minitest"

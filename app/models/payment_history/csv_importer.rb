@@ -5,7 +5,8 @@ class PaymentHistory::CsvImporter
 
   CSV_READER_OPTIONS = {
     converters: :all,
-    header_converters: :symbol
+    header_converters: :symbol,
+    encoding: "UTF-8",
   }.freeze
 
   SAVE_EVERY_N_ROWS = 1000
@@ -81,7 +82,12 @@ class PaymentHistory::CsvImporter
   private
 
   def prepare_csv_file
-    @temp_files[:csv] = prepare_csv_file(@filename)
+    file = fetch_from_s3(filename)
+    @temp_files[:csv] = if zipped?(filename)
+      extracted_zip_file(file)
+    else
+      file
+    end
   end
 
   def clear_old_payments
@@ -139,28 +145,23 @@ class PaymentHistory::CsvImporter
     charge_type
   end
 
-  def prepare_csv_file(filename)
-    file = fetch_from_s3(filename)
-    if zipped?(filename)
-      extract_zip_file(file)
-    else
-      file
-    end
-  end
-
   def zipped?(filename)
     filename.include?(".zip")
   end
 
-  def fetch_from_s3(filename)
+  def fetch_fromv_s3(filename)
     temp_files[:s3_download] = Tempfile.new("s3_download")
     s3 = Aws::S3::Client.new
-    s3.get_object({bucket: "partner-metrics", key: filename}, target: temp_files[:s3_download].path)
+    s3.get_object({
+      bucket: "partner-metrics",
+      key: filename},
+      target: temp_files[:s3_download].path
+    )
     temp_files[:s3_download]
   end
 
-  def extract_zip_file(zipped_file)
-    temp_files[:unzipped] = Tempfile.new("unzipped")
+  def extracted_zip_file(zipped_file)
+    temp_files[:unzipped] = Tempfile.new("unzipped", encoding: "UTF-8")
     Zip.on_exists_proc = true
     Zip.continue_on_exists_proc = true
     Zip::File.open(zipped_file.path) do |zip_file|
@@ -181,7 +182,9 @@ class PaymentHistory::CsvImporter
   end
 
   def close_and_unlink_temp_files
-    temp_files.each_value(&:close)
-    temp_files.each_value(&:unlink)
+    temp_files.each_value do |file|
+      file.close
+      file.unlink if file.is_a?(Tempfile)
+    end
   end
 end
