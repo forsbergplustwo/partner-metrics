@@ -2,7 +2,6 @@ require "test_helper"
 require "zip"
 
 class PaymentHistory::CsvImporterTest < ActiveSupport::TestCase
-
   setup do
     @user = users(:regular)
     @filename = "mixed.csv"

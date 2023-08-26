@@ -6,7 +6,7 @@ class PaymentHistory::CsvImporter
   CSV_READER_OPTIONS = {
     converters: :all,
     header_converters: :symbol,
-    encoding: "UTF-8",
+    encoding: "UTF-8"
   }.freeze
 
   SAVE_EVERY_N_ROWS = 1000
@@ -154,9 +154,9 @@ class PaymentHistory::CsvImporter
     s3 = Aws::S3::Client.new
     s3.get_object({
       bucket: "partner-metrics",
-      key: filename},
-      target: temp_files[:s3_download].path
-    )
+      key: filename
+    },
+      target: temp_files[:s3_download].path)
     temp_files[:s3_download]
   end
 
