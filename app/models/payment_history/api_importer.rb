@@ -36,6 +36,7 @@ class PaymentHistory::ApiImporter
 
   def initialize(user:)
     @user = user
+    @batch_of_payments = []
   end
 
   attr_reader :user
@@ -57,66 +58,77 @@ class PaymentHistory::ApiImporter
     throttle_start_time = Time.zone.now
 
     while has_next_page == true
-      throttle_start_time = throttle(throttle_start_time)
       transactions = []
-      records = []
-      results = ShopifyPartnerAPI.client.query(
-        Graphql::TransactionsQuery,
-        variables: {createdAtMin: created_at_min, cursor: cursor},
-        context: {access_token: user.partner_api_access_token, organization_id: user.partner_api_organization_id}
-      )
-      raise StandardError.new(results.errors.messages.map { |k, v| "#{k}=#{v}" }.join("&")) if results.errors.any?
+      throttle_start_time = throttle(throttle_start_time)
+
+      results = fetch_from_api(cursor, created_at_min)
       return if results.data.nil?
+
       transactions = results.data.transactions.edges
       Rails.logger.info("Number of Transactions: " + transactions.size.to_s)
       has_next_page = results.data.transactions.page_info.has_next_page
       cursor = results.data.transactions.edges.last.cursor
+
       transactions.each do |transaction|
-        node = transaction.node
-
-        created_at = Date.parse(node.created_at)
-
-        next if created_at <= user.calculate_from_date
-        charge_type = lookup_charge_type(node.__typename)
-        next if charge_type.nil?
-
-        record = PaymentHistory.new(
-          user_id: user.id,
-          charge_type: charge_type,
-          payment_date: created_at
-        )
-
-        record.revenue = case node.__typename
-        when "ReferralAdjustment", "ReferralTransaction"
-          node.amount.amount
-        else
-          node.net_amount.amount
-        end
-
-        record.app_title = case node.__typename
-        when "ReferralAdjustment", "ReferralTransaction", "ServiceSale", "ServiceSaleAdjustment"
-          nil
-        when "ThemeSaleAdjustment", "ThemeSale"
-          node.theme.name
-        else
-          node.app.name
-        end
-
-        record.shop = case node.__typename
-        when "ReferralTransaction"
-          node.shop_non_nullable.myshopify_domain
-        else
-          next if node.shop.nil?
-          node.shop.myshopify_domain
-        end
-        records << record
+        payment = new_payment(transaction.node)
+        @batch_of_payments << payment if payment.present?
       end
-      PaymentHistory.import(records, validate: false, no_returning: true)
-      records = []
+
+      PaymentHistory.import(@batch_of_payments, validate: false, no_returning: true)
+      @batch_of_payments = []
     end
   end
 
   private
+
+  def fetch_from_api(cursor, created_at_min)
+    results = ShopifyPartnerAPI.client.query(
+      Graphql::TransactionsQuery,
+      variables: {createdAtMin: created_at_min, cursor: cursor},
+      context: {access_token: user.partner_api_access_token, organization_id: user.partner_api_organization_id}
+    )
+    raise StandardError.new(results.errors.messages.map { |k, v| "#{k}=#{v}" }.join("&")) if results.errors.any?
+    results
+  end
+
+  def new_payment(node)
+    created_at = Date.parse(node.created_at)
+    return nil if created_at <= user.calculate_from_date
+
+    charge_type = lookup_charge_type(node.__typename)
+    return nil if charge_type.nil?
+
+    payment = PaymentHistory.new(
+      user_id: user.id,
+      charge_type: charge_type,
+      payment_date: created_at
+    )
+
+    payment.revenue = case node.__typename
+    when "ReferralAdjustment", "ReferralTransaction"
+      node.amount.amount
+    else
+      node.net_amount.amount
+    end
+
+    payment.app_title = case node.__typename
+    when "ReferralAdjustment", "ReferralTransaction", "ServiceSale", "ServiceSaleAdjustment"
+      nil
+    when "ThemeSaleAdjustment", "ThemeSale"
+      node.theme.name
+    else
+      node.app.name
+    end
+
+    payment.shop = case node.__typename
+    when "ReferralTransaction"
+      node.shop_non_nullable.myshopify_domain
+    else
+      next if node.shop.nil?
+      node.shop.myshopify_domain
+    end
+    payment
+  end
 
   def throttle(start_time)
     stop_time = Time.zone.now

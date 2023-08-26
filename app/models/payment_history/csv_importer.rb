@@ -144,7 +144,7 @@ class PaymentHistory::CsvImporter
     filename.include?(".zip")
   end
 
-  def fetch_fromv_s3(filename)
+  def fetch_from_s3(filename)
     temp_files[:s3_download] = Tempfile.new("s3_download")
     s3 = Aws::S3::Client.new
     s3.get_object({
