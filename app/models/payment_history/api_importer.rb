@@ -76,7 +76,7 @@ class PaymentHistory::ApiImporter
 
         created_at = Date.parse(node.created_at)
 
-        next if created_at <= last_calculated_metric_date
+        next if created_at <= user.calculate_from_date
         charge_type = lookup_charge_type(node.__typename)
         next if charge_type.nil?
 
@@ -85,11 +85,6 @@ class PaymentHistory::ApiImporter
           charge_type: charge_type,
           payment_date: created_at
         )
-
-        # STUPID: For my apps, I want Usage charges counted as "recurring" and not "one_time", others's don't
-        if USAGE_CHARGE_TYPES.include?(node.__typename) && user.count_usage_charges_as_recurring == true
-          record.charge_type = "recurring_revenue"
-        end
 
         record.revenue = case node.__typename
         when "ReferralAdjustment", "ReferralTransaction"

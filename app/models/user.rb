@@ -30,7 +30,7 @@ class User < ActiveRecord::Base
   end
 
   def calculate_from_date
-    newest_metric_date || PaymentHistory.default_start_date
+    @calculate_from_date ||= newest_metric_date.presence || PaymentHistory.default_start_date
   end
 
   def clear_old_payments

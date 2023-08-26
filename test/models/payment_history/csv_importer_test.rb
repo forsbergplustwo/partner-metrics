@@ -15,7 +15,7 @@ class PaymentHistory::CsvImporterTest < ActiveSupport::TestCase
     assert importer.calculate_from_date == @user.calculate_from_date
   end
 
-  test "can import csv files" do
+  test "import! of csv files" do
     file = fixture_csv_file_for(@filename)
 
     importer = PaymentHistory::CsvImporter.new(user: @user, filename: @filename)
@@ -27,7 +27,7 @@ class PaymentHistory::CsvImporterTest < ActiveSupport::TestCase
     assert_correct_last_payment
   end
 
-  test "can import zip files" do
+  test "import! of zip files" do
     zip_file = fixture_zip_file_for(@filename)
 
     importer = PaymentHistory::CsvImporter.new(user: @user, filename: zip_file.path)
