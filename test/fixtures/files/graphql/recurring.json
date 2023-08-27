@@ -1,0 +1,29 @@
+{
+  "data": {
+    "transactions": {
+      "edges": [
+        {
+          "cursor": "",
+          "node": {
+            "__typename": "AppSubscriptionSale",
+            "id": "gid://partners/AppSubscriptionSale/242565501",
+            "created_at": "2023-02-01T00:00:00.000000Z",
+            "net_amount": {
+              "amount": "23.81"
+            },
+            "app": {
+              "name": "Recurring Subscription App"
+            },
+            "shop": {
+              "myshopify_domain": "recurring.myshopify.com"
+            }
+          }
+        }
+      ],
+      "page_info": {
+        "has_next_page": false
+      }
+    }
+  },
+  "errors": []
+}

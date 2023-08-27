@@ -48,6 +48,7 @@ group :development, :test do
   gem "standard"
 
   gem "mocha"
+  gem "http_logger"
 
   # TODO: Add these back when Ruby 2.7+ is supported
   # gem "standard-rails"
