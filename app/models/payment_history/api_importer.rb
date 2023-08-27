@@ -113,7 +113,7 @@ class PaymentHistory::ApiImporter
 
     payment.app_title = case node.__typename
     when "ReferralAdjustment", "ReferralTransaction", "ServiceSale", "ServiceSaleAdjustment"
-      nil
+      PaymentHistory::UNKNOWN_APP_TITLE
     when "ThemeSaleAdjustment", "ThemeSale"
       node.theme.name
     else
@@ -124,9 +124,10 @@ class PaymentHistory::ApiImporter
     when "ReferralTransaction"
       node.shop_non_nullable.myshopify_domain
     else
-      next if node.shop.nil?
-      node.shop.myshopify_domain
+      node.shop&.myshopify_domain
     end
+    return nil if payment.shop.nil?
+
     payment
   end
 
