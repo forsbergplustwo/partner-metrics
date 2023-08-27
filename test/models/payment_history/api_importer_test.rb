@@ -18,7 +18,8 @@ class PaymentHistory::ApiImporterTest < ActiveSupport::TestCase
       Graphql::TransactionsQuery,
       variables: {
         createdAtMin: @user.calculate_from_date.iso8601,
-        cursor: ""},
+        cursor: ""
+      },
       context: {
         access_token: @user.partner_api_access_token,
         organization_id: @user.partner_api_organization_id

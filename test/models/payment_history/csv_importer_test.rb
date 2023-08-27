@@ -41,7 +41,6 @@ class PaymentHistory::CsvImporterTest < ActiveSupport::TestCase
     zip_file.unlink
   end
 
-
   # test "Import! of different types of payments" do
   #   # TODO: Add tests for all types of payments
   # end
