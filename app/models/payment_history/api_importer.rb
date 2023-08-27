@@ -87,7 +87,6 @@ class PaymentHistory::ApiImporter
       variables: {createdAtMin: created_at_min, cursor: cursor},
       context: {access_token: user.partner_api_access_token, organization_id: user.partner_api_organization_id}
     )
-    Rails.logger.info(results.inspect)
     raise StandardError.new(results.errors.messages.map { |k, v| "#{k}=#{v}" }.join("&")) if results.errors.any?
     results
   end
