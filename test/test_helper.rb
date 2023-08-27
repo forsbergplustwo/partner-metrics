@@ -1,6 +1,7 @@
 ENV["RAILS_ENV"] ||= "test"
 require File.expand_path("../../config/environment", __FILE__)
 require "rails/test_help"
+require "mocha"
 require "mocha/minitest"
 
 # TODO: Remove this when Rails 4 is no longer used
