@@ -50,7 +50,6 @@ gem "devise"
 gem "sidekiq"
 gem "graphql-client"
 gem "chartkick"
-gem "sprockets-rails"
 gem "jsbundling-rails"
 
 group :development, :test do
