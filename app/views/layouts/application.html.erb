@@ -21,7 +21,7 @@
     <%= javascript_include_tag "https://www.gstatic.com/charts/loader.js" %>
 
   <% if !current_user.blank? %>
-    <%= intercom_script_tag({
+    <%#= intercom_script_tag({
       :app_id => 'gworkb82',
       :user_id => current_user.id,
       :email => current_user.email,
