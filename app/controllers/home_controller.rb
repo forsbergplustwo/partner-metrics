@@ -9,21 +9,6 @@ class HomeController < ApplicationController
   def app_store_analytics
   end
 
-  # TODO: Move to payment_histories::uploads#create & refactor + add tests
-  def import
-    metrics = current_user.metrics.any?
-    save_partner_api_credentials
-    filename = params[:filename]
-    if filename.present?
-      current_user.update(import: "Importing", import_status: 0)
-      Resque.enqueue(ImportWorker, current_user.id, filename)
-    elsif metrics.present? && current_user.has_partner_api_credentials?
-      flash[:notice] = "Account connection updated! We will import your data automatically, at the end of each day."
-    else
-      flash[:errors] = "Something went wrong. You either need to add your Partner API credentials, or upload the file for the first import."
-    end
-  end
-
   # TODO: Move to payment_histories::uploads#show & refactor + add tests
   def import_status
     render nothing: true unless request.xhr?
@@ -77,16 +62,4 @@ class HomeController < ApplicationController
     redirect_to URI(request.referer).path
   end
 
-  private
-
-  def save_partner_api_credentials
-    if params[:partner_api_access_token].present? && params[:partner_api_organization_id].present? && params[:count_usage_charges_as_recurring].present?
-      current_user.update!(
-        partner_api_access_token: params[:partner_api_access_token],
-        partner_api_organization_id: params[:partner_api_organization_id],
-        partner_api_errors: "",
-        count_usage_charges_as_recurring: params[:count_usage_charges_as_recurring]
-      )
-    end
-  end
 end

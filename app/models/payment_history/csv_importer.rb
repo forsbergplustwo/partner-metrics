@@ -1,4 +1,5 @@
 require "zip"
+require "csvreader"
 
 class PaymentHistory::CsvImporter
   SAVE_EVERY_N_ROWS = 1000
@@ -56,18 +57,16 @@ class PaymentHistory::CsvImporter
     ]
   }.freeze
 
-  def initialize(user:, filename:)
+  def initialize(user:)
     @user = user
-    @filename = filename
     @temp_files = {}
     @rows_processed_count = 0
     @batch_of_payments = []
   end
 
-  attr_accessor :user, :filename, :temp_files
+  attr_accessor :user, :temp_files
 
   def import!
-    prepare_csv_file
     user.clear_old_payments
     import_new_payments
   rescue => error
@@ -79,18 +78,9 @@ class PaymentHistory::CsvImporter
 
   private
 
-  def prepare_csv_file
-    file = fetch_from_s3(filename)
-    temp_files[:csv] = if zipped?(filename)
-      extracted_zip_file(file)
-    else
-      file
-    end
-  end
-
   def import_new_payments
     # Loops through CSV file, saving in chunks of N rows
-    CsvHashReader.foreach(temp_files[:csv], CSV_READER_OPTIONS) do |csv_row|
+    CsvHashReader.foreach(prepared_csv_file, **CSV_READER_OPTIONS) do |csv_row|
       next if irrelevant_row?(csv_row)
       break if row_too_old?(csv_row)
 
@@ -104,6 +94,15 @@ class PaymentHistory::CsvImporter
     end
     # Save any remaining rows
     save_and_reset_batch(@batch_of_payments)
+  end
+
+  def prepared_csv_file
+    file = user.import_file
+    if zipped?(file.content_type)
+      extracted_zip_file(ActiveStorage::Blob.service.path_for(file.key))
+    else
+      ActiveStorage::Blob.service.path_for(file.key)
+    end
   end
 
   def new_payment(csv_row)
@@ -120,6 +119,7 @@ class PaymentHistory::CsvImporter
   def save_and_reset_batch(payments)
     # Uses "activerecord-import", which is much faster than saving each row individually
     PaymentHistory.import(payments, validate: false, no_returning: true) if payments.present?
+    Rails.logger.info("Imported #{payments.count} rows")
     @batch_of_payments = []
   end
 
@@ -139,31 +139,20 @@ class PaymentHistory::CsvImporter
     charge_type
   end
 
-  def zipped?(filename)
-    filename.include?(".zip")
-  end
-
-  def fetch_from_s3(filename)
-    temp_files[:s3_download] = Tempfile.new("s3_download")
-    s3 = Aws::S3::Client.new
-    s3.get_object({
-      bucket: "partner-metrics",
-      key: filename
-    },
-      target: temp_files[:s3_download].path)
-    temp_files[:s3_download]
+  def zipped?(content_type)
+    content_type.include?("application/zip")
   end
 
   def extracted_zip_file(zipped_file)
-    temp_files[:unzipped] = Tempfile.new("unzipped", encoding: "UTF-8")
+    temp_files[:csv] = Tempfile.new("csv", encoding: "UTF-8")
     Zip.on_exists_proc = true
     Zip.continue_on_exists_proc = true
-    Zip::File.open(zipped_file.path) do |zip_file|
+    Zip::File.open(zipped_file) do |zip_file|
       zip_file.each do |entry|
-        entry.extract(temp_files[:unzipped])
+        entry.extract(temp_files[:csv])
       end
     end
-    temp_files[:unzipped]
+    temp_files[:csv]
   end
 
   # TODO: Create a generic import status class
@@ -171,7 +160,7 @@ class PaymentHistory::CsvImporter
     user.update(
       import: "Failed",
       import_status: 100,
-      partner_api_errors: "Error: #{e.message}"
+      partner_api_errors: "Error: #{error.message}"
     )
     # Resque swallows errors, so we need to log them here
     Rails.logger.error("Error importing CSV: #{error.message}")
@@ -181,7 +170,7 @@ class PaymentHistory::CsvImporter
   def close_and_unlink_temp_files
     temp_files.each_value do |file|
       file.close
-      file.unlink if file.is_a?(Tempfile)
+      file.unlink
     end
   end
 end

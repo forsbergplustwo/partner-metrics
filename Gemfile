@@ -76,6 +76,8 @@ group :development do
   gem "standard-minitest"
   gem "standard-thread_safety"
   gem "hotwire-livereload"
+  gem "csvreader"
+  gem "activerecord-import"
 end
 
 group :test do

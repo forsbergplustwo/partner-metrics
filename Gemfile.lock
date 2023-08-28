@@ -54,6 +54,8 @@ GEM
     activerecord (7.0.7.2)
       activemodel (= 7.0.7.2)
       activesupport (= 7.0.7.2)
+    activerecord-import (1.5.0)
+      activerecord (>= 4.2)
     activestorage (7.0.7.2)
       actionpack (= 7.0.7.2)
       activejob (= 7.0.7.2)
@@ -89,6 +91,12 @@ GEM
     connection_pool (2.4.1)
     convenient_grouper (0.1.6)
     crass (1.0.6)
+    csvjson (1.0.1)
+    csvreader (1.2.5)
+      csvjson (>= 1.0.0)
+      csvyaml (>= 0.1.0)
+      tabreader (>= 1.0.1)
+    csvyaml (1.0.0)
     date (3.3.3)
     debug (1.8.0)
       irb (>= 1.5.0)
@@ -276,6 +284,7 @@ GEM
       rubocop-thread_safety
     stimulus-rails (1.2.2)
       railties (>= 6.0.0)
+    tabreader (1.0.1)
     thor (1.2.2)
     timeout (0.4.0)
     turbo-rails (1.4.0)
@@ -309,10 +318,12 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  activerecord-import
   bootsnap
   capybara
   chartkick
   convenient_grouper
+  csvreader
   debug
   devise
   foreman

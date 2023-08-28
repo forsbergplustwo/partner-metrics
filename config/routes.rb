@@ -12,10 +12,11 @@ Rails.application.routes.draw do
   end
 
   scope controller: :home do
-    post :import
     post :import_status
     get :app_store_analytics
     get :reset_metrics
     post :rename_app
   end
+
+  resources :user, only: [:update]
 end

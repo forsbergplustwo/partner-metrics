@@ -6,6 +6,7 @@ class User < ApplicationRecord
 
   has_many :payment_histories, dependent: :delete_all
   has_many :metrics, dependent: :delete_all
+  has_one_attached :import_file, dependent: :destroy
 
   def has_partner_api_credentials?
     partner_api_access_token.present? && partner_api_organization_id.present?
