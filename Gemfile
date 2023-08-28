@@ -1,70 +1,69 @@
 source "https://rubygems.org"
-ruby "2.6.8"
+git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-gem "activerecord-import"
-gem "aws-sdk", "~> 2"
-gem "bootstrap-datepicker-rails"
-gem "bootstrap-sass"
-gem "bootstrap-select-rails", "~> 1.12.0"
-gem "chartkick"
-gem "coffee-rails", "~> 4.0.0"
-gem "convenient_grouper"
-gem "devise"
-gem "devise-bootstrap-views"
-gem "font-awesome-rails", "~> 4.7.0"
-gem "font-awesome-sass", "~> 4.7.0"
-gem "groupdate"
-gem "high_voltage"
-gem "intercom-rails"
-gem "jbuilder", "~> 2.0"
-gem "jquery-rails"
-gem "jquery-tablesorter"
-gem "pg", "< 1.0.0"
-gem "pkg-config"
-gem "rack-timeout", require: "rack/timeout/base"
-gem "rails", "~> 4.2"
+ruby "3.2.0"
+
+# Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
+gem "rails", "~> 7.0.5"
+
+# The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
+gem "sprockets-rails"
+
+# Use postgresql as the database for Active Record
+gem "pg", "~> 1.1"
+
+# Use the Puma web server [https://github.com/puma/puma]
+gem "puma", "~> 5.0"
+
+# Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
+gem "importmap-rails"
+
+# Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
+gem "turbo-rails"
+
+# Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
+gem "stimulus-rails"
+
+# Use Redis adapter to run Action Cable in production
 gem "redis", "~> 4.0"
-gem "remotipart", "~> 1.0"
-gem "resque"
-gem "resque-pool"
-gem "resque-web", require: "resque_web"
-gem "rubyzip"
-gem "sass-rails", "~> 4.0.3"
-gem "sdoc", "~> 0.4.0", group: :doc
-gem "csvreader"
-gem "spring", group: :development
-gem "uglifier", ">= 1.3.0"
-gem "unicorn"
-gem "graphql-client"
+
+# Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
+# gem "kredis"
+
+# Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
+# gem "bcrypt", "~> 3.1.7"
+
+# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
+gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
+
+# Reduces boot times through caching; required in config/boot.rb
+gem "bootsnap", require: false
+
+# Use Sass to process CSS
+# gem "sassc-rails"
+
+# Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
+# gem "image_processing", "~> 1.2"
 
 group :development, :test do
-  gem "foreman"
-  gem "dotenv-rails"
-
-  # Code analysis / linters
-  gem "brakeman"
-  gem "bullet"
-  gem "bundle-audit"
-  gem "standard"
-
-  gem "mocha"
-  gem "http_logger"
-
-  # TODO: Add these back when Ruby 2.7+ is supported
-  # gem "standard-rails"
-  # gem "standard-minitest"
-  # gem "standard-thread_safety"
+  # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
+  gem "debug", platforms: %i[ mri mingw x64_mingw ]
 end
 
 group :development do
-  gem "better_errors"
-  gem "binding_of_caller"
-  gem "hub", require: nil
-  gem "quiet_assets"
-  gem "rails_layout"
-end
-group :production do
-  gem "rails_12factor"
+  # Use console on exceptions pages [https://github.com/rails/web-console]
+  gem "web-console"
+
+  # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
+  # gem "rack-mini-profiler"
+
+  # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
+  # gem "spring"
 end
 
-gem "graphiql-rails", group: :development
+group :test do
+  # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
+  gem "capybara"
+  gem "selenium-webdriver"
+  gem "webdrivers"
+end

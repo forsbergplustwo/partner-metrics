@@ -1,2 +1,0 @@
-Payout Period,Payout Date,Shop,Shop Country,Charge Creation Time,Charge Type,Category,Partner Sale,Shopify Fee,Processing Fee,Regulatory Operating Fee,Partner Share,App Title,Theme Name,Tax Description,Charge ID,Partner Sale Currency,Partner Sale In Payout Currency,Payout Currency
-,2023-02-01 00:00:00 UTC,recurring.myshopify.com,US,2023-02-01 00:00:00 UTC,App sale – 30-day subscription,App revenue,29.0,4.35,0.84,0.0,23.81,Recurring Subscription App,,,gid://shopify/AppSubscription/29942382912,USD,29.0,USD

@@ -1,7 +1,0 @@
-ignore:
-  - 'bin/*'
-  - 'db/**/*'
-  - 'config/environments/*'
-  - '**/*':
-    - Rails/EnvironmentVariableAccess
-    - Lint/FloatComparison

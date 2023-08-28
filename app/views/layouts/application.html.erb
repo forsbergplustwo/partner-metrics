@@ -1,79 +1,16 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= content_for?(:title) ? yield(:title) : "Partner Metrics" %></title>
-  <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "Partner Metrics" %>">
-  <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon.png">
-  <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
-  <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
-  <link rel="manifest" href="/manifest.json">
-  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
-  <meta name="theme-color" content="#ffffff">
-  <%= stylesheet_link_tag 'application', media: 'all' %>
-  <%= javascript_include_tag "https://www.gstatic.com/charts/loader.js" %>
-  <%= javascript_include_tag 'application' %>
-  <%= csrf_meta_tags %>
+  <head>
+    <title>PartnerMetrics</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
 
-  <% if !current_user.blank? %>
-    <%= intercom_script_tag({
-      :app_id => 'gworkb82',
-      :user_id => current_user.id,
-      :email => current_user.email,
-      :created_at => current_user.created_at,
-      :custom_data => {
-        'partnermetrics_last_seen_at' => Time.now.to_i,
-        'partnermetrics_signup_at' => current_user.created_at
-      }
-    }) %>
-  <% end %>
-</head>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
 
-<body class="<%= "#{params[:controller]}-#{params[:action]}" %>">
-  <div id="wrap">
-    <header>
-      <%= render 'layouts/navigation' %>
-    </header>
-    <main id="main" role="main">
-      <div class="container">
-        <%= render 'layouts/messages', locals: {current_user: current_user} %>
-
-        <%= yield %>
-
-        <% if current_user.present? %>
-          <%= render 'layouts/import_modal' %>
-          <%= render 'layouts/rename_app_modal' %>
-        <% end %>
-
-      </div>
-    </main>
-  </div>
-  <footer class="footer text-center animated fadeInUpBig">
-    <div class="row">
-      <div class="col-xs-12">
-        Unofficial metrics dashboard for <a href="http://www.shopify.com/partners" target="_blank">Shopify Partners</a>. Created by <a href="http://www.forsbergplustwo.com" target="_blank">FORSBERG+two</a> (<a href="https://twitter.com/FORSBERGtwo" target="_blank">Twitter <i class="fa fa-twitter"></i></a>) with a little help from <a href="https://www.danielrsim.com" target="_blank">Daniel Sim</a> (<a href="https://twitter.com/drsim" target="_blank">Twitter <i class="fa fa-twitter"></i></a>).
-      </div>
-    </div>
-  </footer>
-
-  <script>
-    var ready;
-    ready = function() {
-      <% if user_signed_in? %>
-        $('#date').on('apply.daterangepicker', function(e) {
-          $('#filter_form').submit();
-        });
-        $('select').selectpicker();
-        $(function () {
-          $('[data-toggle="tooltip"]').tooltip()
-        })
-        setupAjax();
-        setupUploads();
-        // setupPartnerAPI();
-      <% end %>
-    };
-    $(document).on('ready', ready)
-  </script>
-
+  <body>
+    <%= yield %>
   </body>
 </html>
