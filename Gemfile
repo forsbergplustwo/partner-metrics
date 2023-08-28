@@ -46,6 +46,7 @@ gem "bootsnap", require: false
 # gem "image_processing", "~> 1.2"
 
 # CUSTOM GEMS
+gem "sidekiq"
 gem "graphql-client"
 
 group :development, :test do
