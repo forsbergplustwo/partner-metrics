@@ -61,6 +61,7 @@ group :development do
   # gem "spring"
 
   # CUSTOM GEMS
+  gem "foreman"
   gem "standard"
   gem "standard-rails"
   gem "standard-minitest"
