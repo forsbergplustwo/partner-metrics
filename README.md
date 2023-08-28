@@ -17,7 +17,7 @@ Partner Metrics was created by [@forsbergplustwo](@forsbergplustwo), and will re
 To get started:
 
 1. Setup dependencies, environment & database: `bin/setup`
-2. Create and add credentials `bin/rails credentials:edit`
+2. Create and add credentials `bin/rails credentials:edit` (use config/credentials.sample.yml as template)
 3. Start servers and sidekiq workers: `bin/dev`
 
 Visit `localhost:4000`
