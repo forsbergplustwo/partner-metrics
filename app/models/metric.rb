@@ -66,7 +66,7 @@ class Metric < ApplicationRecord
         current = current.average(type["column"]) || 0
         previous = previous.average(type["column"]) || 0
       end
-      current.blank? || previous.blank? ? 0 : (current.to_f / previous * 100) - 100
+      (current.blank? || previous.blank?) ? 0 : (current.to_f / previous * 100) - 100
     end
 
     def get_chart_data(current_user, date, period, type, app_title)

@@ -38,7 +38,7 @@ class HomeController < ApplicationController
     elsif label.include?("Failed")
       amount_done = current_user.import_status
       reload = true
-      flash[:error] = <<-'HTML'
+      flash[:error] = <<-HTML
         <h3><strong>Something went wrong during import!</strong></h3>
         <h3>Partner API</h3>
         <p>If you are using Partner API credentials, check the Organization ID and Access token you entered are correct.</p>

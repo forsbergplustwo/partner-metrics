@@ -1,4 +1,4 @@
-Graphql::TransactionsQuery = ShopifyPartnerAPI.client.parse <<~'GRAPHQL'
+Graphql::TransactionsQuery = ShopifyPartnerAPI.client.parse <<~GRAPHQL
   query($createdAtMin: DateTime, $cursor: String) {
     transactions(createdAtMin: $createdAtMin, after: $cursor, first: 100) {
       edges {

@@ -3,7 +3,7 @@ class Metric::Filterer
     @user = user
     @date = date.present? ? Date.parse(date.to_s) : @user.latest_metric_date
     @period = period
-    @app_title = (app_title == "All" ? nil : app_title)
+    @app_title = ((app_title == "All") ? nil : app_title)
     @charge_type = charge_type
   end
 

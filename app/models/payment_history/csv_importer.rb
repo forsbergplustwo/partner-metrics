@@ -134,7 +134,7 @@ class PaymentHistory::CsvImporter
   def lookup_charge_type(csv_row)
     charge_type = CSV_REVENUE_TYPES.find { |_key, value| value.include?(csv_row[:charge_type]) }&.first
     if charge_type == "usage_revenue"
-      charge_type = user.count_usage_charges_as_recurring == true ? "recurring_revenue" : "onetime_revenue"
+      charge_type = (user.count_usage_charges_as_recurring == true) ? "recurring_revenue" : "onetime_revenue"
     end
     charge_type
   end

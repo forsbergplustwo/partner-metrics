@@ -1,13 +1,13 @@
 module MetricsHelper
   def number_to_currency_with_precision(value)
-    precision = value < 100 ? 2 : 0
+    precision = (value < 100) ? 2 : 0
     number_to_currency(value, precision: precision)
   end
 
   def number_to_percentage_with_precision(value)
-    precision = value < 10 ? 2 : 1
+    precision = (value < 10) ? 2 : 1
     percentage = number_to_percentage(value, precision: precision)
-    value > 0 ? "+" + percentage : percentage
+    (value > 0) ? "+" + percentage : percentage
   end
 
   def metric_change_color(metric_change, direction_good)

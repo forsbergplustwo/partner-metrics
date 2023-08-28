@@ -143,7 +143,7 @@ class PaymentHistory::ApiImporter
   def lookup_charge_type(api_type)
     charge_type = API_REVENUE_TYPES.find { |_key, value| value.include?(api_type) }&.first
     if charge_type == "usage_revenue"
-      charge_type = user.count_usage_charges_as_recurring == true ? "recurring_revenue" : "onetime_revenue"
+      charge_type = (user.count_usage_charges_as_recurring == true) ? "recurring_revenue" : "onetime_revenue"
     end
     charge_type
   end
