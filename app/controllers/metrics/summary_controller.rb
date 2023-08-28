@@ -1,5 +1,4 @@
 class Metrics::SummaryController < MetricsController
-  skip_before_action :set_tiles
 
   # TODO: Refactor -> This one is different from the others and needs re-thinking separately
   def index
