@@ -51,6 +51,8 @@ gem "sidekiq"
 gem "graphql-client"
 gem "chartkick"
 gem "jsbundling-rails"
+gem "groupdate"
+gem "convenient_grouper"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

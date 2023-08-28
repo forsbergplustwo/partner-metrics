@@ -87,6 +87,7 @@ GEM
     chartkick (5.0.4)
     concurrent-ruby (1.2.2)
     connection_pool (2.4.1)
+    convenient_grouper (0.1.6)
     crass (1.0.6)
     date (3.3.3)
     debug (1.8.0)
@@ -107,6 +108,8 @@ GEM
     graphql-client (0.18.0)
       activesupport (>= 3.0)
       graphql
+    groupdate (6.3.0)
+      activesupport (>= 6.1)
     hotwire-livereload (1.2.3)
       listen (>= 3.0.0)
       rails (>= 6.0.0)
@@ -309,10 +312,12 @@ DEPENDENCIES
   bootsnap
   capybara
   chartkick
+  convenient_grouper
   debug
   devise
   foreman
   graphql-client
+  groupdate
   hotwire-livereload
   jsbundling-rails
   pg (~> 1.1)
