@@ -6,7 +6,7 @@ class UserController < ApplicationController
     save_partner_api_credentials
     import_file = user_params["import_file"]
     if import_file.present?
-      current_user.update(import_file: import_file,import: "Importing", import_status: 0)
+      current_user.update(import_file: import_file, import: "Importing", import_status: 0)
       ImportJob.perform_later(user_id: current_user.id, import_type: :csv)
     elsif metrics.present? && current_user.has_partner_api_credentials?
       flash[:notice] = "Account connection updated! We will import your data automatically, at the end of each day."
