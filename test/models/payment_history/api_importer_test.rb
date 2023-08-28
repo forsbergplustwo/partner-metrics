@@ -17,7 +17,7 @@ class PaymentHistory::ApiImporterTest < ActiveSupport::TestCase
     ShopifyPartnerAPI.client.expects(:query).with(
       Graphql::TransactionsQuery,
       variables: {
-        createdAtMin: @user.calculate_from_date.iso8601,
+        createdAtMin: "2023-01-01T00:00:00.000+0000",
         cursor: ""
       },
       context: {

@@ -54,7 +54,7 @@ class PaymentHistory::ApiImporter
   def import_new_payments
     cursor = ""
     has_next_page = true
-    created_at_min = user.calculate_from_date.iso8601 # ISO-8601
+    created_at_min = user.calculate_from_date.strftime("%Y-%m-%dT%H:%M:%S.%L%z") # ISO-8601
     throttle_start_time = Time.zone.now
 
     while has_next_page == true
