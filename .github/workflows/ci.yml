@@ -57,7 +57,7 @@ jobs:
       - name: Setup test database
         env:
           RAILS_ENV: test
-          MASTER_KEY: ${{ secrets.master_key }}
+          RAILS_MASTER_KEY: ${{ secrets.master_key }}
         run: |
           bin/rake db:create
           bin/rake db:schema:load
@@ -66,7 +66,7 @@ jobs:
         env:
           AWS_REGION: us-east-1
           REDIS_URL: redis://localhost:6379/0
-          MASTER_KEY: ${{ secrets.master_key }}
+          RAILS_MASTER_KEY: ${{ secrets.master_key }}
         run: |
           bin/rake test
       - name: Upload artifacts
