@@ -1,0 +1,51 @@
+<% unless @latest_metric_date.blank? %>
+  <form accept-charset="UTF-8" action="<%= url_for(action: action_name) %>" method="get" id="filter_form" class="form-inline pull-right" autocomplete="off" >
+    <div class="form-group">
+      <input name="utf8" type="hidden" value="✓">
+      <% if !@app_titles.blank? %>
+        <select id="app_title" data-width="195px" class="form-control" name="app_title" data-tick-icon="">
+          <%= options_for_select(@app_titles, @app_title) %>
+          <option data-divider="true">
+          <option value="" data-content="<a href='#' data-toggle='modal' data-target='#rename-app-modal'>Rename app / merge data</a>">Rename app / merge data</option>
+        </select>
+      <% end %>
+    </div>
+      <div class="form-group">
+        <%# TODO: Refactor %>
+        <% if params[:controller] != "metrics/summary" %>
+          <div class="input-group date">
+              <input autocomplete="off" data-provide="datepicker" type="text" class="form-control" id="date" name="date" value="<%= @date.strftime('%b %d, %Y') %>" data-date-format="M d, yyyy" data-date-start-date="<%= @first_metric_date.strftime('%b %d, %Y') %>" style="width: 150px" onchange="$('#filter_form').submit();">
+              <div class="input-group-addon">
+                  <span class="fa fa-calendar"></span>
+              </div>
+          </div>
+          <select id="period" data-width="100px" class="form-control" name="period" onchange="$('#filter_form').submit();">
+            <%= options_for_select([
+              ["7 days", 7],
+              ["28 days", 28],
+              ["29 days", 29],
+              ["30 days", 30],
+              ["31 days", 31],
+              ["90 days", 90],
+              ["180 days", 180],
+              ["365 days", 365]
+              ], @period) %>
+          </select>
+          <input id="chart" name="chart" type="hidden" value='<%= @chart_tile["type"] %>'>
+        <% end %>
+      <input type="submit" value="Filter" style="display: none;">
+    </div>
+  </form>
+
+  <script>
+    $(document).on('change', '#app_title', function(event) {
+      if(event.target.value !== '') {
+        $('#filter_form').submit();
+      } else {
+        event.target.selected = false;
+        $('#app_title').val('<%= @app_title || "All" %>');
+        $('#app_title').selectpicker('render');
+      }
+    });
+  </script>
+<% end %>
