@@ -93,6 +93,10 @@ GEM
     foreman (0.87.2)
     globalid (1.1.0)
       activesupport (>= 5.0)
+    graphql (2.0.26)
+    graphql-client (0.18.0)
+      activesupport (>= 3.0)
+      graphql
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
     importmap-rails (1.2.1)
@@ -272,6 +276,7 @@ DEPENDENCIES
   capybara
   debug
   foreman
+  graphql-client
   importmap-rails
   pg (~> 1.1)
   puma (~> 5.0)
