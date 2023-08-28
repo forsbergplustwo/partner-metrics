@@ -61,5 +61,4 @@ class HomeController < ApplicationController
     end
     redirect_to URI(request.referer).path
   end
-
 end

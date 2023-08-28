@@ -11,7 +11,7 @@ class ImportJob < ApplicationJob
     end
 
     # Payments must be imported fully before metrics can be calculated
-    ImportMetricsJob.perform_later(user.id)
+    ImportMetricsJob.perform_later(user_id: user.id)
   rescue => e
     user&.update(import: "Failed", import_status: 100)
     raise e
