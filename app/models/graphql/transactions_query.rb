@@ -1,4 +1,4 @@
-require 'shopify_partner_api'
+require "shopify_partner_api"
 
 Graphql::TransactionsQuery = ShopifyPartnerAPI.client.parse <<~GRAPHQL
   query($createdAtMin: DateTime, $cursor: String) {

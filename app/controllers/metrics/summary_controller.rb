@@ -1,5 +1,4 @@
 class Metrics::SummaryController < MetricsController
-
   # TODO: Refactor -> This one is different from the others and needs re-thinking separately
   def index
     if params["app_title"].blank? || params["app_title"] == "All"
