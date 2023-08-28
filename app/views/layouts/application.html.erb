@@ -7,15 +7,15 @@
   <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
   <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
-  <link rel="manifest" href="/manifest.json">
   <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
   <meta name="theme-color" content="#ffffff">
 
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <%= javascript_importmap_tags %>
+    <%= stylesheet_link_tag "application" %>
+    <%= javascript_include_tag "application" %>
+    <%= hotwire_livereload_tags if Rails.env.development? %>
 
     <%# TODO: Replace %>
     <%= javascript_include_tag "https://www.gstatic.com/charts/loader.js" %>
@@ -62,22 +62,22 @@
   </footer>
 
   <script>
-    var ready;
-    ready = function() {
-      <% if user_signed_in? %>
-        $('#date').on('apply.daterangepicker', function(e) {
-          $('#filter_form').submit();
-        });
-        $('select').selectpicker();
-        $(function () {
-          $('[data-toggle="tooltip"]').tooltip()
-        })
-        setupAjax();
-        setupUploads();
-        // setupPartnerAPI();
-      <% end %>
-    };
-    $(document).on('ready', ready)
+    // var ready;
+    // ready = function() {
+    //   <% if user_signed_in? %>
+    //     $('#date').on('apply.daterangepicker', function(e) {
+    //       $('#filter_form').submit();
+    //     });
+    //     $('select').selectpicker();
+    //     $(function () {
+    //       $('[data-toggle="tooltip"]').tooltip()
+    //     })
+    //     setupAjax();
+    //     setupUploads();
+    //     // setupPartnerAPI();
+    //   <% end %>
+    // };
+    // $(document).on('ready', ready)
   </script>
 
   </body>

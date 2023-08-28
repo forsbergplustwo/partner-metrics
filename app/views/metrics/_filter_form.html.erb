@@ -38,14 +38,14 @@
   </form>
 
   <script>
-    $(document).on('change', '#app_title', function(event) {
-      if(event.target.value !== '') {
-        $('#filter_form').submit();
-      } else {
-        event.target.selected = false;
-        $('#app_title').val('<%= @app_title || "All" %>');
-        $('#app_title').selectpicker('render');
-      }
-    });
+    // $(document).on('change', '#app_title', function(event) {
+    //   if(event.target.value !== '') {
+    //     $('#filter_form').submit();
+    //   } else {
+    //     event.target.selected = false;
+    //     $('#app_title').val('<%= @app_title || "All" %>');
+    //     $('#app_title').selectpicker('render');
+    //   }
+    // });
   </script>
 <% end %>

@@ -99,6 +99,7 @@ GEM
       responders
       warden (~> 1.2.3)
     erubi (1.12.0)
+    ffi (1.15.5)
     foreman (0.87.2)
     globalid (1.1.0)
       activesupport (>= 5.0)
@@ -106,17 +107,22 @@ GEM
     graphql-client (0.18.0)
       activesupport (>= 3.0)
       graphql
+    hotwire-livereload (1.2.3)
+      listen (>= 3.0.0)
+      rails (>= 6.0.0)
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
-    importmap-rails (1.2.1)
-      actionpack (>= 6.0.0)
-      railties (>= 6.0.0)
     io-console (0.6.0)
     irb (1.7.4)
       reline (>= 0.3.6)
+    jsbundling-rails (1.1.2)
+      railties (>= 6.0.0)
     json (2.6.3)
     language_server-protocol (3.17.0.3)
     lint_roller (1.1.0)
+    listen (3.8.0)
+      rb-fsevent (~> 0.10, >= 0.10.3)
+      rb-inotify (~> 0.9, >= 0.9.10)
     loofah (2.21.3)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
@@ -188,6 +194,9 @@ GEM
       zeitwerk (~> 2.5)
     rainbow (3.1.1)
     rake (13.0.6)
+    rb-fsevent (0.11.2)
+    rb-inotify (0.10.1)
+      ffi (~> 1.0)
     redis (4.8.1)
     redis-client (0.16.0)
       connection_pool
@@ -304,7 +313,8 @@ DEPENDENCIES
   devise
   foreman
   graphql-client
-  importmap-rails
+  hotwire-livereload
+  jsbundling-rails
   pg (~> 1.1)
   puma (~> 5.0)
   rails (~> 7.0.5)
