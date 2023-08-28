@@ -1,4 +1,5 @@
 require "graphql/client"
+require "graphql/client/http"
 require "http_client"
 
 module ShopifyPartnerAPI
