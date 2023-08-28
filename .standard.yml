@@ -1,0 +1,10 @@
+plugins:
+  - standard-rails
+  - standard-minitest
+  - standard-thread_safety
+
+ignore:
+  - 'bin/*'
+  - 'db/**/*'
+  - 'config/environments/*'
+  - 'config/puma.rb'
