@@ -2,7 +2,7 @@
   <h1><%= t('.resend_unlock_instructions', default: 'Resend unlock instructions') %></h1>
 </div>
 <div class="col-xs-12 col-sm-6 col-sm-offset-3">
-  <%= bootstrap_devise_error_messages! %>
+
   <div class="panel panel-default devise-bs">
     <div class="panel-body">
       <%= form_for(resource, as: resource_name, url: unlock_path(resource_name), html: { method: :post, html: { role: "form" } }) do |f| %>
@@ -14,5 +14,6 @@
       <% end %>
     </div>
   </div>
+
   <%= render 'devise/shared/links' %>
 </div>

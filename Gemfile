@@ -78,6 +78,7 @@ group :development do
   gem "hotwire-livereload"
   gem "csvreader"
   gem "activerecord-import"
+  gem "letter_opener"
 end
 
 group :test do
