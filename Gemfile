@@ -19,6 +19,7 @@ gem "jsbundling-rails"
 gem "turbo-rails"
 gem "stimulus-rails"
 gem "devise"
+gem "polaris_view_components"
 
 # Charting + Metrics Display
 gem "chartkick"

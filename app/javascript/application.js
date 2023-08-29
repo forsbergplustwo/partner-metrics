@@ -2,3 +2,7 @@
 import "@hotwired/turbo-rails"
 import "chartkick"
 import "./controllers"
+
+// Polaris
+import { registerPolarisControllers } from "polaris-view-components"
+registerPolarisControllers(Stimulus)

@@ -6,7 +6,8 @@
     "@hotwired/turbo-rails": "^7.3.0",
     "@rails/request.js": "^0.0.8",
     "chartkick": "^5.0.1",
-    "esbuild": "^0.19.2"
+    "esbuild": "^0.19.2",
+    "polaris-view-components": "^1.1.0"
   },
   "scripts": {
     "build": "esbuild app/javascript/*.* --bundle --sourcemap --outdir=app/assets/builds --public-path=/assets"

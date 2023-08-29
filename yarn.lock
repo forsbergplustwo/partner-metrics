@@ -208,6 +208,14 @@ esbuild@^0.19.2:
     "@esbuild/win32-ia32" "0.19.2"
     "@esbuild/win32-x64" "0.19.2"
 
+polaris-view-components@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/polaris-view-components/-/polaris-view-components-1.1.0.tgz#92d35287aa75fe80715d6ffee7eb214232f13d29"
+  integrity sha512-pjHxPrYV9w42Cj86gVOKLzzUCteoSe5wsdIDyKDEtoUQ7GX3yTbQGCDXwhFKy4plHiGzQdJU44ABI2q0JEBTDw==
+  dependencies:
+    "@hotwired/stimulus" "^3.2.1"
+    "@rails/request.js" "^0.0.8"
+
 regenerator-runtime@^0.14.0:
   version "0.14.0"
   resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.14.0.tgz#5e19d68eb12d486f797e15a3c6a918f7cec5eb45"
