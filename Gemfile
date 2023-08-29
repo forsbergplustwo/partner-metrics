@@ -11,11 +11,7 @@ gem "redis", "~> 5.0"
 gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
 gem "bootsnap", require: false
 gem "sidekiq"
-gem "graphql-client"
-gem "aws-sdk-s3", require: false
 gem "rack-timeout", require: "rack/timeout/base"
-gem "csvreader"
-gem "activerecord-import"
 
 # Frontend
 gem "sprockets-rails"
@@ -28,6 +24,12 @@ gem "devise"
 gem "chartkick"
 gem "groupdate"
 gem "convenient_grouper"
+
+# Importing
+gem "csvreader"
+gem "activerecord-import"
+gem "graphql-client"
+gem "aws-sdk-s3", require: false
 
 group :development, :test do
   gem "debug", platforms: %i[mri mingw x64_mingw]
