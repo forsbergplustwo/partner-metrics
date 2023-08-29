@@ -44,7 +44,7 @@ class PaymentHistory < ActiveRecord::Base
           # Then loop through each of the charge types
           Array(charge_types).each do |charge_type|
             # Then loop through each of the app titles for this charge type to calculate those specific metrics for the day
-            app_titles = current_user.payment_histories.where(charge_type: charge_type).uniq.pluck(:app_title)
+            app_titles = current_user.payment_histories.where(charge_type: charge_type).pluck(:app_title).uniq
             Array(app_titles).each do |app_title|
               payments = current_user.payment_histories.where(payment_date: date, charge_type: charge_type, app_title: app_title)
               # Here's where the magic happens
