@@ -1,5 +1,8 @@
 class ImportMetricsJob < ApplicationJob
+  include Sidekiq::Job
+
   queue_as :default
+  sidekiq_options retry: 0
 
   def perform(user_id:)
     user = User.find(user_id)
