@@ -1,67 +1,69 @@
-<% metric_value = @metrics.calculate_value(current_user, @chart_tile) %>
-<% metric_change = @metrics.calculate_change(current_user, @chart_tile, @previous_metrics) %>
+<% current_value = metrics.calculate_value(current_user, chart_tile) %>
+<% current_change = metrics.calculate_change(current_user, chart_tile, previous_metrics) %>
 
-<%= polaris_card(title: @chart_tile["title"]) do |card| %>
+<%= polaris_card(title: chart_tile["title"]) do |card| %>
 
-  <%= polaris_display_text(size: :large) do %>
-      <% if @chart_tile["display"] == "number" %>
-        <%= number_with_delimiter(metric_value, delimiter: ',') %>
-      <% elsif @chart_tile["display"] == "percentage" %>
-        <%= number_to_percentage(metric_value, precision: 2) %>
-      <% else %>
-        <%= number_to_currency_with_precision(metric_value) %>
+  <%= polaris_vertical_stack(gap: "5") do %>
+
+    <%= polaris_stack do |stack| %>
+
+      <% stack.with_item(fill: true) do %>
+        <%= polaris_text(variant: :heading3xl, as: :h2) do %>
+          <%= chart_tile_display_value(chart_tile["display"], current_value)%>
+        <% end %>
       <% end %>
-  <% end %>
 
-  <div class="col-xs-4">
-    <h4 class="pull-right text-right <%= metric_change_color(metric_change, @chart_tile["direction_good"]) %>">
-      <%= number_to_percentage_with_precision(metric_change) %>
-      <br>
-      <small><%= pluralize(@period, 'day') %> ago</small>
-    </h4>
-  </div>
+      <% stack.with_item do %>
+          <%= polaris_text(variant: :headingLg, as: :h3, color: metric_change_color(current_change, chart_tile["direction_good"])) do %>
+            <%= number_to_percentage_with_precision(current_change) %>
+          <% end %>
+          <%= polaris_text(variant: :bodyMd, alignment: :end, color: :subdued) do %><%= pluralize(period, 'day') %> ago<% end %>
+      <% end %>
 
-  <div class="col-xs-12">
-    <%= area_chart metrics_charts_path(date: @date, period: @period, chart_type: @chart_tile, app_title: @app_title), download: true, library: {pointSize: 2, animation: {startup: true, duration: 1200, easing: 'inAndOut'}, lineWidth: 4, colors: ["#5912D5"], explorer: { keepInBounds: true , axis: 'horizontal', maxZoomIn: 0.5, maxZoomOut: 1, zoomDelta: 1.1 }, vAxis: {format: 'short', gridlines: {color: "#F1F2F4"}},chartArea: {width: '100%', height: '80%', left: '5%'}} %>
-    <hr>
-  </div>
+    <% end %>
 
-  <% if show_averages(@period, @chart_tile) %>
-    <% column_size = "col-xs-6 col-sm-2"%>
-    <div class="<%= column_size %>">
-      <h5>Daily Avg</h5>
-      <% value = metric_value / @period * 1 %>
-      <h3 class="meta-amount">
-        <% if @chart_tile["display"] == "number" %>
-          <%= number_with_delimiter(value, delimiter: ',') %>
-        <% elsif @chart_tile["display"] == "percentage" %>
-          <%= number_to_percentage(value, precision: 2) %>
-        <% else %>
-          <%= number_to_currency_with_precision(value) %>
+    <%= area_chart metrics_charts_path(date: date, period: period, chart_type: chart_tile, app_title: app_title), **metrics_chart_options %>
+
+    <%= polaris_divider %>
+
+    <%= polaris_stack(distribution: :fill_evenly) do |stack| %>
+
+      <% if show_averages(period, chart_tile) %>
+        <% stack.with_item do %>
+            <%= polaris_text(variant: :bodyMd, as: :h4, color: :subdued) do %>
+              Daily Avg
+            <% end %>
+            <%= polaris_text(variant: :headingMd) do %>
+              <% value = current_value / period * 1 %>
+              <%= chart_tile_display_value(chart_tile["display"], value)%>
+            <% end %>
         <% end %>
-      </h3>
-    </div>
-  <% else %>
-    <% column_size = "col-xs-6 col-sm-2"%>
-    <div class="<%= column_size %>"></div>
-  <% end %>
-  <% periods_ago(@period).each do |period_ago| %>
-    <div class="<%= column_size %>">
-      <% value = Metric.calculate_value_period_ago(current_user, period_ago, @date, @period, @chart_tile, @app_title) || 0 %>
-      <% change = value == 0 ? 0 : (metric_value.to_f / value * 100) - 100 %>
-      <h5><%= distance_of_time_in_words(@date, (@date - (@period * period_ago).days)).gsub('about', '').gsub('almost', '') %> before</h5>
-      <h3 class="meta-amount">
-        <% if @chart_tile["display"] == "number" %>
-          <%= number_with_delimiter(value, delimiter: ',') %>
-        <% elsif @chart_tile["display"] == "percentage" %>
-          <%= number_to_percentage(value, precision: 2) %>
-        <% else %>
-          <%= number_to_currency_with_precision(value) %>
+      <% end %>
+
+      <% periods_ago(period).each do |period_ago| %>
+        <% stack.with_item do %>
+
+          <%# TODO: Where to put these? %>
+          <% value = Metric.calculate_value_period_ago(current_user, period_ago, date, period, chart_tile, app_title) || 0 %>
+          <% change = value == 0 ? 0 : (current_value.to_f / value * 100) - 100 %>
+
+          <%= polaris_text(variant: :bodyMd, as: :h4, color: :subdued) do %>
+            <%= period_ago_in_words(date, period, period_ago) %>
+          <% end %>
+
+          <%= polaris_text(variant: :headingLg) do %>
+            <%= chart_tile_display_value(chart_tile["display"], value)%>
+          <% end %>
+
+          <%= polaris_text(variant: :headingSm, color: metric_change_color(change, chart_tile["direction_good"])) do %>
+            <%= number_to_percentage_with_precision(current_change) %>
+          <% end %>
+
         <% end %>
-      </h3>
-      <h6 class="meta-change <%= metric_change_color(change, @chart_tile["direction_good"]) %>">
-      <%= number_to_percentage_with_precision(change) %></h6>
-    </div>
+      <% end %>
+
+    <% end %>
+
   <% end %>
 
 <% end %>

@@ -4,9 +4,15 @@
 ) do |page| %>
 
   <% if @metrics.any? %>
-    <%= polaris_card do %>
-      <%= render "chart_tile" %>
-    <% end %>
+
+    <%= render partial: "chart_tile", locals: {
+      metrics: @metrics,
+      previous_metrics: @previous_metrics,
+      date: @date,
+      period: @period,
+      chart_tile: @chart_tile,
+      app_title: @app_title,
+    } %>
 
     <%= polaris_card do %>
       <%= render "metric_tiles" %>
