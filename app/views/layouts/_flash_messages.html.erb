@@ -1,0 +1,11 @@
+<% notice = flash.now[:notice].presence || flash[:notice] %>
+<% alert = flash.now[:alert].presence || flash[:alert] %>
+
+<div id="flash-messages" data-turbo-temporary>
+  <% if notice.present? %>
+    <%= polaris_toast { notice } %>
+  <% end %>
+  <% if alert.present? %>
+    <%= polaris_toast(error: true) { alert } %>
+  <% end %>
+</div>

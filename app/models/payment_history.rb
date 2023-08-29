@@ -30,23 +30,24 @@ class PaymentHistory < ApplicationRecord
       end
       Rails.logger.info(calculate_from)
       last_imported_payment = current_user.payment_histories.maximum(:payment_date)
-      Rails.logger.info(last_imported_payment)
       if last_imported_payment.present?
         calculate_to = last_imported_payment - 1.day # Process only full days (export day may contain partial data)
         # Loop through each date in the range
         total_days = (calculate_to - calculate_from).to_i
         total_days = 1 if total_days == 0
-        Rails.logger.info(total_days.to_s)
+        Rails.logger.debug("TOTAL DAYS: " + total_days.to_s)
         days_processed = 0
-        calculate_from.upto(calculate_to) do |date|
-          Rails.logger.info(date.inspect)
+        calculate_from.to_date.upto(calculate_to) do |date|
+          Rails.logger.debug(date.inspect)
           metrics_for_date = []
           # Then loop through each of the charge types
           Array(charge_types).each do |charge_type|
             # Then loop through each of the app titles for this charge type to calculate those specific metrics for the day
-            app_titles = current_user.payment_histories.where(charge_type: charge_type).uniq.pluck(:app_title)
+            app_titles = current_user.payment_histories.where(charge_type: charge_type).pluck(:app_title).uniq
             Array(app_titles).each do |app_title|
               payments = current_user.payment_histories.where(payment_date: date, charge_type: charge_type, app_title: app_title)
+              next if payments.empty?
+
               # Here's where the magic happens
               revenue = payments.sum(:revenue)
               number_of_charges = payments.count
@@ -118,15 +119,14 @@ class PaymentHistory < ApplicationRecord
               end
             end
           end
-          Metric.import metrics_for_date
+          Metric.import!(metrics_for_date, validate: false, no_returning: true)
           days_processed += 1
           import_status = ((days_processed.to_f / total_days.to_f) * 100.0).to_i
           current_user.update(import: "Calculating metrics (#{date} processed)", import_status: import_status)
-          metrics_for_date = nil
-          if days_processed % 30 == 0
-            GC.start
-            Rails.logger.info("GC Started on Metrics")
-          end
+          # if days_processed % 30 == 0
+          #   GC.start
+          #   Rails.logger.info("GC Started on Metrics")
+          # end
         end
       end
       current_user.update(import: "Complete", import_status: 100, partner_api_errors: "")

@@ -1,8 +1,9 @@
-  <div id="heading_row" class="row">
-    <%= render "metrics/heading", title: "Recurring Revenue" %>
-  </div>
+<%= polaris_page(
+  title: "Recurring revenue",
+  subtitle: ""
+) do |page| %>
 
-  <% if !@metrics.blank? %>
+  <% if @metrics.any? %>
 
   <div class="row" id="chart_tile">
     <%= render "chart_tile" %>
@@ -68,16 +69,9 @@
   </div>
 
   <% else %>
-    <div class="row">
-      <div class="col-sm-12">
-        <div class="panel panel-default animated shake">
-          <div class="panel-body">
-            <div class="col-sm-12 text-center">
-              <h2>Hmmm...</h2>
-                <p>Looks like you have no Recurring Revenue (yet!) :(</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+
+    <%= render "metrics/empty_state", heading: "Recurring revenue", icon_name: "AnalyticsMajor" %>
+
   <% end %>
+
+<% end %>

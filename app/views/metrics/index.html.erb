@@ -1,71 +1,97 @@
-<div id="heading_row" class="row">
-    <%= render "metrics/heading", title: "Overview" %>
-  </div>
+<%= polaris_page(
+  title: "Metrics",
+  subtitle: ""
+) do |page| %>
 
-  <% if !@metrics.blank? %>
+  <% if @metrics.any? %>
+    <%= polaris_card do %>
+      <%= render "chart_tile" %>
+    <% end %>
 
-  <div class="row" id="chart_tile">
-    <%= render "chart_tile" %>
-  </div>
+    <%= polaris_card do %>
+      <%= render "metric_tiles" %>
+    <% end %>
 
-  <div class="row" id="metric_tiles">
-    <%= render "metric_tiles" %>
-  </div>
-
-  <div class="row">
-    <div class="col-sm-6">
-      <div class="panel panel-default">
-        <div class="panel-body">
-          <%= pie_chart current_user.yearly_revenue_per_product(date: @date) %>
-        </div>
-        <div class="panel-footer text-center">
-          <h5>Revenue per Product (Last 12 Months)</h5>
-        </div>
-      </div>
-    </div>
-    <div class="col-sm-6">
-      <div class="panel panel-default">
-        <div class="panel-body">
-          <%= pie_chart current_user.yearly_revenue_per_country(date: @date) %>
-        </div>
-        <div class="panel-footer text-center">
-          <h5>Revenue per Country (Last 12 Months)</h5>
-        </div>
-      </div>
-    </div>
-    <div class="col-sm-6">
-      <div class="panel panel-default">
-        <div class="panel-body">
-          <%= column_chart current_user.yearly_revenue_per_charge_type(date: @date) %>
-        </div>
-        <div class="panel-footer text-center">
-          <h5>Revenue per Charge Type (Last 12 Months)</h5>
-        </div>
-      </div>
-    </div>
-    <div class="col-sm-6">
-      <div class="panel panel-default">
-        <div class="panel-body">
-          <%= column_chart current_user.total_revenue_per_charge_type(from_date: @first_metric_date, date: @date) %>
-        </div>
-        <div class="panel-footer text-center">
-          <h5>Revenue per Charge Type (TOTAL)</h5>
-        </div>
-      </div>
-    </div>
-  </div>
-  <% else %>
-    <div class="row">
-      <div class="col-sm-12">
+    <%= polaris_card do %>
+      <div class="col-sm-6">
         <div class="panel panel-default">
           <div class="panel-body">
-            <div class="col-sm-12 text-center">
-              <h2><i class="fa fa-line-chart" style="font-size: 100px" aria-hidden="true"></i></h2>
-              <h2>Welcome!</h2>
-              <p>Click the <b>Account connection</b> button above to get started.</p>
-            </div>
+            <%= pie_chart current_user.yearly_revenue_per_product(date: @date) %>
+          </div>
+          <div class="panel-footer text-center">
+            <h5>Revenue per Product (Last 12 Months)</h5>
           </div>
         </div>
       </div>
-    </div>
+      <div class="col-sm-6">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <%= pie_chart current_user.yearly_revenue_per_country(date: @date) %>
+          </div>
+          <div class="panel-footer text-center">
+            <h5>Revenue per Country (Last 12 Months)</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <%= column_chart current_user.yearly_revenue_per_charge_type(date: @date) %>
+          </div>
+          <div class="panel-footer text-center">
+            <h5>Revenue per Charge Type (Last 12 Months)</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <%= column_chart current_user.total_revenue_per_charge_type(from_date: @first_metric_date, date: @date) %>
+          </div>
+          <div class="panel-footer text-center">
+            <h5>Revenue per Charge Type (TOTAL)</h5>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+  <% else %>
+
+    <%= render "metrics/empty_state", heading: "Metrics", icon_name: "AnalyticsMajor" %>
+
   <% end %>
+
+  <%= polaris_card do %>
+    <%= turbo_frame_tag current_user do %>
+      <%= form_with(
+        model: current_user,
+        builder: Polaris::FormBuilder,
+      ) do |form| %>
+
+        <%= polaris_form_layout do |form_layout| %>
+
+          <% if current_user.errors.any? %>
+            <% form_layout.item do %>
+              <%= form.errors_summary %>
+            <% end %>
+          <% end %>
+
+          <% form_layout.with_item do %>
+            <%= form.file_field :import_file, required: current_user.metrics.none? %>
+          <% end %>
+
+          <% form_layout.with_item do %>
+            <%= polaris_button(
+              submit: true,
+              primary: true,
+              data: {form_target: "submitButton"},
+            ) { "Save" } %>
+          <% end %>
+
+        <% end %>
+
+      <% end %>
+    <% end %>
+  <% end %>
+
+<% end %>

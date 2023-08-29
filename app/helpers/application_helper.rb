@@ -1,6 +1,5 @@
 module ApplicationHelper
-  def avatar_url(user, size)
-    gravatar_id = Digest::MD5.hexdigest(user.email.downcase)
-    "https://gravatar.com/avatar/#{gravatar_id}.png?s=#{size}"
+  def icon_source_url(name)
+    Polaris::ViewComponents::Engine.root.join("app", "assets", "icons", "polaris", "#{name}.svg")
   end
 end

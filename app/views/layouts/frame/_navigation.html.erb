@@ -1,0 +1,70 @@
+<% !user_signed_in? || unless content_for?(:hide_navigation) %>
+  <% frame.with_navigation do |navigation| %>
+
+    <% navigation.with_section(fill: true) do |section| %>
+      <% section.with_item(
+        url: metrics_path,
+        label: "Metrics",
+        icon: "AnalyticsMajor",
+        selected: nav_item_selected?(metrics_path),
+        link_arguments: {}
+      ) do |item| %>
+        <% item.with_sub_item(
+          url: metrics_recurring_index_path,
+          label: "Recurring",
+          # icon: "CreditCardMajor",
+          selected: nav_item_selected?(metrics_recurring_index_path),
+          link_arguments: {}
+        ) %>
+        <% item.with_sub_item(
+          url: metrics_onetime_index_path,
+          label: "Onetime",
+          # icon: "CashDollarMajor",
+          selected: nav_item_selected?(metrics_onetime_index_path),
+          link_arguments: {}
+        ) %>
+        <% item.with_sub_item(
+          url: metrics_affiliate_index_path,
+          label: "Affiliate",
+          # icon: "AffiliateMajor",
+          selected: nav_item_selected?(metrics_affiliate_index_path),
+          link_arguments: {}
+        ) %>
+      <% end %>
+
+      <% section.with_item(
+        url: metrics_summary_index_path,
+        label: "Payments",
+        icon: "CashDollarMajor",
+        selected: nav_item_selected?(metrics_summary_index_path),
+        link_arguments: {}
+      ) do |item| %>
+        <% item.with_sub_item(
+          url: metrics_summary_index_path,
+          label: "Summary",
+          # icon: "CreditCardMajor",
+          selected: nav_item_selected?(metrics_summary_index_path),
+          link_arguments: {}
+        ) %>
+      <% end %>
+    <% end %>
+
+    <% navigation.with_section(title: "Data sources") do |section| %>
+      <% section.with_item(
+        url: edit_user_registration_path(current_user),
+        label: "Shopify Partner API",
+        icon: "InsertDynamicSourceMajor",
+        selected: nav_item_selected?(edit_user_registration_path(current_user)),
+        link_arguments: {}
+      ) %>
+      <% section.with_item(
+        url: edit_user_registration_path(current_user),
+        label: "CSV upload",
+        icon: "InsertDynamicSourceMajor",
+        selected: nav_item_selected?(edit_user_registration_path(current_user)),
+        link_arguments: {}
+      ) %>
+    <% end %>
+
+  <% end %>
+<% end %>
