@@ -5,8 +5,8 @@
 
   <% if @metrics.any? %>
 
-  <div class="row" id="chart_tile">
-    <%= render "chart_tile" %>
+  <div class="row" id="selected_chart">
+    <%= render "selected_chart" %>
   </div>
 
   <div class="row" id="metric_tiles">
@@ -17,7 +17,7 @@
     <div class="col-sm-12">
       <div class="panel panel-default animated fadeIn">
         <div class="panel-body">
-          <%= column_chart current_user.yearly_revenue_per_product(charge_type: "onetime_revenue", date: @date) %>
+          <%= column_chart current_user.yearly_revenue_per_product(charge_type: "onetime_revenue", date: @selected_or_latest_date) %>
         </div>
         <div class="panel-footer text-center">
           <h5>One-Time Revenue (Last 12 Months)</h5>
@@ -27,7 +27,7 @@
     <div class="col-sm-6">
       <div class="panel panel-default animated fadeIn">
         <div class="panel-body">
-          <%= pie_chart current_user.yearly_revenue_per_product(charge_type: "onetime_revenue", date: @date) %>
+          <%= pie_chart current_user.yearly_revenue_per_product(charge_type: "onetime_revenue", date: @selected_or_latest_date) %>
         </div>
         <div class="panel-footer text-center">
           <h5>One-Time Split (Last 12 Months)</h5>
@@ -37,7 +37,7 @@
     <div class="col-sm-6">
       <div class="panel panel-default animated fadeIn">
         <div class="panel-body">
-          <%= pie_chart current_user.yearly_revenue_per_country(date: @date, charge_type: "onetime_revenue") %>
+          <%= pie_chart current_user.yearly_revenue_per_country(date: @selected_or_latest_date, charge_type: "onetime_revenue") %>
         </div>
         <div class="panel-footer text-center">
           <h5>Revenue per Country (Last 12 Months)</h5>
@@ -50,7 +50,7 @@
     <div class="col-sm-12">
       <div class="panel panel-default animated fadeIn">
         <div class="panel-body">
-          <%= column_chart current_user.total_revenue_per_app(from_date: @first_metric_date, date: @date, charge_type: "onetime_revenue") %>
+          <%= column_chart current_user.total_revenue_per_app(date: @selected_or_latest_date, charge_type: "onetime_revenue") %>
         </div>
         <div class="panel-footer text-center">
           <h5>One-Time Revenue (TOTAL)</h5>

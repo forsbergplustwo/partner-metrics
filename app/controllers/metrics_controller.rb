@@ -13,24 +13,13 @@ class MetricsController < ApplicationController
   end
 
   def set_data
-    set_dates
     set_app_titles
     set_metrics
     set_tiles
   end
 
-  def set_dates
-    if current_user.metrics.any?
-      @first_metric_date = current_user.oldest_metric_date
-      @latest_metric_date = current_user.newest_metric_date
-    else
-      @first_metric_date = Date.today
-      @latest_metric_date = Date.today
-    end
-  end
-
   def set_app_titles
-    @app_titles = ["All"] + current_user.app_titles(charge_type)
+    @app_titles = current_user.app_titles(charge_type)
   end
 
   def set_metrics
@@ -38,7 +27,7 @@ class MetricsController < ApplicationController
       user: current_user,
       date: date_param,
       period: period_param,
-      app_title: app_title_param,
+      selected_app: selected_app_param,
       charge_type: charge_type
     )
 
@@ -48,13 +37,11 @@ class MetricsController < ApplicationController
 
   def set_tiles
     @tiles = Metric::OVERVIEW_TILES
-    @chart_tile = chart_tile(tiles: @tiles, selected: params["chart"])
+    @selected_chart = selected_chart(tiles: @tiles, selected: params["chart"])
   end
 
-  def app_title_param
-    @app_title = if params[:app_title].present? && params[:app_title] != "All"
-      params[:app_title].to_s
-    end
+  def selected_app_param
+    @selected_app = params[:selected_app].to_s
   end
 
   def period_param
@@ -66,14 +53,14 @@ class MetricsController < ApplicationController
   end
 
   def date_param
-    @date = if params[:date].present?
+    @selected_or_latest_date = if params[:date].present?
       Date.parse(params[:date].to_s)
     else
-      @latest_metric_date
+      current_user.newest_metric_date || Time.zone.today
     end
   end
 
-  def chart_tile(tiles:, selected: nil)
+  def selected_chart(tiles:, selected: nil)
     if selected.present?
       tiles.find { |t| t["type"] == selected }
     else

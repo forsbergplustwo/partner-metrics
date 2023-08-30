@@ -5,8 +5,8 @@
 
   <% if @metrics.any? %>
 
-  <div class="row" id="chart_tile">
-    <%= render "chart_tile" %>
+  <div class="row" id="selected_chart">
+    <%= render "selected_chart" %>
   </div>
 
   <div class="row" id="metric_tiles">
@@ -17,7 +17,7 @@
     <div class="col-sm-12">
       <div class="panel panel-default animated fadeIn">
         <div class="panel-body">
-          <%= column_chart current_user.yearly_revenue_per_product(charge_type: "affiliate_revenue", date: @date) %>
+          <%= column_chart current_user.yearly_revenue_per_product(charge_type: "affiliate_revenue", date: @selected_or_latest_date) %>
         </div>
         <div class="panel-footer text-center">
           <h5>Affiliate Revenue (Last 12 Months)</h5>
@@ -27,7 +27,7 @@
     <div class="col-sm-6">
       <div class="panel panel-default animated fadeIn">
         <div class="panel-body">
-          <%= pie_chart current_user.yearly_revenue_per_product(charge_type: "affiliate_revenue", date: @date) %>
+          <%= pie_chart current_user.yearly_revenue_per_product(charge_type: "affiliate_revenue", date: @selected_or_latest_date) %>
         </div>
         <div class="panel-footer text-center">
           <h5>Affiliate Split (Last 12 Months)</h5>
@@ -37,7 +37,7 @@
     <div class="col-sm-6">
       <div class="panel panel-default animated fadeIn">
         <div class="panel-body">
-          <%= pie_chart current_user.yearly_revenue_per_country(charge_type: "affiliate_revenue", date: @date) %>
+          <%= pie_chart current_user.yearly_revenue_per_country(charge_type: "affiliate_revenue", date: @selected_or_latest_date) %>
         </div>
         <div class="panel-footer text-center">
           <h5>Revenue per Country (Last 12 Months)</h5>
@@ -49,7 +49,7 @@
     <div class="col-sm-12">
       <div class="panel panel-default animated fadeIn">
         <div class="panel-body">
-          <%= column_chart current_user.total_revenue_per_charge_type(charge_type: "affiliate_revenue", from_date: @first_metric_date, date: @date) %>
+          <%= column_chart current_user.total_revenue_per_charge_type(charge_type: "affiliate_revenue", date: @selected_or_latest_date) %>
         </div>
         <div class="panel-footer text-center">
           <h5>Affiliate Revenue (TOTAL)</h5>

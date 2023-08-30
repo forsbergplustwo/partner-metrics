@@ -1,18 +1,13 @@
 class Metrics::SummaryController < MetricsController
   # TODO: Refactor -> This one is different from the others and needs re-thinking separately
   def index
-    if params["app_title"].blank? || params["app_title"] == "All"
+    if params["selected_app"].blank?
       payments = current_user.payment_histories
       metrics = current_user.metrics
     else
-      @app_title = params["app_title"]
-      payments = current_user.payment_histories.where(app_title: params["app_title"])
-      metrics = current_user.metrics.where(app_title: params["app_title"])
-    end
-    @latest_metric_date = begin
-      metrics.last.payment_date
-    rescue
-      Time.zone.now
+      @selected_app = params["selected_app"]
+      payments = current_user.payment_histories.where(app_title: params["selected_app"])
+      metrics = current_user.metrics.where(app_title: params["selected_app"])
     end
     @payments_count = payments.group_by_month(:payment_date, reverse: true, last: 36).count
     @payments_revenue = payments.group_by_month(:payment_date, reverse: true, last: 36).sum(:revenue)

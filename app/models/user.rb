@@ -64,7 +64,8 @@ class User < ApplicationRecord
     end.group(:charge_type).sum(:revenue)
   end
 
-  def total_revenue_per_charge_type(from_date:, date:, charge_type: nil)
+  def total_revenue_per_charge_type(date:, charge_type: nil)
+    from_date = oldest_metric_date || Time.zone.today
     if charge_type
       metrics.where(metric_date: from_date..date, charge_type: charge_type)
     else
@@ -72,7 +73,8 @@ class User < ApplicationRecord
     end.group(:charge_type).sum(:revenue)
   end
 
-  def total_revenue_per_app(from_date:, date:, charge_type: nil)
+  def total_revenue_per_app(date:, charge_type: nil)
+    from_date = oldest_metric_date || Time.zone.today
     if charge_type
       metrics.where(metric_date: from_date..date, charge_type: charge_type)
     else

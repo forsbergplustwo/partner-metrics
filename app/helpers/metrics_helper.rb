@@ -1,9 +1,8 @@
 module MetricsHelper
-
-  def chart_tile_display_value(chart_tile_display, value)
-    case chart_tile_display
+  def metric_display_value(selected_chart_display, value)
+    case selected_chart_display
     when "number"
-      number_with_delimiter(value, delimiter: ',')
+      number_with_delimiter(value, delimiter: ",")
     when "percentage"
       number_to_percentage(value, precision: 2)
     else
@@ -12,7 +11,7 @@ module MetricsHelper
   end
 
   def number_to_currency_with_precision(value)
-    precision = value < 100 ? 2 : 0
+    precision = (value < 100) ? 2 : 0
     number_to_currency(value, precision: precision)
   end
 
@@ -46,7 +45,7 @@ module MetricsHelper
   def period_ago_in_words(date, period, period_ago)
     past_date = date - (period * period_ago).days
     raw_text = distance_of_time_in_words(date, past_date)
-    clean_text = raw_text.gsub('about', '').gsub('almost', '')
+    clean_text = raw_text.gsub("about", "").gsub("almost", "")
     "#{clean_text} ago"
   end
 
@@ -58,6 +57,17 @@ module MetricsHelper
     end
   end
 
+  def metric_chart_url(tile_type, date, period, app)
+    url_for(
+      action: action_name,
+      date: date,
+      period: period,
+      chart: tile_type,
+      selected_app: app,
+      anchor: "top"
+    )
+  end
+
   def metrics_chart_options
     {
       download: true,
@@ -66,27 +76,27 @@ module MetricsHelper
         animation: {
           startup: true,
           duration: 1200,
-          easing: 'inAndOut'
+          easing: "inAndOut"
         },
         lineWidth: 4,
         colors: ["#5912D5"],
         explorer: {
           keepInBounds: true,
-          axis: 'horizontal',
+          axis: "horizontal",
           maxZoomIn: 0.5,
           maxZoomOut: 1,
           zoomDelta: 1.1
         },
         vAxis: {
-          format: 'short',
+          format: "short",
           gridlines: {
             color: "#F1F2F4"
           }
         },
         chartArea: {
-          width: '100%',
-          height: '80%',
-          left: '5%'
+          width: "100%",
+          height: "80%",
+          left: "5%"
         }
       }
     }

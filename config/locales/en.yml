@@ -30,4 +30,13 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  metrics:
+    index:
+      metrics:
+        title: "Metrics"
+      recurring:
+        title: "Recurring"
+      onetime:
+        title: "One-time"
+      affiliate:
+        title: "Affiliate"

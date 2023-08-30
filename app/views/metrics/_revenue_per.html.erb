@@ -1,0 +1,25 @@
+<%= polaris_layout do |layout| %>
+  <% layout.with_section(one_half: true) do %>
+    <%= polaris_card(title: "Revenue per app (12 Months)") do %>
+      <%= pie_chart current_user.yearly_revenue_per_product(date: date) %>
+    <% end %>
+  <% end %>
+  <% layout.with_section(one_half: true) do %>
+    <%= polaris_card(title: "Revenue per country (12 Months)") do %>
+      <%= pie_chart current_user.yearly_revenue_per_country(date: date) %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<%= polaris_layout do |layout| %>
+  <% layout.with_section(one_half: true) do %>
+    <%= polaris_card(title: "Revenue per charge type (12 Months)") do %>
+      <%= column_chart current_user.yearly_revenue_per_charge_type(date: date) %>
+    <% end %>
+  <% end %>
+  <% layout.with_section(one_half: true) do %>
+    <%= polaris_card(title: "Revenue per charge type (All time)") do %>
+      <%= column_chart current_user.total_revenue_per_charge_type(date: date) %>
+    <% end %>
+  <% end %>
+<% end %>

@@ -1,0 +1,66 @@
+  <%= form_tag(
+    url_for(action: action_name),
+    method: :get,
+    data: {controller: "filters daterangepicker", daterangepicker_target: "form", turbo_frame: :metrics, turbo_action: :advance},
+  ) do %>
+    <%= polaris_filters do |filters| %>
+
+      <% unless app_titles.blank? %>
+        <% filters.with_item(label: selected_app.presence || "All apps", sectioned: false, style: "white-space: nowrap;") do %>
+          <%= polaris_option_list(name: "selected_app") do |list| %>
+            <% list.with_radio_button(
+              label: "All apps",
+              value: "",
+              checked: selected_app == nil,
+              data: {action: "filters#submit"}
+            ) %>
+            <% app_titles.each do |key, value| %>
+              <% list.with_radio_button(
+                label: key,
+                value: key,
+                checked: selected_app == key,
+                data: {action: "filters#submit"}
+              ) %>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+
+      <% filters.with_item(label: "#{period} days", sectioned: false, style: "white-space: nowrap;") do %>
+        <%= polaris_option_list(name: "period") do |list| %>
+          <% periods = [["7 days", 7],
+            ["28 days", 28],
+            ["29 days", 29],
+            ["30 days", 30],
+            ["31 days", 31],
+            ["90 days", 90],
+            ["180 days", 180],
+            ["365 days", 365]]
+          %>
+          <% periods.each do |key, value| %>
+            <% list.with_radio_button(
+              label: key,
+              value: value,
+              checked: period == value,
+              data: {action: "filters#submit"}
+            ) %>
+          <% end %>
+        <% end %>
+      <% end %>
+
+      <% filters.with_item(label: date.to_s, sectioned: false, style: "white-space: nowrap;") do %>
+        <%= polaris_text_field(
+          name: :date,
+          value: date,
+          type: :date,
+          label_hidden: true,
+          input_options: {
+            min: (current_user.oldest_metric_date || nil),
+            max: (current_user.newest_metric_date || Time.zone.today)
+          },
+          data: {action: "input->filters#submit change->filters#submit"}
+        ) %>
+      <% end %>
+
+    <% end %>
+  <% end %>

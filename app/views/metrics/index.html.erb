@@ -1,103 +1,92 @@
 <%= polaris_page(
-  title: "Metrics",
+  title: t(".#{controller_name}.title"),
   subtitle: ""
 ) do |page| %>
 
-  <% if @metrics.any? %>
+  <%= turbo_frame_tag :metrics do %>
 
-    <%= render partial: "chart_tile", locals: {
-      metrics: @metrics,
-      previous_metrics: @previous_metrics,
-      date: @date,
-      period: @period,
-      chart_tile: @chart_tile,
-      app_title: @app_title,
-    } %>
+    <%= polaris_vertical_stack(gap: "5") do %>
 
-    <%= polaris_card do %>
-      <%= render "metric_tiles" %>
-    <% end %>
+      <%= render "filters",
+        selected_chart: @selected_chart,
+        selected_app: @selected_app,
+        app_titles: @app_titles,
+        date: @selected_or_latest_date,
+        period: @period
+      %>
 
-    <%= polaris_card do %>
-      <div class="col-sm-6">
-        <div class="panel panel-default">
-          <div class="panel-body">
-            <%= pie_chart current_user.yearly_revenue_per_product(date: @date) %>
-          </div>
-          <div class="panel-footer text-center">
-            <h5>Revenue per Product (Last 12 Months)</h5>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-6">
-        <div class="panel panel-default">
-          <div class="panel-body">
-            <%= pie_chart current_user.yearly_revenue_per_country(date: @date) %>
-          </div>
-          <div class="panel-footer text-center">
-            <h5>Revenue per Country (Last 12 Months)</h5>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-6">
-        <div class="panel panel-default">
-          <div class="panel-body">
-            <%= column_chart current_user.yearly_revenue_per_charge_type(date: @date) %>
-          </div>
-          <div class="panel-footer text-center">
-            <h5>Revenue per Charge Type (Last 12 Months)</h5>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-6">
-        <div class="panel panel-default">
-          <div class="panel-body">
-            <%= column_chart current_user.total_revenue_per_charge_type(from_date: @first_metric_date, date: @date) %>
-          </div>
-          <div class="panel-footer text-center">
-            <h5>Revenue per Charge Type (TOTAL)</h5>
-          </div>
-        </div>
-      </div>
-    <% end %>
+      <% if @metrics.any? %>
 
-  <% else %>
+          <%= render "selected_chart",
+            selected_chart: @selected_chart,
+            selected_app: @selected_app,
+            metrics: @metrics,
+            previous_metrics: @previous_metrics,
+            date: @selected_or_latest_date,
+            period: @period
+          %>
 
-    <%= render "metrics/empty_state", heading: "Metrics", icon_name: "AnalyticsMajor" %>
-
-  <% end %>
-
-  <%= polaris_card do %>
-    <%= turbo_frame_tag current_user do %>
-      <%= form_with(
-        model: current_user,
-        builder: Polaris::FormBuilder,
-      ) do |form| %>
-
-        <%= polaris_form_layout do |form_layout| %>
-
-          <% if current_user.errors.any? %>
-            <% form_layout.item do %>
-              <%= form.errors_summary %>
+          <%= polaris_horizontal_grid(gap: "5", columns: 3) do %>
+            <% @tiles.each do |tile|%>
+              <%= render "metric_tile",
+                tile: tile,
+                chart_url: metric_chart_url(tile["type"], @selected_or_latest_date, @period, @selected_app),
+                selected_app: @selected_app,
+                metrics: @metrics,
+                previous_metrics: @previous_metrics,
+                date: @selected_or_latest_date,
+                period: @period
+              %>
             <% end %>
           <% end %>
 
-          <% form_layout.with_item do %>
-            <%= form.file_field :import_file, required: current_user.metrics.none? %>
-          <% end %>
+          <%= render "#{params[:controller]}/revenue_per",
+            date: @selected_or_latest_date,
+            selected_app: @selected_app,
+            period: @period
+          %>
 
-          <% form_layout.with_item do %>
-            <%= polaris_button(
-              submit: true,
-              primary: true,
-              data: {form_target: "submitButton"},
-            ) { "Save" } %>
+      <% else %>
+
+        <%= render "metrics/empty_state", heading: t(".#{controller_name}.title"), icon_name: "AnalyticsMajor" %>
+
+      <% end %>
+
+    <% end %>
+
+    <%= polaris_card do %>
+      <%= turbo_frame_tag current_user do %>
+        <%= form_with(
+          model: current_user,
+          builder: Polaris::FormBuilder,
+        ) do |form| %>
+
+          <%= polaris_form_layout do |form_layout| %>
+
+            <% if current_user.errors.any? %>
+              <% form_layout.item do %>
+                <%= form.errors_summary %>
+              <% end %>
+            <% end %>
+
+            <% form_layout.with_item do %>
+              <%= form.file_field :import_file, required: current_user.metrics.none? %>
+            <% end %>
+
+            <% form_layout.with_item do %>
+              <%= polaris_button(
+                submit: true,
+                primary: true,
+                data: {form_target: "submitButton"},
+              ) { "Save" } %>
+            <% end %>
+
           <% end %>
 
         <% end %>
-
       <% end %>
     <% end %>
+
   <% end %>
 
 <% end %>

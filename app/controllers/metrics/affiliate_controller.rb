@@ -1,12 +1,13 @@
 class Metrics::AffiliateController < MetricsController
   def index
+    render "metrics/index"
   end
 
   private
 
   def set_tiles
     @tiles = Metric::AFFILIATE_TILES
-    @chart_tile = chart_tile(tiles: @tiles, selected: params["chart"])
+    @selected_chart = selected_chart(tiles: @tiles, selected: params["chart"])
   end
 
   def charge_type
