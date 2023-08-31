@@ -2,7 +2,7 @@ class Metric < ApplicationRecord
   belongs_to :user
 
   PERIODS = [7, 28, 29, 30, 31, 90, 180, 365].freeze
-  MONTHS_AGO = [1, 2, 3, 6, 12].freeze
+  PERIODS_AGO = [1, 2, 3, 6, 12].freeze
 
   CHARGE_TYPES = [
     :recurring_revenue,
@@ -57,22 +57,6 @@ class Metric < ApplicationRecord
         counter_date -= period.days
       end
       group_options
-    end
-
-    def calculate_value_period_ago(current_user, month_ago, date, period, type, app_title)
-      date -= (period * month_ago).days
-      last_date = date - period.days + 1.day
-      value = if app_title.blank?
-        where(user_id: current_user.id, metric_date: last_date..date)
-      else
-        where(user_id: current_user.id, metric_date: last_date..date, app_title: app_title)
-      end
-      value = value.where(charge_type: type["charge_type"]) unless type["charge_type"].blank?
-      if type["calculation"] == :sum
-        value.sum(type["column"])
-      else
-        value.average(type["column"])
-      end
     end
   end
 end

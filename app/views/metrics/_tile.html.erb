@@ -23,7 +23,7 @@
           <%= polaris_text(
             variant: :headingMd,
             as: :h3,
-            color: metric_change_color(tile.change, tile.positive_change_is_good?)
+            color: metric_change_color(tile.change, tile.positive_change_is_good)
           ) do %>
             <%= number_to_percentage_with_precision(tile.change) %>
           <% end %>

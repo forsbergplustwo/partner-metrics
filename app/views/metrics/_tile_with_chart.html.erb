@@ -11,7 +11,7 @@
       <% end %>
 
       <% stack.with_item do %>
-          <%= polaris_text(variant: :headingLg, as: :h3, color: metric_change_color(tile.change, tile.positive_change_is_good?)) do %>
+          <%= polaris_text(variant: :headingLg, as: :h3, color: metric_change_color(tile.change, tile.positive_change_is_good)) do %>
             <%= number_to_percentage_with_precision(tile.change) %>
           <% end %>
           <%= polaris_text(variant: :bodyMd, alignment: :end, color: :subdued) do %><%= pluralize(filter.period, 'day') %> ago<% end %>
@@ -25,19 +25,34 @@
 
     <%= polaris_stack(distribution: :fill_evenly) do |stack| %>
 
-      <% if show_averages(filter.period, filter.chart) %>
+      <% if show_averages(filter.period, tile) %>
         <% stack.with_item do %>
             <%= polaris_text(variant: :bodyMd, as: :h4, color: :subdued) do %>
               Daily Avg
             <% end %>
             <%= polaris_text(variant: :headingMd) do %>
-              <% value = tile.current_value / filter.period * 1 %>
-              <%= metric_display_value(tile.display, value)%>
+              <%= metric_display_value(tile.display, tile.average_value)%>
             <% end %>
         <% end %>
       <% end %>
 
-      <%#= render "tile_periods_ago", tile: tile %>
+      <% Metric::PERIODS_AGO.each do |period_ago| %>
+        <% stack.with_item do %>
+
+          <%= polaris_text(variant: :bodyMd, as: :h4, color: :subdued) do %>
+            <%= period_ago_in_words(filter.date, filter.period, period_ago) %>
+          <% end %>
+
+          <%= polaris_text(variant: :headingLg) do %>
+            <%= metric_display_value(tile.display, tile.period_ago_value(period_ago))%>
+          <% end %>
+
+          <%= polaris_text(variant: :headingSm, color: metric_change_color(tile.period_ago_change(period_ago), tile.positive_change_is_good)) do %>
+            <%= number_to_percentage_with_precision(tile.period_ago_change(period_ago)) %>
+          <% end %>
+
+        <% end %>
+      <% end %>
 
     <% end %>
 

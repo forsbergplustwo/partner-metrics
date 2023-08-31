@@ -32,13 +32,9 @@ module MetricsHelper
     :subdued
   end
 
-  def show_averages(period, type)
+  def show_averages(period, tile)
     types = [:average, :lifetime_value, :repeat_customers]
-    !types.include?(type["type"]) || type["calculation"] != :average
-  end
-
-  def periods_ago(period)
-    [1, 2, 3, 6, 12]
+    !types.include?(tile.handle) || tile.calculation != :average
   end
 
   def filter_periods
@@ -62,7 +58,7 @@ module MetricsHelper
 
   def select_chart(tiles, selected)
     if selected.present?
-      tiles.find { |t| t["type"] == selected }
+      tiles.find { |t| t.handle == selected }
     else
       tiles.first
     end
@@ -83,14 +79,15 @@ module MetricsHelper
     {
       download: true,
       library: {
-        pointSize: 2,
+        pointSize: 6,
+        backgroundColor: "transparent",
         animation: {
           startup: true,
-          duration: 1200,
+          duration: 600,
           easing: "inAndOut"
         },
-        lineWidth: 4,
-        colors: ["#5912D5"],
+        lineWidth: 3,
+        colors: ["#5912D5", "rgba(89, 18, 213, 0.2)"],
         explorer: {
           keepInBounds: true,
           axis: "horizontal",

@@ -26,11 +26,11 @@
         selected: nav_item_selected?(payments_path),
         link_arguments: {}
       ) do |item| %>
-        <%# item.with_sub_item(
-          url: metrics_summary_index_path,
-          label: "Summary",
+        <% item.with_sub_item(
+          url: "/payments/live_view",
+          label: "Live view",
           # icon: "CreditCardMajor",
-          selected: nav_item_selected?(metrics_summary_index_path),
+          selected: nav_item_selected?("/payments/live_view"),
           link_arguments: {}
         ) %>
       <% end %>

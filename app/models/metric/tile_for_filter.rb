@@ -9,7 +9,7 @@ class Metric::TileForFilter
     @display = tile_config[:display]
     @positive_change_is_good = tile_config[:positive_change_is_good]
   end
-  attr_reader :handle, :display, :calculation
+  attr_reader :handle, :display, :calculation, :positive_change_is_good
 
   def current_value
     metrics = @filter.current_period_metrics.by_optional_charge_type(@charge_type)
@@ -26,8 +26,19 @@ class Metric::TileForFilter
     (current_value.to_f / previous_value * 100) - 100
   end
 
-  def positive_change_is_good?
-    @positive_change_is_good == true
+  def average_value
+    current_value / @filter.period
+  end
+
+  def period_ago_value(period_ago)
+    date = @filter.date - (period_ago * @filter.period).days
+    metrics = @filter.user_metrics_by_app.by_optional_charge_type(@charge_type)
+    metrics.by_date_and_period(date: date, period: @filter.period).calculate_value(@calculation, @column)
+  end
+
+  def period_ago_change(period_ago)
+    return 0 if current_value.blank? || period_ago_value(period_ago).blank?
+    (current_value.to_f / period_ago_value(period_ago) * 100) - 100
   end
 
   def chart_data
