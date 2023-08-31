@@ -19,11 +19,11 @@
         <% end %>
       <% end %>
 
-      <%# section.with_item(
-        url: metrics_summary_index_path,
+      <% section.with_item(
+        url: payments_path,
         label: "Payments",
         icon: "CashDollarMajor",
-        selected: nav_item_selected?(metrics_summary_index_path),
+        selected: nav_item_selected?(payments_path),
         link_arguments: {}
       ) do |item| %>
         <%# item.with_sub_item(
@@ -33,20 +33,20 @@
           selected: nav_item_selected?(metrics_summary_index_path),
           link_arguments: {}
         ) %>
-      <%# end %>
+      <% end %>
     <% end %>
 
     <% navigation.with_section(title: "Data sources") do |section| %>
       <% section.with_item(
         url: edit_user_registration_path(current_user),
-        label: "Shopify Partner API",
-        icon: "InsertDynamicSourceMajor",
+        label: "CSV import",
+        icon: "ImportMinor",
         selected: nav_item_selected?(edit_user_registration_path(current_user)),
         link_arguments: {}
       ) %>
       <% section.with_item(
         url: edit_user_registration_path(current_user),
-        label: "CSV upload",
+        label: "Partner API",
         icon: "InsertDynamicSourceMajor",
         selected: nav_item_selected?(edit_user_registration_path(current_user)),
         link_arguments: {}

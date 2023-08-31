@@ -2,7 +2,7 @@
   <%= polaris_card(
     title: tile.handle.to_s.humanize,
     actions: [{
-      content: polaris_icon(name: "AnalyticsLineMinor"),
+      content: polaris_icon(name: "ViewMinor", color: :subdued),
       title: "View chart",
       url: url_for(action: action_name, **filter.to_param.merge(chart: tile.handle)),
       data: {

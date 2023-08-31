@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   root to: "home#index"
 
   get "metrics/(:charge_type)", to: "metrics#show", as: :metrics
+  resources :payments, only: [:index]
 
   scope controller: :home do
     post :import_status

@@ -4,3 +4,11 @@
   background-color: var(--p-color-bg-app);
   margin-bottom: var(--p-space-4);
 }
+
+.Polaris-Button--plain .Polaris-Icon--colorSubdued svg {
+  fill: var(--p-color-icon-subdued) !important;
+
+  &:hover {
+    fill: var(--p-color-icon) !important;
+  }
+}
