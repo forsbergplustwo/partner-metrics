@@ -4,11 +4,7 @@ Rails.application.routes.draw do
   devise_for :users
   root to: "home#index"
 
-  resources :metrics, only: [:index]
-
-  namespace :metrics do
-    resources :recurring, :onetime, :affiliate, :summary, only: [:index]
-  end
+  get "metrics/(:charge_type)", to: "metrics#show", as: :metrics
 
   scope controller: :home do
     post :import_status

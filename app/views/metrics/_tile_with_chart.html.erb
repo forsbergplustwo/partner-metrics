@@ -1,0 +1,46 @@
+<%= polaris_card(title: tile.title) do |card| %>
+
+  <%= polaris_vertical_stack(gap: "5") do %>
+
+    <%= polaris_stack(alignment: :center) do |stack| %>
+
+      <% stack.with_item(fill: true) do %>
+        <%= polaris_text(variant: :heading4xl, as: :h2) do %>
+          <%= metric_display_value(tile.display, tile.current_value)%>
+        <% end %>
+      <% end %>
+
+      <% stack.with_item do %>
+          <%= polaris_text(variant: :headingLg, as: :h3, color: metric_change_color(tile.change, tile.direction_good?)) do %>
+            <%= number_to_percentage_with_precision(tile.change) %>
+          <% end %>
+          <%= polaris_text(variant: :bodyMd, alignment: :end, color: :subdued) do %><%= pluralize(filter.period, 'day') %> ago<% end %>
+      <% end %>
+
+    <% end %>
+
+    <%= area_chart(tile.chart_data, **metrics_chart_options)%>
+
+    <%= polaris_divider %>
+
+    <%= polaris_stack(distribution: :fill_evenly) do |stack| %>
+
+      <% if show_averages(filter.period, filter.chart) %>
+        <% stack.with_item do %>
+            <%= polaris_text(variant: :bodyMd, as: :h4, color: :subdued) do %>
+              Daily Avg
+            <% end %>
+            <%= polaris_text(variant: :headingMd) do %>
+              <% value = tile.current_value / filter.period * 1 %>
+              <%= metric_display_value(tile.display, value)%>
+            <% end %>
+        <% end %>
+      <% end %>
+
+      <%#= render "tile_periods_ago", tile: tile %>
+
+    <% end %>
+
+  <% end %>
+
+<% end %>

@@ -22,8 +22,7 @@ module MetricsHelper
   end
 
   def metric_change_color(metric_change, direction_good)
-    case direction_good
-    when "up"
+    if direction_good
       return :success if metric_change > 0.01
       return :critical if metric_change < -0.01
     else

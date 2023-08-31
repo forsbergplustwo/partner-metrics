@@ -1,0 +1,20 @@
+<% periods_ago(filter.period).each do |period_ago| %>
+  <% stack.with_item do %>
+
+    <% value = Metric.calculate_value_period_ago(current_user, period_ago, q[:date], q[:period], selected_chart, q[:app]) || 0 %>
+    <% change = value == 0 ? 0 : (current_value.to_f / value * 100) - 100 %>
+
+    <%= polaris_text(variant: :bodyMd, as: :h4, color: :subdued) do %>
+      <%= period_ago_in_words(q[:date], q[:period], period_ago) %>
+    <% end %>
+
+    <%= polaris_text(variant: :headingLg) do %>
+      <%= metric_display_value(selected_chart["display"], value)%>
+    <% end %>
+
+    <%= polaris_text(variant: :headingSm, color: metric_change_color(change, selected_chart["direction_good"])) do %>
+      <%= number_to_percentage_with_precision(current_change) %>
+    <% end %>
+
+  <% end %>
+<% end %>

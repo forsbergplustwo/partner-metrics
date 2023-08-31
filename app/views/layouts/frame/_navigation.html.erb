@@ -10,43 +10,43 @@
         link_arguments: {}
       ) do |item| %>
         <% item.with_sub_item(
-          url: metrics_recurring_index_path,
+          url: metrics_path(charge_type: "recurring_revenue"),
           label: "Recurring",
           # icon: "CreditCardMajor",
-          selected: nav_item_selected?(metrics_recurring_index_path),
+          selected: nav_item_selected?(metrics_path(charge_type: "recurring_revenue")),
           link_arguments: {}
         ) %>
         <% item.with_sub_item(
-          url: metrics_onetime_index_path,
+          url: metrics_path(charge_type: "onetime_revenue"),
           label: "Onetime",
           # icon: "CashDollarMajor",
-          selected: nav_item_selected?(metrics_onetime_index_path),
+          selected: nav_item_selected?(metrics_path(charge_type: "onetime_revenue")),
           link_arguments: {}
         ) %>
         <% item.with_sub_item(
-          url: metrics_affiliate_index_path,
+          url: metrics_path(charge_type: "affiliate_revenue"),
           label: "Affiliate",
           # icon: "AffiliateMajor",
-          selected: nav_item_selected?(metrics_affiliate_index_path),
+          selected: nav_item_selected?(metrics_path(charge_type: "affiliate_revenue")),
           link_arguments: {}
         ) %>
       <% end %>
 
-      <% section.with_item(
+      <%# section.with_item(
         url: metrics_summary_index_path,
         label: "Payments",
         icon: "CashDollarMajor",
         selected: nav_item_selected?(metrics_summary_index_path),
         link_arguments: {}
       ) do |item| %>
-        <% item.with_sub_item(
+        <%# item.with_sub_item(
           url: metrics_summary_index_path,
           label: "Summary",
           # icon: "CreditCardMajor",
           selected: nav_item_selected?(metrics_summary_index_path),
           link_arguments: {}
         ) %>
-      <% end %>
+      <%# end %>
     <% end %>
 
     <% navigation.with_section(title: "Data sources") do |section| %>

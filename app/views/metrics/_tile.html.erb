@@ -1,13 +1,10 @@
-<% current_value = metrics.calculate_value(current_user, tile) %>
-<% current_change = metrics.calculate_change(current_user, tile, previous_metrics) %>
-
 <div>
   <%= polaris_card(
-    title: tile["title"],
+    title: tile.title,
     actions: [{
       content: polaris_icon(name: "AnalyticsLineMinor"),
       title: "View chart",
-      url: chart_url,
+      url: url_for(action: action_name, **filter.to_param.merge(chart: tile.handle)),
       data: {
         turbo_frame: "metrics",
         turbo_action: "advance",
@@ -18,7 +15,7 @@
 
         <% stack.with_item(fill: true) do %>
           <%= polaris_text(variant: :heading2xl, as: :h2) do %>
-            <%= metric_display_value(tile["display"], current_value)%>
+            <%= metric_display_value(tile.display, tile.current_value)%>
           <% end %>
         <% end %>
 
@@ -26,12 +23,12 @@
           <%= polaris_text(
             variant: :headingMd,
             as: :h3,
-            color: metric_change_color(current_change, tile["direction_good"])
+            color: metric_change_color(tile.change, tile.direction_good?)
           ) do %>
-            <%= number_to_percentage_with_precision(current_change) %>
+            <%= number_to_percentage_with_precision(tile.change) %>
           <% end %>
           <%= polaris_text(variant: :bodySm, alignment: :end, color: :subdued) do %>
-            <%= pluralize(q[:period], 'day') %> ago
+            <%= pluralize(filter.period, 'day') %> ago
           <% end %>
         <% end %>
 

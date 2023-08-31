@@ -1,38 +1,29 @@
 <%= polaris_page(
-  title: t(".#{controller_name}.title"),
-  subtitle: t(".#{controller_name}.subtitle"),
+  title: t(".#{@filter.charge_type}.title"),
+  subtitle: t(".#{@filter.charge_type}.subtitle"),
 ) do |page| %>
 
   <%= turbo_frame_tag :metrics do %>
 
     <%= polaris_vertical_stack(gap: "5") do %>
 
-      <%= render "filters", q: current_query %>
+      <%= render "filter", filter: @filter, app_titles: @app_titles %>
 
-      <% if @metrics.any? %>
+      <% if @filter.has_metrics? %>
 
-          <%= render "selected_chart",
-            q: current_query,
-            selected_chart: select_chart(current_tiles, current_query[:chart]),
-            metrics: @metrics,
-            previous_metrics: @previous_metrics %>
+          <%= render "tile_with_chart", tile: @selected_tile, filter: @filter %>
 
           <%= polaris_horizontal_grid(gap: "5", columns: 3) do %>
-            <% current_tiles.each do |tile|%>
-              <%= render "metric_tile",
-                q: current_query,
-                tile: tile,
-                metrics: @metrics,
-                previous_metrics: @previous_metrics,
-                chart_url: url_for(action: action_name, q: current_query.merge(chart: tile["type"])) %>
+            <% @tiles.each do |tile| %>
+              <%= render "tile", tile: tile, filter: @filter %>
             <% end %>
           <% end %>
 
-          <%= render "#{params[:controller]}/revenue_per", q: current_query %>
+          <%#= render "#{params[:controller]}/revenue_per", q: current_query %>
 
       <% else %>
 
-        <%= render "metrics/empty_state", heading: t(".#{controller_name}.title"), icon_name: "AnalyticsMajor" %>
+        <%= render "metrics/empty_state", heading: t(".#{@filter.charge_type}.title"), icon_name: "AnalyticsMajor" %>
 
       <% end %>
 
