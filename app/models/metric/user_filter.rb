@@ -16,13 +16,11 @@ class Metric::UserFilter
   end
 
   def tile
-    tiles.find { |t| t.handle == chart }
+    tiles.find { |t| t.handle.to_s == @chart }
   end
 
   def user_metrics_by_app
-    metrics = @user.metrics
-    metrics = metrics.where(app_title: @app) unless @app.blank?
-    metrics
+    @user.metrics.by_optional_app_title(@app)
   end
 
   def current_period_metrics
@@ -30,6 +28,7 @@ class Metric::UserFilter
   end
 
   def previous_period_metrics
+    previous_date = @date - @period.days + 1
     user_metrics_by_app.by_date_and_period(date: previous_date, period: @period)
   end
 
@@ -49,11 +48,7 @@ class Metric::UserFilter
 
   private
 
-  def previous_date
-    @date - @period.days + 1
-  end
-
   def default_chart
-    tiles.first.handle
+    tiles.first.handle.to_s
   end
 end

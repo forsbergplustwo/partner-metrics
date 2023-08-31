@@ -7,9 +7,6 @@ class MetricsController < ApplicationController
     @tiles = @filter.tiles
     @selected_tile = @filter.tile
     @app_titles = current_user.app_titles(@filter.charge_type)
-    Rails.logger.debug "@filter: #{@filter.to_param}"
-    Rails.logger.debug "@params: #{params}"
-    Rails.logger.debug "@query: #{query_params}"
   end
 
   private

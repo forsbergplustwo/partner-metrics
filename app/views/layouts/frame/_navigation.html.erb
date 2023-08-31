@@ -9,27 +9,14 @@
         selected: nav_item_selected?(metrics_path),
         link_arguments: {}
       ) do |item| %>
-        <% item.with_sub_item(
-          url: metrics_path(charge_type: "recurring_revenue"),
-          label: "Recurring",
-          # icon: "CreditCardMajor",
-          selected: nav_item_selected?(metrics_path(charge_type: "recurring_revenue")),
-          link_arguments: {}
-        ) %>
-        <% item.with_sub_item(
-          url: metrics_path(charge_type: "onetime_revenue"),
-          label: "Onetime",
-          # icon: "CashDollarMajor",
-          selected: nav_item_selected?(metrics_path(charge_type: "onetime_revenue")),
-          link_arguments: {}
-        ) %>
-        <% item.with_sub_item(
-          url: metrics_path(charge_type: "affiliate_revenue"),
-          label: "Affiliate",
-          # icon: "AffiliateMajor",
-          selected: nav_item_selected?(metrics_path(charge_type: "affiliate_revenue")),
-          link_arguments: {}
-        ) %>
+        <% Metric::CHARGE_TYPES.each do |charge_type|%>
+          <% item.with_sub_item(
+            url: metrics_path(charge_type: charge_type),
+            label: t("metrics.#{charge_type}.title"),
+            selected: nav_item_selected?(metrics_path(charge_type: charge_type)),
+            link_arguments: {}
+          ) %>
+        <% end %>
       <% end %>
 
       <%# section.with_item(

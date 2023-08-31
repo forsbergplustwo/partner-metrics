@@ -1,29 +1,24 @@
 class Metric::TileForFilter
-  # {"handle" => "affiliate_revenue", "title" => "Revenue", "calculation" => "sum", "metric_type" => "affiliate_revenue", "column" => "revenue", "display" => "currency", "direction_good" => "up"}
-
   def initialize(filter:, tile_config:)
     @filter = filter
 
     @handle = tile_config[:handle]
-    @title = tile_config[:title]
+    @charge_type = tile_config[:charge_type]
     @calculation = tile_config[:calculation]
-    @metric_type = tile_config[:metric_type]
     @column = tile_config[:column]
     @display = tile_config[:display]
-    @direction_good = tile_config[:direction_good]
+    @positive_change_is_good = tile_config[:positive_change_is_good]
   end
-  attr_reader :handle, :title, :display, :direction_good
+  attr_reader :handle, :display, :calculation
 
   def current_value
-    metrics = @filter.current_period_metrics
-    metrics = metrics.where(charge_type: @metric_type) unless @metric_type.blank?
-    metrics.calculate_value(@calculation, @column) || 0
+    metrics = @filter.current_period_metrics.by_optional_charge_type(@charge_type)
+    metrics.calculate_value(@calculation, @column)
   end
 
   def previous_value
-    metrics = @filter.previous_period_metrics
-    metrics = metrics.where(charge_type: @metric_type) unless @metric_type.blank?
-    metrics.calculate_value(@calculation, @column) || 0
+    metrics = @filter.previous_period_metrics.by_optional_charge_type(@charge_type)
+    metrics.calculate_value(@calculation, @column)
   end
 
   def change
@@ -31,13 +26,12 @@ class Metric::TileForFilter
     (current_value.to_f / previous_value * 100) - 100
   end
 
-  def direction_good?
-    @direction_good == "up"
+  def positive_change_is_good?
+    @positive_change_is_good == true
   end
 
   def chart_data
-    metrics = @filter.user_metrics_by_app
-    metrics = metrics.where(charge_type: @metric_type) unless @metric_type.blank?
+    metrics = @filter.user_metrics_by_app.by_optional_charge_type(@charge_type)
     metrics.chart_data(@filter.date, @filter.period, @calculation, @column)
   end
 end

@@ -31,15 +31,14 @@
 
 en:
   metrics:
-    show:
-      title: "Metrics"
-      subtitle: "An overview of all your recurring, one-time, and affiliate revenue."
-      recurring_revenue:
-        title: "Recurring"
-        subtitle: "Revenue from recurring subscriptions, from both monthly and annual plans."
-      onetime_revenue:
-        title: "One-time"
-        subtitle: "Revenue from onetime payments, from both apps and themes."
-      affiliate_revenue:
-        title: "Affiliate"
-        subtitle: "Revenue from the partner affiliate program."
+    title: "Metrics"
+    subtitle: "An overview of all your recurring, one-time, and affiliate revenue."
+    recurring_revenue:
+      title: "Recurring"
+      subtitle: "Revenue from recurring subscriptions, from both monthly and annual plans."
+    onetime_revenue:
+      title: "One-time"
+      subtitle: "Revenue from onetime payments, from both apps and themes."
+    affiliate_revenue:
+      title: "Affiliate"
+      subtitle: "Revenue from the partner affiliate program."

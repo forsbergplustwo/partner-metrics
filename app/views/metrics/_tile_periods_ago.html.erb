@@ -12,7 +12,7 @@
       <%= metric_display_value(selected_chart["display"], value)%>
     <% end %>
 
-    <%= polaris_text(variant: :headingSm, color: metric_change_color(change, selected_chart["direction_good"])) do %>
+    <%= polaris_text(variant: :headingSm, color: metric_change_color(change, selected_chart["positive_change_is_good"])) do %>
       <%= number_to_percentage_with_precision(current_change) %>
     <% end %>
 

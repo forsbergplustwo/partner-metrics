@@ -1,9 +1,9 @@
 module MetricsHelper
   def metric_display_value(selected_chart_display, value)
     case selected_chart_display
-    when "number"
+    when :number
       number_with_delimiter(value, delimiter: ",")
-    when "percentage"
+    when :percentage
       number_to_percentage(value, precision: 2)
     else
       number_to_currency_with_precision(value)
@@ -11,7 +11,7 @@ module MetricsHelper
   end
 
   def number_to_currency_with_precision(value)
-    precision = (value < 100) ? 2 : 0
+    precision = (value.to_i < 100) ? 2 : 0
     number_to_currency(value, precision: precision)
   end
 
@@ -21,8 +21,8 @@ module MetricsHelper
     (value > 0) ? "+" + percentage : percentage
   end
 
-  def metric_change_color(metric_change, direction_good)
-    if direction_good
+  def metric_change_color(metric_change, positive_change_is_good)
+    if positive_change_is_good
       return :success if metric_change > 0.01
       return :critical if metric_change < -0.01
     else
@@ -33,8 +33,8 @@ module MetricsHelper
   end
 
   def show_averages(period, type)
-    types = ["average", "lifetime_value", "repeat_customers"]
-    !types.include?(type["type"]) || type["calculation"] != "average"
+    types = [:average, :lifetime_value, :repeat_customers]
+    !types.include?(type["type"]) || type["calculation"] != :average
   end
 
   def periods_ago(period)

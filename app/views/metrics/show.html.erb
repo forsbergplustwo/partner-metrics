@@ -1,6 +1,6 @@
 <%= polaris_page(
-  title: t(".#{@filter.charge_type}.title"),
-  subtitle: t(".#{@filter.charge_type}.subtitle"),
+  title: t("metrics.#{@filter.charge_type}.title"),
+  subtitle: t("metrics.#{@filter.charge_type}.subtitle"),
 ) do |page| %>
 
   <%= turbo_frame_tag :metrics do %>
@@ -23,7 +23,7 @@
 
       <% else %>
 
-        <%= render "metrics/empty_state", heading: t(".#{@filter.charge_type}.title"), icon_name: "AnalyticsMajor" %>
+        <%= render "metrics/empty_state", heading: t("metrics.#{@filter.charge_type}.title"), icon_name: "AnalyticsMajor" %>
 
       <% end %>
 

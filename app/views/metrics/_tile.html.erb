@@ -1,6 +1,6 @@
 <div>
   <%= polaris_card(
-    title: tile.title,
+    title: tile.handle.to_s.humanize,
     actions: [{
       content: polaris_icon(name: "AnalyticsLineMinor"),
       title: "View chart",
@@ -23,7 +23,7 @@
           <%= polaris_text(
             variant: :headingMd,
             as: :h3,
-            color: metric_change_color(tile.change, tile.direction_good?)
+            color: metric_change_color(tile.change, tile.positive_change_is_good?)
           ) do %>
             <%= number_to_percentage_with_precision(tile.change) %>
           <% end %>
