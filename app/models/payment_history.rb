@@ -9,7 +9,6 @@ class PaymentHistory < ApplicationRecord
   UNKNOWN_APP_TITLE = "Unknown".freeze
 
   belongs_to :user
-  validates :user_id, presence: true
 
   class << self
     def default_start_date
@@ -43,8 +42,7 @@ class PaymentHistory < ApplicationRecord
           # Then loop through each of the charge types
           Array(charge_types).each do |charge_type|
             # Then loop through each of the app titles for this charge type to calculate those specific metrics for the day
-            app_titles = current_user.payment_histories.where(charge_type: charge_type).pluck(:app_title).uniq
-            Array(app_titles).each do |app_title|
+            current_user.app_titles(charge_type).each do |app_title|
               payments = current_user.payment_histories.where(payment_date: date, charge_type: charge_type, app_title: app_title)
               next if payments.empty?
 
@@ -96,7 +94,7 @@ class PaymentHistory < ApplicationRecord
                     revenue_churn = churned_sum / previous_sum
                     revenue_churn = 0.0 if revenue_churn.nan?
                     revenue_churn *= 100
-                    lifetime_value = ((previous_sum / previous_shops.size) / shop_churn) if shop_churn != 0.0
+                    lifetime_value = ((previous_sum / previous_shops.size) / shop_churn) if shop_churn != 0
                     shop_churn *= 100
                   end
                 end

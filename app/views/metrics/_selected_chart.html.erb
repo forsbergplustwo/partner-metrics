@@ -17,38 +17,46 @@
           <%= polaris_text(variant: :headingLg, as: :h3, color: metric_change_color(current_change, selected_chart["direction_good"])) do %>
             <%= number_to_percentage_with_precision(current_change) %>
           <% end %>
-          <%= polaris_text(variant: :bodyMd, alignment: :end, color: :subdued) do %><%= pluralize(period, 'day') %> ago<% end %>
+          <%= polaris_text(variant: :bodyMd, alignment: :end, color: :subdued) do %><%= pluralize(q[:period], 'day') %> ago<% end %>
       <% end %>
 
     <% end %>
 
-    <%= area_chart metrics_charts_path(date: date, period: period, chart_type: selected_chart, selected_app: selected_app), **metrics_chart_options %>
+    <%= area_chart(
+      current_user.metrics.get_chart_data(
+        selected_chart,
+        q[:date],
+        q[:period],
+        q[:app]
+      ),
+      **metrics_chart_options
+    )%>
 
     <%= polaris_divider %>
 
     <%= polaris_stack(distribution: :fill_evenly) do |stack| %>
 
-      <% if show_averages(period, selected_chart) %>
+      <% if show_averages(q[:period], q[:chart]) %>
         <% stack.with_item do %>
             <%= polaris_text(variant: :bodyMd, as: :h4, color: :subdued) do %>
               Daily Avg
             <% end %>
             <%= polaris_text(variant: :headingMd) do %>
-              <% value = current_value / period * 1 %>
+              <% value = current_value / q[:period] * 1 %>
               <%= metric_display_value(selected_chart["display"], value)%>
             <% end %>
         <% end %>
       <% end %>
 
-      <% periods_ago(period).each do |period_ago| %>
+      <% periods_ago(q[:period]).each do |period_ago| %>
         <% stack.with_item do %>
 
           <%# TODO: Where to put these? %>
-          <% value = Metric.calculate_value_period_ago(current_user, period_ago, date, period, selected_chart, selected_app) || 0 %>
+          <% value = Metric.calculate_value_period_ago(current_user, period_ago, q[:date], q[:period], selected_chart, q[:app]) || 0 %>
           <% change = value == 0 ? 0 : (current_value.to_f / value * 100) - 100 %>
 
           <%= polaris_text(variant: :bodyMd, as: :h4, color: :subdued) do %>
-            <%= period_ago_in_words(date, period, period_ago) %>
+            <%= period_ago_in_words(q[:date], q[:period], period_ago) %>
           <% end %>
 
           <%= polaris_text(variant: :headingLg) do %>

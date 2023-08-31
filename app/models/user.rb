@@ -14,7 +14,7 @@ class User < ApplicationRecord
 
   # TODO: These should probably be in metric model
 
-  def app_titles(charge_type)
+  def app_titles(charge_type = nil)
     if charge_type.present?
       metrics.where(charge_type: charge_type)
     else
@@ -24,6 +24,10 @@ class User < ApplicationRecord
 
   def newest_metric_date
     metrics.maximum("metric_date")
+  end
+
+  def newest_metric_date_or_today
+    newest_metric_date.presence || Time.zone.today.to_date
   end
 
   def oldest_metric_date

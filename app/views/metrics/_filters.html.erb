@@ -3,22 +3,27 @@
     method: :get,
     data: {controller: "filters daterangepicker", daterangepicker_target: "form", turbo_frame: :metrics, turbo_action: :advance},
   ) do %>
+
+    <%= fields_for :q do |form| %>
+      <%= form.hidden_field :chart, value: q[:chart] %>
+    <% end %>
+
     <%= polaris_filters do |filters| %>
 
-      <% unless app_titles.blank? %>
-        <% filters.with_item(label: selected_app.presence || "All apps", sectioned: false, style: "white-space: nowrap;") do %>
-          <%= polaris_option_list(name: "selected_app") do |list| %>
+      <% unless current_user.app_titles(current_charge_type).blank? %>
+        <% filters.with_item(label: q[:app].presence || "All apps", sectioned: false, style: "white-space: nowrap;") do %>
+          <%= polaris_option_list(name: "q[app]") do |list| %>
             <% list.with_radio_button(
               label: "All apps",
               value: "",
-              checked: selected_app == nil,
+              checked: q[:app] == nil,
               data: {action: "filters#submit"}
             ) %>
-            <% app_titles.each do |key, value| %>
+            <% current_user.app_titles(current_charge_type).each do |key| %>
               <% list.with_radio_button(
                 label: key,
                 value: key,
-                checked: selected_app == key,
+                checked: q[:app] == key,
                 data: {action: "filters#submit"}
               ) %>
             <% end %>
@@ -26,40 +31,31 @@
         <% end %>
       <% end %>
 
-      <% filters.with_item(label: "#{period} days", sectioned: false, style: "white-space: nowrap;") do %>
-        <%= polaris_option_list(name: "period") do |list| %>
-          <% periods = [["7 days", 7],
-            ["28 days", 28],
-            ["29 days", 29],
-            ["30 days", 30],
-            ["31 days", 31],
-            ["90 days", 90],
-            ["180 days", 180],
-            ["365 days", 365]]
-          %>
-          <% periods.each do |key, value| %>
+      <% filters.with_item(label: q[:date].to_s, sectioned: false, style: "white-space: nowrap;") do %>
+        <%= polaris_text_field(
+          name: "q[date]",
+          value: q[:date],
+          type: :date,
+          label_hidden: true,
+          input_options: {
+            min: (current_user.oldest_metric_date),
+            max: (current_user.newest_metric_date_or_today)
+          },
+          data: {action: "input->filters#submit change->filters#submit"}
+        ) %>
+      <% end %>
+
+      <% filters.with_item(label: "#{q[:period]} days", sectioned: false, style: "white-space: nowrap;") do %>
+        <%= polaris_option_list(name: "q[period]",) do |list| %>
+          <% filter_periods.each do |key, value| %>
             <% list.with_radio_button(
               label: key,
               value: value,
-              checked: period == value,
+              checked: q[:period] == value,
               data: {action: "filters#submit"}
             ) %>
           <% end %>
         <% end %>
-      <% end %>
-
-      <% filters.with_item(label: date.to_s, sectioned: false, style: "white-space: nowrap;") do %>
-        <%= polaris_text_field(
-          name: :date,
-          value: date,
-          type: :date,
-          label_hidden: true,
-          input_options: {
-            min: (current_user.oldest_metric_date || nil),
-            max: (current_user.newest_metric_date || Time.zone.today)
-          },
-          data: {action: "input->filters#submit change->filters#submit"}
-        ) %>
       <% end %>
 
     <% end %>

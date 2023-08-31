@@ -1,26 +1,25 @@
 <%= polaris_layout do |layout| %>
   <% layout.with_section(one_half: true) do %>
     <%= polaris_card(title: "Recurring per app (Last 12 Months)") do %>
-      <%= column_chart current_user.yearly_revenue_per_product(charge_type: "recurring_revenue", date: date) %>
+      <%= column_chart current_user.yearly_revenue_per_product(charge_type: "recurring_revenue", date: q[:date]) %>
     <% end %>
   <% end %>
   <% layout.with_section(one_half: true) do %>
     <%= polaris_card(title: "Recurring per app (Last 12 Months)") do %>
-      <%= pie_chart current_user.yearly_revenue_per_product(charge_type: "recurring_revenue", date: date) %>
+      <%= pie_chart current_user.yearly_revenue_per_product(charge_type: "recurring_revenue", date: q[:date]) %>
     <% end %>
   <% end %>
 <% end %>
 
 <% per_plan = current_user.payment_histories.where(
   charge_type: "recurring_revenue",
-  app_title: selected_app,
-  payment_date: (date - period.days)..date).group(:revenue).order('revenue DESC').count
+  app_title: q[:app],
+  payment_date: (q[:date] - q[:period].days)..q[:date]).group(:revenue).order('revenue DESC').count
 %>
 
 <%= polaris_layout do |layout| %>
   <% layout.with_section(one_half: true) do %>
-    <%= polaris_card(title: "Users per plan (Last #{period} days)") do %>
-      <p>Last #{period} days</p>
+    <%= polaris_card(title: "Users per plan (Last #{q[:period]} days)") do %>
       <%= column_chart per_plan %>
     <% end %>
   <% end %>

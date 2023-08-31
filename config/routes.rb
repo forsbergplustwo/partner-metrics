@@ -8,7 +8,6 @@ Rails.application.routes.draw do
 
   namespace :metrics do
     resources :recurring, :onetime, :affiliate, :summary, only: [:index]
-    resource :charts, only: [:show]
   end
 
   scope controller: :home do

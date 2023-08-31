@@ -42,6 +42,10 @@ module MetricsHelper
     [1, 2, 3, 6, 12]
   end
 
+  def filter_periods
+    Metric::PERIODS.map { |p| ["#{p} days", p] }
+  end
+
   def period_ago_in_words(date, period, period_ago)
     past_date = date - (period * period_ago).days
     raw_text = distance_of_time_in_words(date, past_date)
@@ -57,13 +61,21 @@ module MetricsHelper
     end
   end
 
+  def select_chart(tiles, selected)
+    if selected.present?
+      tiles.find { |t| t["type"] == selected }
+    else
+      tiles.first
+    end
+  end
+
   def metric_chart_url(tile_type, date, period, app)
     url_for(
       action: action_name,
       date: date,
       period: period,
       chart: tile_type,
-      selected_app: app,
+      app: app,
       anchor: "top"
     )
   end

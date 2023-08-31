@@ -1,70 +1,67 @@
 # TODO: Refactor this controller to not use so many instance variables
 class MetricsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_data
+  before_action :default_query!, if: -> { params[:q].blank? }
+  before_action :set_metrics
 
   def index
   end
 
   private
 
-  def charge_type
-    nil
-  end
+  def default_query!
+    chart = current_tiles.first
+    date = current_user.newest_metric_date_or_today
 
-  def set_data
-    set_app_titles
-    set_metrics
-    set_tiles
-  end
+    q = Metric::QueryParams.new(
+      date: date,
+      chart: chart["type"],
+      period: 30,
+      app: nil
+    ).to_param
 
-  def set_app_titles
-    @app_titles = current_user.app_titles(charge_type)
+    redirect_to url_for(action: action_name, q: q)
   end
 
   def set_metrics
-    metrics_filterer = Metric::Filterer.new(
-      user: current_user,
-      date: date_param,
-      period: period_param,
-      selected_app: selected_app_param,
-      charge_type: charge_type
+    date = current_query[:date]
+    period = current_query[:period]
+    previous_date = date - period.days + 1
+
+    @metrics = metrics_for_range(date, period)
+    @previous_metrics = metrics_for_range(previous_date, period)
+  end
+
+  def metrics_for_range(date, period)
+    current_user.metrics.for_range_and_query(
+      date: date,
+      period: period,
+      app_title: current_query[:app],
+      charge_type: current_charge_type
     )
-
-    @metrics = metrics_filterer.metrics
-    @previous_metrics = metrics_filterer.previous_metrics
   end
 
-  def set_tiles
-    @tiles = Metric::OVERVIEW_TILES
-    @selected_chart = selected_chart(tiles: @tiles, selected: params["chart"])
+  def current_charge_type
+    @current_charge_type ||= Metric.charge_type_for(controller_name)
   end
+  helper_method :current_charge_type
 
-  def selected_app_param
-    @selected_app = params[:selected_app].to_s
+  def current_tiles
+    @current_tiles ||= Metric.tiles_for(controller_name)
   end
+  helper_method :current_tiles
 
-  def period_param
-    @period = if params[:period].present?
-      params[:period].to_i
-    else
-      30
-    end
+  def current_query
+    @current_query ||= Metric::QueryParams.new(query_params).to_param
   end
+  helper_method :current_query
 
-  def date_param
-    @selected_or_latest_date = if params[:date].present?
-      Date.parse(params[:date].to_s)
-    else
-      current_user.newest_metric_date || Time.zone.today
-    end
-  end
-
-  def selected_chart(tiles:, selected: nil)
-    if selected.present?
-      tiles.find { |t| t["type"] == selected }
-    else
-      tiles.first
-    end
+  def query_params
+    params[:q]&.permit(
+      :app,
+      :chart,
+      :date,
+      :period
+    )
   end
 end

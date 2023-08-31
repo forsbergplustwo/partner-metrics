@@ -1,50 +1,34 @@
 <%= polaris_page(
   title: t(".#{controller_name}.title"),
-  subtitle: ""
+  subtitle: t(".#{controller_name}.subtitle"),
 ) do |page| %>
 
   <%= turbo_frame_tag :metrics do %>
 
     <%= polaris_vertical_stack(gap: "5") do %>
 
-      <%= render "filters",
-        selected_chart: @selected_chart,
-        selected_app: @selected_app,
-        app_titles: @app_titles,
-        date: @selected_or_latest_date,
-        period: @period
-      %>
+      <%= render "filters", q: current_query %>
 
       <% if @metrics.any? %>
 
           <%= render "selected_chart",
-            selected_chart: @selected_chart,
-            selected_app: @selected_app,
+            q: current_query,
+            selected_chart: select_chart(current_tiles, current_query[:chart]),
             metrics: @metrics,
-            previous_metrics: @previous_metrics,
-            date: @selected_or_latest_date,
-            period: @period
-          %>
+            previous_metrics: @previous_metrics %>
 
           <%= polaris_horizontal_grid(gap: "5", columns: 3) do %>
-            <% @tiles.each do |tile|%>
+            <% current_tiles.each do |tile|%>
               <%= render "metric_tile",
+                q: current_query,
                 tile: tile,
-                chart_url: metric_chart_url(tile["type"], @selected_or_latest_date, @period, @selected_app),
-                selected_app: @selected_app,
                 metrics: @metrics,
                 previous_metrics: @previous_metrics,
-                date: @selected_or_latest_date,
-                period: @period
-              %>
+                chart_url: url_for(action: action_name, q: current_query.merge(chart: tile["type"])) %>
             <% end %>
           <% end %>
 
-          <%= render "#{params[:controller]}/revenue_per",
-            date: @selected_or_latest_date,
-            selected_app: @selected_app,
-            period: @period
-          %>
+          <%= render "#{params[:controller]}/revenue_per", q: current_query %>
 
       <% else %>
 

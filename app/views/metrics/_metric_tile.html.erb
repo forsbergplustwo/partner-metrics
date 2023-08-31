@@ -31,7 +31,7 @@
             <%= number_to_percentage_with_precision(current_change) %>
           <% end %>
           <%= polaris_text(variant: :bodySm, alignment: :end, color: :subdued) do %>
-            <%= pluralize(period, 'day') %> ago
+            <%= pluralize(q[:period], 'day') %> ago
           <% end %>
         <% end %>
 
