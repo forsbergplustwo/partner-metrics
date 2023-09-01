@@ -30,6 +30,18 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
+  actions:
+    save: "Save"
+    discard: "Discard"
+    choose_file: "Choose file"
+  statuses:
+    draft: "Draft"
+    scheduled: "Scheduled"
+    processing: "Processing"
+    calculating: "Calculating"
+    completed: "Completed"
+    failed: "Failed"
+    cancelled: "Cancelled"
   metrics:
     title: "Metrics"
     subtitle: "An overview of all your recurring, one-time, and affiliate revenue."
@@ -48,3 +60,17 @@ en:
       title: "Payments"
       subtitle: "A list of all payments made to you."
       no_payments: "No payments have been made to you yet."
+  imports:
+    new:
+      title: "Import"
+      subtitle: "Import your historical payouts data to get a complete overview of your revenue."
+    show:
+      title: "Import details"
+    index:
+      title: "Imports"
+      subtitle: "A list of all imports you've made."
+      no_imports: "No imports have been made yet."
+    form:
+      payouts_file_help_text: "Export your payouts from the Shopify Partners Dashboard, then drop the received ZIP file above."
+    insights:
+      title: Import details

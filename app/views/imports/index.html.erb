@@ -1,0 +1,11 @@
+<%= polaris_page(
+  title: t(".title"),
+  subtitle: t(".subtitle")
+) do |page| %>
+
+  <% page.with_primary_action(disabled: true) { "New import" } %>
+
+  <%= turbo_frame_tag :imports, target: "_top" do %>
+
+  <% end %>
+<% end %>

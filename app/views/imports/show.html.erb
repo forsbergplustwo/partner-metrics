@@ -1,0 +1,24 @@
+<%= turbo_stream_from [current_user, @import] %>
+
+<%= polaris_page(
+  title: t(".title"),
+  id: dom_id(@import)
+) do |page| %>
+
+  <% page.with_title_metadata do %>
+    <%= render "status", import: @import %>
+  <% end %>
+
+  <%= render @import %>
+
+  <div>
+    <%= link_to "Back to imports", imports_path %>
+
+    <%= polaris_button(
+      url: @import,
+      data: {turbo_method: :delete},
+      destructive: true
+    ) { "Destroy this import" } %>
+  </div>
+
+<% end %>

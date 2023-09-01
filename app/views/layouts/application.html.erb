@@ -45,7 +45,8 @@
     ) do |frame| %>
       <%= render "layouts/frame/top_bar", frame: frame %>
       <%= render "layouts/frame/navigation", frame: frame %>
-      <%= render "layouts/frame/toasts", frame: frame %>
+
+      <%= render "layouts/flash_messages" %>
 
       <%= yield %>
 

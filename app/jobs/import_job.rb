@@ -2,19 +2,17 @@ class ImportJob < ApplicationJob
   queue_as :default
   sidekiq_options retry: 0
 
-  def perform(user_id:, import_type: nil)
-    user = User.find(user_id)
-
-    if !import_type.nil? && import_type == :csv
-      PaymentHistory::CsvImporter.new(user: user).import!
+  def perform(import:)
+    if import.source == Import::IMPORT_FILE_SOURCE
+      PaymentHistory::CsvImporter.new(import: import).import!
     else
-      PaymentHistory::ApiImporter.new(user: user).import!
+      PaymentHistory::ApiImporter.new(import: import).import!
     end
-
+    import.calculating!
     # Payments must be imported fully before metrics can be calculated
-    ImportMetricsJob.perform_later(user_id: user.id)
+    ImportMetricsJob.perform_later(import_id: import.id)
   rescue => e
-    user&.update(import: "Failed", import_status: 100)
+    import&.failed!
     raise e
   end
 end

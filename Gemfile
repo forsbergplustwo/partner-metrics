@@ -12,6 +12,7 @@ gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
 gem "bootsnap", require: false
 gem "sidekiq"
 gem "rack-timeout", require: "rack/timeout/base"
+gem "active_storage_validations"
 
 # Frontend
 gem "sprockets-rails"

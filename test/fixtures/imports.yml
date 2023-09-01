@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  import_type: 
+  status: 
+  progress: 1
+  user: one
+  timestamps: MyString
+  started_at: 2023-09-01 11:56:47
+  ended_at: 2023-09-01 11:56:47
+
+two:
+  import_type: 
+  status: 
+  progress: 1
+  user: two
+  timestamps: MyString
+  started_at: 2023-09-01 11:56:47
+  ended_at: 2023-09-01 11:56:47

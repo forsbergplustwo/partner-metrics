@@ -1,0 +1,26 @@
+<%= polaris_page(
+  narrow_width: true,
+  title: t(".title"),
+  subtitle: t(".subtitle"),
+  data: {
+    controller: "submittable",
+  }
+) do |page| %>
+
+<% page.with_primary_action(
+  submit: true,
+  id: "externalSubmitButton",
+  data: {
+    action: "submittable#submit"
+  }
+) { "Import" } %>
+
+  <% page.with_title_metadata do %>
+    <%= tag.span id: "#{@import.id}_status" do %>
+      <%= render "status", import: @import %>
+    <% end %>
+  <% end %>
+
+  <%= render "form", import: @import %>
+
+<% end %>

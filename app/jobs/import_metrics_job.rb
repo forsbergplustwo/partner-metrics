@@ -2,13 +2,14 @@ class ImportMetricsJob < ApplicationJob
   queue_as :default
   sidekiq_options retry: 0
 
-  def perform(user_id:)
-    user = User.find(user_id)
-    return unless user
+  def perform(import_id:)
+    import = Import.find(import_id)
+    return unless import
 
-    PaymentHistory.calculate_metrics(user)
+    PaymentHistory.calculate_metrics(import)
+    import.completed!
   rescue => e
-    user&.update(import: "Failed", import_status: 100)
+    import&.failed!
     raise e
   end
 end

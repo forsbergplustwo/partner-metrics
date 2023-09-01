@@ -15,7 +15,10 @@ class PaymentHistory < ApplicationRecord
       YEARS_TO_IMPORT.ago.to_date
     end
 
-    def calculate_metrics(current_user)
+    def calculate_metrics(import)
+      import.calculating!
+      current_user = import.user
+
       current_user.update(import: "Calculating metrics (Warming up)", import_status: 0)
       # We want metrics broken up into their respective charge types (Recurring, OneTime, Affiliate), as well as by which application. We also want calculations for every day, for chart purposes.
       charge_types = ["recurring_revenue", "onetime_revenue", "affiliate_revenue", "refund"]

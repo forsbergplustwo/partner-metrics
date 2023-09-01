@@ -34,17 +34,20 @@ class PaymentHistory::ApiImporter
     ]
   }.freeze
 
-  def initialize(user:)
-    @user = user
+  def initialize(import:)
+    @import = import
+    @user = @import.user
     @batch_of_payments = []
   end
 
-  attr_reader :user
+  attr_reader :import, :user
 
   def import!
+    import.processing!
     user.clear_old_payments
     import_new_payments
   rescue => error
+    import.failed!
     handle_import_error(error)
     raise error
   end

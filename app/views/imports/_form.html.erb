@@ -1,0 +1,49 @@
+<%= turbo_frame_tag import, target: "_top" do %>
+  <%= form_with(
+    model: import,
+    builder: Polaris::FormBuilder,
+    data: {
+      controller: "form",
+      form_show_save_bar_value: false,
+      form_submit_button_target_value: "#externalSubmitButton",
+      submittable_target: "form",
+    }
+  ) do |form| %>
+
+    <%= polaris_layout do |layout| %>
+      <%# Required to submit form via Return/Enter %>
+      <%= form.submit hidden: true %>
+
+      <%= form.hidden_field :source %>
+
+      <% if current_user.errors.any? %>
+        <% layout.with_section do %>
+          <%= form.errors_summary %>
+        <% end %>
+      <% end %>
+
+      <% layout.with_section do %>
+        <%= polaris_card do %>
+          <%= polaris_form_layout do |form_layout| %>
+            <%= form_layout.with_item do %>
+              <%= polaris_dropzone(
+                form: form,
+                attribute: :payouts_file,
+                error: form.error_for(:payouts_upload),
+                label: Import.human_attribute_name(:payouts_file),
+                label_hidden: false,
+                accept: Import::ACCEPTED_FILE_TYPES.join(","),
+                multiple: false,
+              ) %>
+            <% end %>
+            <%= form_layout.with_item do %>
+              <%= polaris_text(variant: :bodySm, color: :subdued) { t(".payouts_file_help_text") } %>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+
+    <% end %>
+
+  <% end %>
+<% end %>

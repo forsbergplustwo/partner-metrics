@@ -38,10 +38,10 @@
 
     <% navigation.with_section(title: "Data sources") do |section| %>
       <% section.with_item(
-        url: edit_user_registration_path(current_user),
+        url: new_import_path,
         label: "CSV import",
         icon: "ImportMinor",
-        selected: nav_item_selected?(edit_user_registration_path(current_user)),
+        selected: nav_item_selected?(new_import_path),
         link_arguments: {}
       ) %>
       <% section.with_item(
