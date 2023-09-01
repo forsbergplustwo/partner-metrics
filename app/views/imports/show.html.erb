@@ -1,8 +1,10 @@
-<%= turbo_stream_from [current_user, @import] %>
+<%= turbo_stream_from [current_user, :imports] %>
 
 <%= polaris_page(
+  narrow_width: true,
   title: t(".title"),
-  id: dom_id(@import)
+  id: dom_id(@import),
+  back_url: imports_path,
 ) do |page| %>
 
   <% page.with_title_metadata do %>
@@ -11,14 +13,13 @@
 
   <%= render @import %>
 
-  <div>
-    <%= link_to "Back to imports", imports_path %>
-
-    <%= polaris_button(
+  <%= polaris_page_actions do |actions| %>
+    <% actions.with_secondary_action(
+      destructive: true,
+      outline: true,
       url: @import,
       data: {turbo_method: :delete},
-      destructive: true
-    ) { "Destroy this import" } %>
-  </div>
+    ) { "Delete" } %>
+  <% end %>
 
 <% end %>

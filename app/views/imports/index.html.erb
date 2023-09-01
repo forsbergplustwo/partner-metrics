@@ -3,7 +3,7 @@
   subtitle: t(".subtitle")
 ) do |page| %>
 
-  <% page.with_primary_action(disabled: true) { "New import" } %>
+  <% page.with_primary_action(url: new_import_path) { "New import" } %>
 
   <%= turbo_frame_tag :imports, target: "_top" do %>
 

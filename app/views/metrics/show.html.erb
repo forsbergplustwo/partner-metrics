@@ -29,39 +29,6 @@
 
     <% end %>
 
-    <%= polaris_card do %>
-      <%= turbo_frame_tag current_user do %>
-        <%= form_with(
-          model: current_user,
-          builder: Polaris::FormBuilder,
-        ) do |form| %>
-
-          <%= polaris_form_layout do |form_layout| %>
-
-            <% if current_user.errors.any? %>
-              <% form_layout.item do %>
-                <%= form.errors_summary %>
-              <% end %>
-            <% end %>
-
-            <% form_layout.with_item do %>
-              <%= form.file_field :import_file, required: current_user.metrics.none? %>
-            <% end %>
-
-            <% form_layout.with_item do %>
-              <%= polaris_button(
-                submit: true,
-                primary: true,
-                data: {form_target: "submitButton"},
-              ) { "Save" } %>
-            <% end %>
-
-          <% end %>
-
-        <% end %>
-      <% end %>
-    <% end %>
-
   <% end %>
 
 <% end %>

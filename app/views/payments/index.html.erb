@@ -5,51 +5,7 @@
 
   <% page.with_primary_action(disabled: true) { "Save" } %>
 
-  <%= turbo_frame_tag current_user, target: "_top" do %>
-    <%= form_with(
-      model: current_user,
-      builder: Polaris::FormBuilder,
-      data: {
-        controller: "form",
-        save_bar_target: "form",
-        submittable_target: "form"
-      }
-    ) do |form| %>
-      <%# Required to submit form via Return/Enter %>
-      <%= form.submit hidden: true %>
+  <%= turbo_frame_tag :payments, target: "_top" do %>
 
-      <% if current_user.errors.any? %>
-        <%= polaris_card_section do %>
-          <%= form.errors_summary %>
-        <% end %>
-      <% end %>
-
-      <%= polaris_card_section do %>
-        <%= polaris_form_layout do |form_layout| %>
-          <% form_layout.with_item do %>
-            <%= polaris_dropzone(
-              form: form,
-              attribute: :logo,
-              error: form.error_for(:logo),
-              label: User.human_attribute_name(:import_file),
-              label_hidden: false,
-              #accept: Setting::ACCEPTED_LOGO_FORMATS.join(","),
-              multiple: false
-            ) do %>
-              <%= polaris_button { "Choose file" } %>
-            <% end %>
-          <% end %>
-        <% end %>
-      <% end %>
-
-      <%= polaris_page_actions do |actions| %>
-        <% actions.with_primary_action(
-          submit: true,
-          disabled: true,
-          data: {form_target: "submitButton"},
-        ) { "Save" } %>
-      <% end %>
-
-    <% end %>
   <% end %>
 <% end %>

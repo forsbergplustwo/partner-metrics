@@ -37,7 +37,7 @@ class Import < ApplicationRecord
 
   def broadcast_status_change
     broadcast_replace_to(
-      [user, self],
+      [user, :imports],
       target: "#{id}_status",
       partial: "imports/status",
       locals: {import: self}

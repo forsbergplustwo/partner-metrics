@@ -1,32 +1,34 @@
-<div>
-  <p>
-    <strong>Import type:</strong>
-    <%= import.source %>
-  </p>
+<%= polaris_card do %>
+  <div>
+    <p>
+      <strong>Import type:</strong>
+      <%= import.source %>
+    </p>
 
-  <p>
-    <strong>Progress:</strong>
-    <%= import.progress %>
-  </p>
+    <p>
+      <strong>Progress:</strong>
+      <%= import.progress %>
+    </p>
 
-  <p>
-    <strong>User:</strong>
-    <%= import.user_id %>
-  </p>
+    <p>
+      <strong>User:</strong>
+      <%= import.user_id %>
+    </p>
 
-  <p>
-    <strong>Timestamps:</strong>
-    <%= import.timestamps %>
-  </p>
+    <p>
+      <strong>Timestamps:</strong>
+      <%= import.timestamps %>
+    </p>
 
-  <p>
-    <strong>Started at:</strong>
-    <%= import.started_at %>
-  </p>
+    <p>
+      <strong>Started at:</strong>
+      <%= import.started_at %>
+    </p>
 
-  <p>
-    <strong>Ended at:</strong>
-    <%= import.ended_at %>
-  </p>
+    <p>
+      <strong>Ended at:</strong>
+      <%= import.ended_at %>
+    </p>
 
-</div>
+  </div>
+<% end %>
