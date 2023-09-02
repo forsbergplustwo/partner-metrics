@@ -1,5 +1,5 @@
 import { Controller } from '@hotwired/stimulus'
-import DirtyForm from '../dirty-form'
+import DirtyForm from '../libraries/dirty-form'
 
 export default class extends Controller {
   static targets = ['submitButton']

@@ -10,5 +10,8 @@ application.register("filters", FiltersController)
 import FormController from "./form_controller"
 application.register("form", FormController)
 
+import GlobeController from "./globe_controller"
+application.register("globe", GlobeController)
+
 import SubmittableController from "./submittable_controller"
 application.register("submittable", SubmittableController)
