@@ -23,3 +23,11 @@
   <% end %>
 
 <% end %>
+
+<br><br>
+<%= tag.div style: "width: 100%; height: 900px",
+    data: {
+      controller: "globe",
+      globe_target: "container",
+      globe_payment_countries_value: current_user.payment_histories.pluck(:shop_country).uniq.last(50).to_json
+    } %>
