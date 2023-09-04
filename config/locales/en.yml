@@ -67,8 +67,8 @@ en:
     show:
       title: "Import details"
     index:
-      title: "Imports"
-      subtitle: "A list of all imports you've made."
+      title: "Imported data"
+      subtitle: "A list of all payment imports for your account."
       no_imports: "No imports have been made yet."
     form:
       payouts_file_help_text: "Export your payouts from the Shopify Partners Dashboard, then drop the received ZIP file above."

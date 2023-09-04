@@ -19,15 +19,15 @@
       outline: true,
       url: @import,
       data: {turbo_method: :delete},
-    ) { "Delete" } %>
+    ) { "Delete import" } %>
   <% end %>
 
 <% end %>
 
 <br><br>
-<%= tag.div style: "width: 100%; height: 900px",
+<%= tag.div style: "width: 100%; height: 900px; opacity: 0; transition: opacity 3s ease-in-out;",
     data: {
       controller: "globe",
       globe_target: "container",
-      globe_payment_countries_value: current_user.payment_histories.pluck(:shop_country).uniq.last(50).to_json
+      globe_fetch_url_value: import_globe_path(@import, offset: 0),
     } %>

@@ -28,7 +28,7 @@ class Import < ApplicationRecord
   validates :status, presence: true
 
   after_create_commit :schedule!
-  after_update_commit :broadcast_status_change, if: -> { status_previously_changed? }
+  after_update_commit :broadcast_status_change, if: -> { saved_change_to_status? }
 
   def schedule!
     ImportJob.perform_later(import: self)

@@ -8,4 +8,13 @@
   <%= turbo_frame_tag :imports, target: "_top" do %>
 
   <% end %>
+
+  <%= polaris_page_actions do |actions| %>
+    <% actions.with_secondary_action(
+      destructive: true,
+      outline: true,
+      url: metrics_path,
+      data: {turbo_method: :delete,turbo_confirm: "Are you sure? This removes all payments and metrics."},
+    ) { "Reset all data" } %>
+  <% end %>
 <% end %>

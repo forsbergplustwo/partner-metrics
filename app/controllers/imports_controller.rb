@@ -28,15 +28,6 @@ class ImportsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /imports/1
-  def update
-    if @import.update(import_params)
-      redirect_to @import, notice: "Import was successfully updated.", status: :see_other
-    else
-      render :edit, status: :unprocessable_entity
-    end
-  end
-
   # DELETE /imports/1
   def destroy
     @import.destroy

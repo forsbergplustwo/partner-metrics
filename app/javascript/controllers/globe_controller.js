@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
+import { get } from "@rails/request.js"
 import Globe from "globe.gl"
 import {
   Color,
@@ -18,10 +19,15 @@ const RINGS_MAX_R = 1.2; // deg
 const RING_PROPAGATION_SPEED = 0.3; // deg/sec
 
 const ARC_COLORS = [
-  ["rgba(35, 196, 140, 0.5)", "rgba(35, 196, 140, 0.7)", "rgba(161, 237, 208, 0.9)", "rgba(161, 237, 208, 1)"],
-  ["rgba(59, 195, 211, 0.5)", "rgba(59, 195, 211, 0.7)", "rgba(147, 222, 231, 0.9)", "rgba(147, 222, 231, 1)"],
-  ["rgba(121, 69, 227, 0.5)", "rgba(121, 69, 227, 0.7)", "rgba(203, 180, 248, 0.9)", "rgba(203, 180, 248, 1)"]
+  ["rgba(80, 220, 169, 0.5);", "rgba(80, 220, 169, 0.7);", "rgba(161, 237, 208, 0.9)", "rgba(161, 237, 208, 1)"],
+  ["rgba(109, 211, 222, 0.5)", "rgba(109, 211, 222, 0.7)", "rgba(147, 222, 231, 0.9)", "rgba(147, 222, 231, 1)"],
+  ["rgba(173, 139, 241, 0.5)", "rgba(173, 139, 241, 0.7)", "rgba(203, 180, 248, 0.9)", "rgba(203, 180, 248, 1)"]
 ]
+const ARC_REVERSED_COLORS = [
+  ["rgba(245, 196, 82, 0.5)", "rgba(245, 196, 82, 0.7)", "rgba(248, 217, 144, 0.9)", "rgba(248, 217, 144, 1)"],
+  ["rgba(245, 147, 82, 0.5)", "rgba(245, 147, 82, 0.7)", "rgba(247, 177, 130, 0.9)", "rgba(247, 177, 130, 1)"],
+]
+
 const ARC_ALTITUDES = [0.5, 0.55, 0.55, 0.6, 0.6];
 const ARC_DASH_LENGTHS = [1.5, 1.8, 1.9, 1.9, 2, 2.2];
 const ARC_SPEEDS = [0.6, 0.65, 0.75, 0.95, 1];
@@ -29,76 +35,97 @@ const ARC_SPEEDS = [0.6, 0.65, 0.75, 0.95, 1];
 export default class extends Controller {
   static targets = ['container']
   static values = {
-    countriesCount: {
-      Number,
-      default: 50
-    },
-    paymentCountries: {
-      type: Array,
-      default: []
-    },
     myLocation: {
       type: String,
-      default: "DK"
+      default: "US"
+    },
+    fetchUrl: {
+      type: String,
+    },
+    keepFetching: {
+      type: Boolean,
+      default: true
     }
   }
 
   initialize() {
     this.globe = Globe()
-
     this.setupGlobe();
     this.setupScene();
     this.setupControls();
     this.setupCamera();
 
-    this.setSize();
-    this.setViewPointCountry();
+    this.setUserLocation().then(() => {
+      this.updateGlobeHexPolygons();
+      this.setViewPointCountry()
+    })
   }
+
 
   connect() {
     // Add dataFetcher() here
     this.setSize();
     this.globe.resumeAnimation();
-    this.globe.showGlobe(true);
-    this.emitArcs();
+    this.containerTarget.addEventListener("resize", () => this.setSize());
+
+    this.keepFetchingValue = true;
+    this.fetchDataAndEmit();
+
+    this.containerTarget.style.opacity = 1;
   }
 
   disconnect() {
-    this.globe.showGlobe(false);
+    this.keepFetchingValue = false;
+    this.containerTarget.style.opacity = 0;
+
     this.globe.pauseAnimation();
+    this.containerTarget.removeEventListener("resize", () => this.setSize());
   }
 
   // ACTIONS
 
-  emitArcs() {
+  async fetchDataAndEmit() {
+    if (!this.keepFetchingValue) {
+      console.log("Disconecting fetch");
+      return;
+    }
+
+    const response = await get(this.fetchUrlValue);
+    let data = await response.json;
+    let delay = 3000;
+    if (response.ok && data.length > 0) {
+      delay = data.length * 1000
+      await this.emitArcs(data);
+    }
+    setTimeout(() => { this.fetchDataAndEmit(); }, delay);
+  }
+
+  async emitArcs(data) {
+    if (!this.keepFetchingValue) {
+      console.log("Disconecting arcs");
+      return;
+    }
     // Generate arcsData based on provided countries and my location
     const myLat = CountryData[this.myLocationValue].lat
     const myLng = CountryData[this.myLocationValue].lon
 
-    const selectedCountries = this.paymentCountriesValue.slice(0, this.countriesCountValue)
-      .map(code => CountryData[code])
-      .filter(Boolean);
+    const selectedCountries = data.slice(0, data.length - 1)
+      .map(payment => ({ coordinates: CountryData[payment.countryCode], reverse: payment.reverse }))
+      .filter(country => country.coordinates);
 
-    const arcsData = selectedCountries.map(country => ({
-      startLat: country.lat,
-      startLng: country.lon,
-      endLat: myLat,
-      endLng: myLng,
-      arcColor: ARC_COLORS[Math.round(Math.random() * (ARC_COLORS.length - 1))],
-      arcAltitude: ARC_ALTITUDES[Math.round(Math.random() * (ARC_ALTITUDES.length - 1))] * 1.1,
-      arcDashLength: ARC_DASH_LENGTHS[Math.round(Math.random() * (ARC_DASH_LENGTHS.length - 1))],
-      arcSpeed: ARC_SPEEDS[Math.round(Math.random() * (ARC_SPEEDS.length - 1))] * FLIGHT_TIME
-    }));
+    const arcsData = selectedCountries.map(country => this.getArcDataForCountry(country, myLat, myLng));
 
     // Emit arcs in a tightly controlled time loop
     // Cycle speed is proportional to arc length,
     // total flight time & dashLength.. very important!
-    let currentArcIndex = 0;
     const emitLoop = () => {
-      let arc = arcsData[currentArcIndex];
+      if (arcsData.length === 0) {
+
+        return;
+      }
+      let arc = arcsData.shift();
       let cycleSpeed = arc.arcSpeed * arc.arcDashLength;
       this.emitArc(arc, cycleSpeed);
-      currentArcIndex = (currentArcIndex + 1) % arcsData.length;
       setTimeout(emitLoop, cycleSpeed * 2);
     };
 
@@ -109,8 +136,10 @@ export default class extends Controller {
       setTimeout(emitLoop, 800);
       setTimeout(emitLoop, 1400);
       setTimeout(emitLoop, 2300);
+      setTimeout(emitLoop, 4100);
     }, 500);
   }
+
 
   emitArc(arc, cycleSpeed) {
     // Add and remove arc after 1 cycle
@@ -129,6 +158,44 @@ export default class extends Controller {
       setTimeout(() => this.globe.ringsData(this.globe.ringsData().filter(r => r !== targetRing)), cycleSpeed);
     }, cycleSpeed);
   }
+
+  getArcDataForCountry = (country, myLat, myLng) => {
+    if (!country.coordinates) {
+      return;
+    }
+    let startLat, startLng, endLat, endLng;
+
+    if (country.reverse) {
+      startLat = myLat;
+      startLng = myLng;
+      endLat = country.coordinates.lat;
+      endLng = country.coordinates.lon;
+    } else {
+      startLat = country.coordinates.lat;
+      startLng = country.coordinates.lon;
+      endLat = myLat;
+      endLng = myLng;
+    }
+
+    return {
+      startLat: startLat,
+      startLng: startLng,
+      endLat: endLat,
+      endLng: endLng,
+      arcColor: this.getArcColor(country.reverse),
+      arcAltitude: ARC_ALTITUDES[Math.round(Math.random() * (ARC_ALTITUDES.length - 1))] * 1.1,
+      arcDashLength: ARC_DASH_LENGTHS[Math.round(Math.random() * (ARC_DASH_LENGTHS.length - 1))],
+      arcSpeed: ARC_SPEEDS[Math.round(Math.random() * (ARC_SPEEDS.length - 1))] * FLIGHT_TIME
+    };
+  };
+
+  getArcColor = (reverse) => {
+    if (reverse) {
+      return ARC_REVERSED_COLORS[Math.round(Math.random() * (ARC_REVERSED_COLORS.length - 1))];
+    } else {
+      return ARC_COLORS[Math.round(Math.random() * (ARC_COLORS.length - 1))];
+    }
+  };
 
   // SETUP GLOBE
 
@@ -151,15 +218,19 @@ export default class extends Controller {
       .hexPolygonsData(map.features)
       .hexPolygonResolution(3)
       .hexPolygonMargin(0.3)
-      .hexPolygonColor((e) => {
-        if (
-          ["DK"].includes(
-            e.properties.ISO_A2
-          )
-        ) {
-          return "rgba(255,255,255, 0.8)";
-        } else return "rgba(255,255,255, 0.3)";
-      });
+      .hexPolygonColor("rgba(255,255,255, 0.3)");
+  }
+
+  updateGlobeHexPolygons() {
+    this.globe.hexPolygonColor((e) => {
+      if (
+        this.myLocationValue.includes(
+          e.properties.ISO_A2
+        )
+      ) {
+        return "rgba(255,255,255, 0.8)";
+      } else return "rgba(255,255,255, 0.3)";
+    });
   }
 
   addGlobeArcsLayer() {
@@ -242,14 +313,23 @@ export default class extends Controller {
 
   // HELPER FUNCTIONS
 
+  async setUserLocation() {
+    // Using http://ip-api.com/json/
+    const response = await get("http://ip-api.com/json/?fields=countryCode");
+    if (response.ok) {
+      const locationData = await response.json;
+      this.myLocationValue = locationData.countryCode;
+    }
+    this.setViewPointCountry();
+  }
+
   setViewPointCountry() {
     const myLocation = CountryData[this.myLocationValue]
     const pointOfView = {
       lat: myLocation.lat - 15,
-      lng: myLocation.lat + 45,
+      lng: myLocation.lon + 45,
       altitude: 2.5
     };
-
     setTimeout(() => { this.globe.pointOfView(pointOfView) });
   }
 

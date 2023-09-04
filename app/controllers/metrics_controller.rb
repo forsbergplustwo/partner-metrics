@@ -9,6 +9,13 @@ class MetricsController < ApplicationController
     @app_titles = current_user.app_titles(@filter.charge_type)
   end
 
+  def destroy
+    current_user.metrics.delete_all
+    current_user.payment_histories.delete_all
+    flash[:notice] = "Metrics reset!"
+    redirect_to imports_path
+  end
+
   private
 
   def query_params

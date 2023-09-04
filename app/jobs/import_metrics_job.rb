@@ -6,7 +6,7 @@ class ImportMetricsJob < ApplicationJob
     import = Import.find(import_id)
     return unless import
 
-    PaymentHistory.calculate_metrics(import)
+    PaymentHistory.calculate_metrics(import: import)
     import.completed!
   rescue => e
     import&.failed!

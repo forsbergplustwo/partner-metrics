@@ -25,21 +25,13 @@
         icon: "CashDollarMajor",
         selected: nav_item_selected?(payments_path),
         link_arguments: {}
-      ) do |item| %>
-        <% item.with_sub_item(
-          url: "/payments/live_view",
-          label: "Live view",
-          # icon: "CreditCardMajor",
-          selected: nav_item_selected?("/payments/live_view"),
-          link_arguments: {}
-        ) %>
-      <% end %>
+      ) %>
     <% end %>
 
     <% navigation.with_section(title: "Data sources") do |section| %>
       <% section.with_item(
         url: imports_path,
-        label: "CSV import",
+        label: "Imported data",
         icon: "ImportMinor",
         selected: nav_item_selected?(imports_path),
         link_arguments: {}

@@ -40,14 +40,6 @@ class HomeController < ApplicationController
     }
   end
 
-  # TODO: Move to metrics#destroy & refactor + add tests
-  def reset_metrics
-    current_user.metrics.delete_all
-    current_user.payment_histories.delete_all
-    flash[:notice] = "Metrics successfully reset!"
-    redirect_to root_path
-  end
-
   # TODO: Move to metrics::app_names#update & refactor + add tests
   def rename_app
     from_name = params["rename_from"]

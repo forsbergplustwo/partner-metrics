@@ -15,7 +15,7 @@ class PaymentHistory < ApplicationRecord
       YEARS_TO_IMPORT.ago.to_date
     end
 
-    def calculate_metrics(import)
+    def calculate_metrics(import:)
       import.calculating!
       current_user = import.user
 
@@ -45,7 +45,8 @@ class PaymentHistory < ApplicationRecord
           # Then loop through each of the charge types
           Array(charge_types).each do |charge_type|
             # Then loop through each of the app titles for this charge type to calculate those specific metrics for the day
-            current_user.app_titles(charge_type).each do |app_title|
+            app_titles = current_user.payment_histories.where(charge_type: charge_type).pluck(:app_title).uniq
+            app_titles.each do |app_title|
               payments = current_user.payment_histories.where(payment_date: date, charge_type: charge_type, app_title: app_title)
               next if payments.empty?
 
