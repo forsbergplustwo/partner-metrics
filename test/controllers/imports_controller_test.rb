@@ -17,7 +17,7 @@ class ImportsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create import" do
     assert_difference("Import.count") do
-      post imports_url, params: { import: { ended_at: @import.ended_at, import_type: @import.import_type, progress: @import.progress, started_at: @import.started_at, status: @import.status, timestamps: @import.timestamps, user_id: @import.user_id } }
+      post imports_url, params: {import: {ended_at: @import.ended_at, import_type: @import.import_type, progress: @import.progress, started_at: @import.started_at, status: @import.status, timestamps: @import.timestamps, user_id: @import.user_id}}
     end
 
     assert_redirected_to import_url(Import.last)
@@ -34,7 +34,7 @@ class ImportsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update import" do
-    patch import_url(@import), params: { import: { ended_at: @import.ended_at, import_type: @import.import_type, progress: @import.progress, started_at: @import.started_at, status: @import.status, timestamps: @import.timestamps, user_id: @import.user_id } }
+    patch import_url(@import), params: {import: {ended_at: @import.ended_at, import_type: @import.import_type, progress: @import.progress, started_at: @import.started_at, status: @import.status, timestamps: @import.timestamps, user_id: @import.user_id}}
     assert_redirected_to import_url(@import)
   end
 

@@ -4,7 +4,7 @@ import {
   Color,
   DirectionalLight,
   Fog,
-  PointLight,
+  PointLight
 } from "three"
 
 import map from "../libraries/globe/countries-map-data.json";
@@ -85,7 +85,7 @@ export default class extends Controller {
       endLat: myLat,
       endLng: myLng,
       arcColor: ARC_COLORS[Math.round(Math.random() * (ARC_COLORS.length - 1))],
-      arcAltitude: ARC_ALTITUDES[Math.round(Math.random() * (ARC_ALTITUDES.length - 1))] * 1.2,
+      arcAltitude: ARC_ALTITUDES[Math.round(Math.random() * (ARC_ALTITUDES.length - 1))] * 1.1,
       arcDashLength: ARC_DASH_LENGTHS[Math.round(Math.random() * (ARC_DASH_LENGTHS.length - 1))],
       arcSpeed: ARC_SPEEDS[Math.round(Math.random() * (ARC_SPEEDS.length - 1))] * FLIGHT_TIME
     }));
@@ -182,18 +182,14 @@ export default class extends Controller {
       .ringsData([])
       .ringMaxRadius(RINGS_MAX_R)
       .ringPropagationSpeed(RING_PROPAGATION_SPEED)
+      // TODO: Get this back in sync with arc animation
       .ringRepeatPeriod(FLIGHT_TIME * ARC_REL_LEN / NUM_RINGS);
   }
 
   addGlobeMaterials() {
-    const MATERIAL_COLOR = new Color(0x16042D);
-    const MATERIAL_EMISSIVE_COLOR = new Color(0x000000);
-
-
     const globeMaterial = this.globe.globeMaterial();
-    globeMaterial.color = MATERIAL_COLOR
-    globeMaterial.specular = MATERIAL_COLOR
-    globeMaterial.emissive = MATERIAL_EMISSIVE_COLOR
+    globeMaterial.color = new Color(0x16042D);
+    globeMaterial.emissive = new Color(0x000000);
     globeMaterial.emissiveIntensity = 0.2;
     globeMaterial.shininess = 0.7;
   }
@@ -247,15 +243,13 @@ export default class extends Controller {
   // HELPER FUNCTIONS
 
   setViewPointCountry() {
-    let dk = CountryData.DK
-    const lat = dk.lat
-    const lng = dk.lon
-
+    const myLocation = CountryData[this.myLocationValue]
     const pointOfView = {
-      lat: lat - 15,
-      lng: lng + 45,
+      lat: myLocation.lat - 15,
+      lng: myLocation.lat + 45,
       altitude: 2.5
     };
+
     setTimeout(() => { this.globe.pointOfView(pointOfView) });
   }
 
