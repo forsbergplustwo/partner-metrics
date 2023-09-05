@@ -96,6 +96,8 @@ export default class extends Controller {
 
     let delay = 3000;
 
+    // Expecting an array of country codes and reverse flags [{ countryCode: "US", reverse: false}]
+    // at some multiple of ARCS_AT_ONCE (recommended 10 * ARCS_AT_ONCE)
     const response = await get(this.fetchUrlValue);
     let newlyFetchedArcs = await response.json;
 
