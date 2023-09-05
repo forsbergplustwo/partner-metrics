@@ -2,7 +2,7 @@ require "zip"
 require "csvreader"
 
 class PaymentHistory::CsvImporter
-  SAVE_EVERY_N_ROWS = 1000
+  SAVE_EVERY_N_ROWS = 500
 
   CSV_READER_OPTIONS = {
     converters: :all,
