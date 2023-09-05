@@ -11,6 +11,7 @@
     <%= render "status", import: @import %>
   <% end %>
 
+
   <%= render @import %>
 
   <%= polaris_page_actions do |actions| %>
@@ -25,7 +26,7 @@
 <% end %>
 
 <br><br>
-<%= tag.div style: "width: 100%; height: 900px; opacity: 0; transition: opacity 3s ease-in-out;",
+<%= tag.div style: "width: 80%; height: 800px; margin: 0 auto; opacity: 0; transition: opacity 3s ease-in-out;",
     data: {
       controller: "globe",
       globe_target: "container",

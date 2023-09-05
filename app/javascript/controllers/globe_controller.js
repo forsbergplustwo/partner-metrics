@@ -32,6 +32,9 @@ const ARC_ALTITUDES = [0.5, 0.55, 0.55, 0.6, 0.6];
 const ARC_DASH_LENGTHS = [1.5, 1.8, 1.9, 1.9, 2, 2.2];
 const ARC_SPEEDS = [0.6, 0.65, 0.75, 0.95, 1];
 
+const ARCS_AT_ONCE = 5;
+const ARC_EMIT_DELAY = 300;
+
 export default class extends Controller {
   static targets = ['container']
   static values = {
@@ -63,15 +66,16 @@ export default class extends Controller {
 
 
   connect() {
-    // Add dataFetcher() here
     this.setSize();
+    this.globe.arcsData([]);
     this.globe.resumeAnimation();
     this.containerTarget.addEventListener("resize", () => this.setSize());
-
-    this.keepFetchingValue = true;
-    this.fetchDataAndEmit();
-
     this.containerTarget.style.opacity = 1;
+
+    // Start fetching data and emitting arcs
+    this.keepFetchingValue = true;
+    this.previouslyFetchedArcs = []
+    setTimeout(() => { this.fetchDataAndEmit(); }, 2000);
   }
 
   disconnect() {
@@ -85,42 +89,60 @@ export default class extends Controller {
   // ACTIONS
 
   async fetchDataAndEmit() {
+    // Stop fetching if disconnected
     if (!this.keepFetchingValue) {
-      console.log("Disconecting fetch");
       return;
     }
 
-    const response = await get(this.fetchUrlValue);
-    let data = await response.json;
     let delay = 3000;
-    if (response.ok && data.length > 0) {
-      delay = data.length * 1000
-      await this.emitArcs(data);
+
+    const response = await get(this.fetchUrlValue);
+    let newlyFetchedArcs = await response.json;
+
+    if (response.ok && newlyFetchedArcs.length > 0) {
+      // Stops emitting when no new arcs are fetched
+      if (JSON.stringify(newlyFetchedArcs) === JSON.stringify(this.previouslyFetchedArcs)) {
+        return;
+      }
+      this.previouslyFetchedArcs = newlyFetchedArcs;
+
+      // Emit arcs in chunks (number of arcs seen at once)
+      let chunkSize = Math.ceil(newlyFetchedArcs.length / ARCS_AT_ONCE);
+      delay = chunkSize * FLIGHT_TIME - 1000;
+      this.emitArcsInChunks(newlyFetchedArcs, chunkSize);
     }
+    // Repeat again when the total arc release cycle is complete
     setTimeout(() => { this.fetchDataAndEmit(); }, delay);
   }
 
-  async emitArcs(data) {
-    if (!this.keepFetchingValue) {
-      console.log("Disconecting arcs");
-      return;
+  emitArcsInChunks(arcs, chunkSize) {
+    let delay = 0;
+    const chunkedArcs = this.chunkArray(arcs, chunkSize);
+    for (let i = 0; i < chunkedArcs.length; i++) {
+      setTimeout(() => {
+        this.emitArcs(chunkedArcs[i]);
+      }, delay);
+      delay += ARC_EMIT_DELAY;
     }
-    // Generate arcsData based on provided countries and my location
-    const myLat = CountryData[this.myLocationValue].lat
-    const myLng = CountryData[this.myLocationValue].lon
+  }
 
+  emitArcs(data) {
+    // Generate arcsData based on provided countries and own location
     const selectedCountries = data.slice(0, data.length - 1)
       .map(payment => ({ coordinates: CountryData[payment.countryCode], reverse: payment.reverse }))
       .filter(country => country.coordinates);
 
-    const arcsData = selectedCountries.map(country => this.getArcDataForCountry(country, myLat, myLng));
+    const myLat = CountryData[this.myLocationValue].lat
+    const myLng = CountryData[this.myLocationValue].lon
+
+    let arcsData = selectedCountries.map(country => this.getArcDataForCountry(country, myLat, myLng));
 
     // Emit arcs in a tightly controlled time loop
     // Cycle speed is proportional to arc length,
     // total flight time & dashLength.. very important!
     const emitLoop = () => {
-      if (arcsData.length === 0) {
-
+      if (arcsData.length < 1) {
+        // Stop emitting when no more arcs in the chunk
         return;
       }
       let arc = arcsData.shift();
@@ -129,15 +151,8 @@ export default class extends Controller {
       setTimeout(emitLoop, cycleSpeed * 2);
     };
 
-    // Start the emit loops with a small delay
-    // Add more for more arcs at once
-    setTimeout(() => {
-      emitLoop();
-      setTimeout(emitLoop, 800);
-      setTimeout(emitLoop, 1400);
-      setTimeout(emitLoop, 2300);
-      setTimeout(emitLoop, 4100);
-    }, 500);
+    // Start the emit loops
+    emitLoop();
   }
 
 
@@ -183,18 +198,10 @@ export default class extends Controller {
       endLat: endLat,
       endLng: endLng,
       arcColor: this.getArcColor(country.reverse),
-      arcAltitude: ARC_ALTITUDES[Math.round(Math.random() * (ARC_ALTITUDES.length - 1))] * 1.1,
-      arcDashLength: ARC_DASH_LENGTHS[Math.round(Math.random() * (ARC_DASH_LENGTHS.length - 1))],
-      arcSpeed: ARC_SPEEDS[Math.round(Math.random() * (ARC_SPEEDS.length - 1))] * FLIGHT_TIME
+      arcAltitude: this.getRandomFromList(ARC_ALTITUDES),
+      arcDashLength: this.getRandomFromList(ARC_DASH_LENGTHS),
+      arcSpeed: this.getRandomFromList(ARC_SPEEDS) * FLIGHT_TIME
     };
-  };
-
-  getArcColor = (reverse) => {
-    if (reverse) {
-      return ARC_REVERSED_COLORS[Math.round(Math.random() * (ARC_REVERSED_COLORS.length - 1))];
-    } else {
-      return ARC_COLORS[Math.round(Math.random() * (ARC_COLORS.length - 1))];
-    }
   };
 
   // SETUP GLOBE
@@ -253,7 +260,6 @@ export default class extends Controller {
       .ringsData([])
       .ringMaxRadius(RINGS_MAX_R)
       .ringPropagationSpeed(RING_PROPAGATION_SPEED)
-      // TODO: Get this back in sync with arc animation
       .ringRepeatPeriod(FLIGHT_TIME * ARC_REL_LEN / NUM_RINGS);
   }
 
@@ -320,7 +326,6 @@ export default class extends Controller {
       const locationData = await response.json;
       this.myLocationValue = locationData.countryCode;
     }
-    this.setViewPointCountry();
   }
 
   setViewPointCountry() {
@@ -338,8 +343,31 @@ export default class extends Controller {
     this.globe.height(this.containerSize.height);
   }
 
+  getArcColor = (reverse) => {
+    if (reverse) {
+      return ARC_REVERSED_COLORS[Math.round(Math.random() * (ARC_REVERSED_COLORS.length - 1))];
+    } else {
+      return ARC_COLORS[Math.round(Math.random() * (ARC_COLORS.length - 1))];
+    }
+  };
+
+  getRandomFromList = (list) => {
+    return list[Math.round(Math.random() * (list.length - 1))];
+  };
+
   get containerSize() {
     let dimensions = this.containerTarget.getBoundingClientRect();
     return { width: dimensions.width, height: dimensions.height };
+  }
+
+  chunkArray(array, size) {
+    // This prevents infinite loops
+    if (size < 1) throw new Error('Size must be positive')
+
+    const result = []
+    for (let i = 0; i < array.length; i += size) {
+      result.push(array.slice(i, i + size))
+    }
+    return result
   }
 }
