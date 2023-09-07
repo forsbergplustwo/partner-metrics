@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_01_095646) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_07_074633) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -78,7 +78,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_01_095646) do
     t.index ["user_id", "metric_date"], name: "index_metrics_on_user_id_and_metric_date"
   end
 
-  create_table "payment_histories", id: :serial, force: :cascade do |t|
+  create_table "payments", id: :serial, force: :cascade do |t|
     t.date "payment_date"
     t.text "charge_type"
     t.text "app_title"
@@ -88,12 +88,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_01_095646) do
     t.datetime "updated_at", precision: nil
     t.integer "user_id"
     t.string "shop_country"
-    t.index ["payment_date"], name: "index_payment_histories_on_payment_date"
-    t.index ["user_id", "app_title"], name: "index_payment_histories_on_user_id_and_app_title"
+    t.index ["payment_date"], name: "index_payments_on_payment_date"
+    t.index ["user_id", "app_title"], name: "index_payments_on_user_id_and_app_title"
     t.index ["user_id", "charge_type", "app_title"], name: "payment_histories_user_charge_title_index"
-    t.index ["user_id", "charge_type"], name: "index_payment_histories_on_user_id_and_charge_type"
+    t.index ["user_id", "charge_type"], name: "index_payments_on_user_id_and_charge_type"
     t.index ["user_id", "payment_date", "charge_type", "app_title", "shop"], name: "payment_histories_full_index"
-    t.index ["user_id", "payment_date"], name: "index_payment_histories_on_user_id_and_payment_date"
+    t.index ["user_id", "payment_date"], name: "index_payments_on_user_id_and_payment_date"
   end
 
   create_table "users", id: :serial, force: :cascade do |t|

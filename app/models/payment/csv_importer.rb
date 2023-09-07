@@ -1,7 +1,7 @@
 require "zip"
 require "csvreader"
 
-class PaymentHistory::CsvImporter
+class Payment::CsvImporter
   SAVE_EVERY_N_ROWS = 500
 
   CSV_READER_OPTIONS = {
@@ -109,8 +109,8 @@ class PaymentHistory::CsvImporter
   end
 
   def new_payment(csv_row)
-    user.payment_histories.new(
-      app_title: csv_row[:app_title].presence || PaymentHistory::UNKNOWN_APP_TITLE,
+    user.payments.new(
+      app_title: csv_row[:app_title].presence || Payment::UNKNOWN_APP_TITLE,
       charge_type: lookup_charge_type(csv_row),
       shop: csv_row[:shop],
       shop_country: csv_row[:shop_country],
@@ -121,7 +121,7 @@ class PaymentHistory::CsvImporter
 
   def save_and_reset_batch(payments)
     # Uses "activerecord-import", which is much faster than saving each row individually
-    PaymentHistory.import(payments, validate: false, no_returning: true) if payments.present?
+    Payment.import(payments, validate: false, no_returning: true) if payments.present?
     Rails.logger.info("Imported #{payments.count} rows")
     @batch_of_payments = []
   end

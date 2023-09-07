@@ -4,7 +4,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
     :recoverable, :rememberable, :trackable, :validatable
 
-  has_many :payment_histories, dependent: :delete_all
+  has_many :payments, dependent: :delete_all
   has_many :metrics, dependent: :delete_all
   has_many :imports, dependent: :delete_all
   has_one_attached :import_file, dependent: :destroy
@@ -36,11 +36,11 @@ class User < ApplicationRecord
   end
 
   def calculate_from_date
-    @calculate_from_date ||= newest_metric_date.presence || PaymentHistory.default_start_date
+    @calculate_from_date ||= newest_metric_date.presence || Payment.default_start_date
   end
 
   def clear_old_payments
-    payment_histories.where("payment_date > ?", calculate_from_date).delete_all
+    payments.where("payment_date > ?", calculate_from_date).delete_all
   end
 
   # TODO: DRY the following methods up
@@ -55,9 +55,9 @@ class User < ApplicationRecord
 
   def yearly_revenue_per_country(date:, charge_type: nil)
     if charge_type
-      payment_histories.where(payment_date: 12.months.ago..date, charge_type: charge_type)
+      payments.where(payment_date: 12.months.ago..date, charge_type: charge_type)
     else
-      payment_histories.where(payment_date: 12.months.ago..date)
+      payments.where(payment_date: 12.months.ago..date)
     end.where("revenue > ?", 0).group(:shop_country).order("sum_revenue DESC").sum(:revenue)
   end
 

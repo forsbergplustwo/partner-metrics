@@ -7,11 +7,11 @@ class PaymentsController < ApplicationController
   # TODO: Refactor -> This one is different from the others and needs re-thinking separately
   # def index
   #   if params["selected_app"].blank?
-  #     payments = current_user.payment_histories
+  #     payments = current_user.payments
   #     metrics = current_user.metrics
   #   else
   #     @selected_app = params["selected_app"]
-  #     payments = current_user.payment_histories.where(app_title: params["selected_app"])
+  #     payments = current_user.payments.where(app_title: params["selected_app"])
   #     metrics = current_user.metrics.where(app_title: params["selected_app"])
   #   end
   #   @payments_count = payments.group_by_month(:payment_date, reverse: true, last: 36).count

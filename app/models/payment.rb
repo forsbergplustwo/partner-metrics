@@ -3,7 +3,7 @@
 # 2. Split the CSV import into separate class
 # 3. Split the Partner API import into separate class
 
-class PaymentHistory < ApplicationRecord
+class Payment < ApplicationRecord
   YEARS_TO_IMPORT = 4.years.freeze
 
   UNKNOWN_APP_TITLE = "Unknown".freeze
@@ -25,13 +25,13 @@ class PaymentHistory < ApplicationRecord
       latest_calculated_metric = current_user.metrics.order("metric_date").last
       calculate_from = if latest_calculated_metric.present?
         latest_calculated_metric.metric_date + 1.day
-      elsif current_user.payment_histories.any?
-        current_user.payment_histories.order("payment_date").first.payment_date
+      elsif current_user.payments.any?
+        current_user.payments.order("payment_date").first.payment_date
       else
-        PaymentHistory.default_start_date
+        Payment.default_start_date
       end
       Rails.logger.info(calculate_from)
-      last_imported_payment = current_user.payment_histories.maximum(:payment_date)
+      last_imported_payment = current_user.payments.maximum(:payment_date)
       if last_imported_payment.present?
         calculate_to = last_imported_payment - 1.day # Process only full days (export day may contain partial data)
         # Loop through each date in the range
@@ -45,9 +45,9 @@ class PaymentHistory < ApplicationRecord
           # Then loop through each of the charge types
           Array(charge_types).each do |charge_type|
             # Then loop through each of the app titles for this charge type to calculate those specific metrics for the day
-            app_titles = current_user.payment_histories.where(charge_type: charge_type).pluck(:app_title).uniq
+            app_titles = current_user.payments.where(charge_type: charge_type).pluck(:app_title).uniq
             app_titles.each do |app_title|
-              payments = current_user.payment_histories.where(payment_date: date, charge_type: charge_type, app_title: app_title)
+              payments = current_user.payments.where(payment_date: date, charge_type: charge_type, app_title: app_title)
               next if payments.empty?
 
               # Here's where the magic happens
@@ -67,7 +67,7 @@ class PaymentHistory < ApplicationRecord
                 # Calculate Repeat Customers
                 if charge_type == "onetime_revenue"
                   payments.uniq.pluck(:shop).each do |shop|
-                    previous_purchase_count = current_user.payment_histories.where(shop: shop, payment_date: calculate_from..date, charge_type: charge_type, app_title: app_title).count
+                    previous_purchase_count = current_user.payments.where(shop: shop, payment_date: calculate_from..date, charge_type: charge_type, app_title: app_title).count
                     repeat_customers += 1 if previous_purchase_count > 1
                   end
                   repeat_vs_new_customers = repeat_customers.to_f / number_of_shops * 100
@@ -77,9 +77,9 @@ class PaymentHistory < ApplicationRecord
                 # in reality this is not always the case, due to Frozen charges. This means churn will
                 # never be 100% accurate with only payment data to work.
                 if charge_type == "recurring_revenue" || charge_type == "affiliate_revenue"
-                  previous_shops = current_user.payment_histories.where(payment_date: date - 59.days..date - 30.days, charge_type: charge_type, app_title: app_title).group_by(&:shop)
+                  previous_shops = current_user.payments.where(payment_date: date - 59.days..date - 30.days, charge_type: charge_type, app_title: app_title).group_by(&:shop)
                   if previous_shops.size != 0
-                    current_shops = current_user.payment_histories.where(payment_date: date - 29.days..date, charge_type: charge_type, app_title: app_title).group_by(&:shop)
+                    current_shops = current_user.payments.where(payment_date: date - 29.days..date, charge_type: charge_type, app_title: app_title).group_by(&:shop)
                     churned_shops = previous_shops.reject { |h| current_shops.include? h }
                     shop_churn = churned_shops.size / previous_shops.size.to_f
                     shop_churn = 0.0 if shop_churn.nan?

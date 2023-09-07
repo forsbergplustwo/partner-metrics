@@ -11,7 +11,7 @@ class MetricsController < ApplicationController
 
   def destroy
     current_user.metrics.delete_all
-    current_user.payment_histories.delete_all
+    current_user.payments.delete_all
     flash[:notice] = "Metrics reset!"
     redirect_to imports_path
   end

@@ -9,7 +9,7 @@ class HomeController < ApplicationController
   def app_store_analytics
   end
 
-  # TODO: Move to payment_histories::uploads#show & refactor + add tests
+  # TODO: Move to payments::uploads#show & refactor + add tests
   def import_status
     render nothing: true unless request.xhr?
     label = current_user.import
@@ -46,7 +46,7 @@ class HomeController < ApplicationController
     to_name = params["rename_to"]
     if from_name.present? && to_name.present? && from_name != to_name
       current_user.metrics.where(app_title: from_name).update_all(app_title: to_name)
-      current_user.payment_histories.where(app_title: from_name).update_all(app_title: to_name)
+      current_user.payments.where(app_title: from_name).update_all(app_title: to_name)
       flash[:notice] = "App successfully renamed!"
     else
       flash[:errors] = "Failed to rename app!"

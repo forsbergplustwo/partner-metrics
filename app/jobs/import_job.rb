@@ -4,9 +4,9 @@ class ImportJob < ApplicationJob
 
   def perform(import:)
     if import.source == Import::IMPORT_FILE_SOURCE
-      PaymentHistory::CsvImporter.new(import: import).import!
+      Payment::CsvImporter.new(import: import).import!
     else
-      PaymentHistory::ApiImporter.new(import: import).import!
+      Payment::ApiImporter.new(import: import).import!
     end
     import.calculating!
     # Payments must be imported fully before metrics can be calculated

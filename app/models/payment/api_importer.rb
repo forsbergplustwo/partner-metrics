@@ -1,7 +1,7 @@
 require "graphql/client"
 require "graphql/client/http"
 
-class PaymentHistory::ApiImporter
+class Payment::ApiImporter
   include ShopifyPartnerAPI
 
   THROTTLE_MIN_TIME_PER_CALL = 0.3
@@ -77,7 +77,7 @@ class PaymentHistory::ApiImporter
         @batch_of_payments << payment if payment.present?
       end
 
-      PaymentHistory.import(@batch_of_payments, validate: false, no_returning: true)
+      Payment.import(@batch_of_payments, validate: false, no_returning: true)
       @batch_of_payments = []
     end
   end
@@ -101,7 +101,7 @@ class PaymentHistory::ApiImporter
     charge_type = lookup_charge_type(node.__typename)
     return nil if charge_type.nil?
 
-    payment = PaymentHistory.new(
+    payment = Payment.new(
       user_id: user.id,
       charge_type: charge_type,
       payment_date: created_at
@@ -116,7 +116,7 @@ class PaymentHistory::ApiImporter
 
     payment.app_title = case node.__typename
     when "ReferralAdjustment", "ReferralTransaction", "ServiceSale", "ServiceSaleAdjustment"
-      PaymentHistory::UNKNOWN_APP_TITLE
+      Payment::UNKNOWN_APP_TITLE
     when "ThemeSaleAdjustment", "ThemeSale"
       node.theme.name
     else

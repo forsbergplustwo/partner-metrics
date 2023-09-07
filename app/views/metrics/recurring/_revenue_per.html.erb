@@ -11,7 +11,7 @@
   <% end %>
 <% end %>
 
-<% per_plan = current_user.payment_histories.where(
+<% per_plan = current_user.payments.where(
   charge_type: :recurring_revenue,
   app_title: q[:app],
   payment_date: (q[:date] - q[:period].days)..q[:date]).group(:revenue).order('revenue DESC').count
