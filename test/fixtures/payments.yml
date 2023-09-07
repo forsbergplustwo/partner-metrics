@@ -1,0 +1,28 @@
+onetime:
+  user: regular
+  import: completed
+  payment_date: 2023-01-01
+  charge_type: onetime_revenue
+  app_title: test-app
+  shop: test-shop.myshopify.com
+  revenue: !ruby/object:BigDecimal 18:0.1e2
+
+recurring:
+  user: regular
+  import: completed
+  payment_date: 2023-01-01
+  charge_type: recurring_revenue
+  app_title: test-app
+  shop: test-shop.myshopify.com
+  revenue: !ruby/object:BigDecimal 18:0.1e2
+  import: completed
+
+affiliate:
+  user: regular
+  import: completed
+  payment_date: 2023-01-01
+  charge_type: affiliate_revenue
+  app_title: test-app
+  shop: test-shop.myshopify.com
+  revenue: !ruby/object:BigDecimal 18:0.1e2
+  import: completed

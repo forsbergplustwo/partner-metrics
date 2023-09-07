@@ -1,19 +1,11 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  import_type: 
-  status: 
-  progress: 1
-  user: one
-  timestamps: MyString
-  started_at: 2023-09-01 11:56:47
-  ended_at: 2023-09-01 11:56:47
+completed:
+  source: <%= Import::IMPORT_FILE_SOURCE %>
+  status: completed
+  user: regular
 
-two:
-  import_type: 
-  status: 
-  progress: 1
-  user: two
-  timestamps: MyString
-  started_at: 2023-09-01 11:56:47
-  ended_at: 2023-09-01 11:56:47
+failed:
+  source: <%= Import::IMPORT_FILE_SOURCE %>
+  status: failed
+  user: regular

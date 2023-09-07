@@ -2,6 +2,13 @@
 # yarn lockfile v1
 
 
+"@babel/runtime@^7.17.8":
+  version "7.22.15"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.22.15.tgz#38f46494ccf6cf020bd4eed7124b425e83e523b8"
+  integrity sha512-T0O+aa+4w0u06iNmapipJXMV4HoUir03hpx3/YqXXhu9xim3w+dVphjFWl1OH8NbZHw5Lbm9k45drDkgq2VNNA==
+  dependencies:
+    regenerator-runtime "^0.14.0"
+
 "@babel/runtime@^7.21.0":
   version "7.22.11"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.22.11.tgz#7a9ba3bbe406ad6f9e8dd4da2ece453eb23a77a4"
@@ -350,6 +357,18 @@ frame-ticker@1:
   dependencies:
     simplesignal "^2.1.6"
 
+globe.gl@^2.29.2:
+  version "2.29.2"
+  resolved "https://registry.yarnpkg.com/globe.gl/-/globe.gl-2.29.2.tgz#23e4a78321bf468c1765ce71656010bfc69268fc"
+  integrity sha512-vH0X+tVaMJPhGnNJmj8r7rzqff3E3I6rRwULsrOleJF+Vc6izj94fjkAwiZL0y8fB4uyIGurW1qx4F48blqRTg==
+  dependencies:
+    "@tweenjs/tween.js" "18 - 21"
+    accessor-fn "1"
+    kapsule "1"
+    three ">=0.118 <1"
+    three-globe "^2.28"
+    three-render-objects "^1.28"
+
 h3-js@4:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/h3-js/-/h3-js-4.1.0.tgz#f8c4a8ad36612489a954f1a0bb3f4b7657d364e5"
@@ -384,6 +403,13 @@ polaris-view-components@^1.1.0:
   dependencies:
     "@hotwired/stimulus" "^3.2.1"
     "@rails/request.js" "^0.0.8"
+
+polished@4:
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/polished/-/polished-4.2.2.tgz#2529bb7c3198945373c52e34618c8fe7b1aa84d1"
+  integrity sha512-Sz2Lkdxz6F2Pgnpi9U5Ng/WdWAUZxmHrNPoVlm3aAemxoy2Qy7LGjQg4uf8qKelDAUW94F4np3iH2YPf2qefcQ==
+  dependencies:
+    "@babel/runtime" "^7.17.8"
 
 regenerator-runtime@^0.14.0:
   version "0.14.0"
@@ -426,7 +452,7 @@ three-geojson-geometry@1:
     d3-geo "1 - 3"
     earcut "2"
 
-three-globe@^2.28.0:
+three-globe@^2.28:
   version "2.28.0"
   resolved "https://registry.yarnpkg.com/three-globe/-/three-globe-2.28.0.tgz#384935e39f6b8e3cbd1afce0d62f3c337ad7fcdd"
   integrity sha512-p/51NNPfu1N0ReSqtwNVICcNn0H96AsgXt2X/DLWyjKbcKMSWZLYIzA9Px9m1hoYEq1wPscHiHbMPWsv2huUcg==
@@ -447,10 +473,20 @@ three-globe@^2.28.0:
     three-geojson-geometry "1"
     tinycolor2 "1"
 
-three-glow-mesh@^0.1.2:
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/three-glow-mesh/-/three-glow-mesh-0.1.2.tgz#d7e1528e678380fc7022ffed6189246100493b4d"
-  integrity sha512-sjiRl8PdRuc5xzZtaAusumx4sS/zRAYiFSQ1bNefRrJOXgu+ZHxq4/vYwRoa85PwPKLkp2SCo3Lu4JfJrphngw==
+three-render-objects@^1.28:
+  version "1.28.6"
+  resolved "https://registry.yarnpkg.com/three-render-objects/-/three-render-objects-1.28.6.tgz#96386dcafd270e509606691139018c4a093ff495"
+  integrity sha512-e1Dls7NbT9XvKByueLRFRFKIAnNRL9sz7Ul318uXkP/f9uZjUFmelgloBAK3PSQ5xJd++FsKCf7ZIteSWNzTpA==
+  dependencies:
+    "@tweenjs/tween.js" "18 - 21"
+    accessor-fn "1"
+    kapsule "1"
+    polished "4"
+
+"three@>=0.118 <1":
+  version "0.156.1"
+  resolved "https://registry.yarnpkg.com/three/-/three-0.156.1.tgz#bab4fec121a5b3975eb4f4d227d9c912171eb399"
+  integrity sha512-kP7H0FK9d/k6t/XvQ9FO6i+QrePoDcNhwl0I02+wmUJRNSLCUIDMcfObnzQvxb37/0Uc9TDT0T1HgsRRrO6SYQ==
 
 three@^0.156.0:
   version "0.156.0"

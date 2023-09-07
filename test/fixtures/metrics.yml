@@ -1,0 +1,50 @@
+recurring:
+  user: regular
+  import: completed
+  metric_date: 2023-01-01
+  charge_type: recurring_revenue
+  app_title: test-app
+  revenue: !ruby/object:BigDecimal 18:0.1e2
+  number_of_charges: 1
+  number_of_shops: 1
+  repeat_customers: 0
+  repeat_vs_new_customers: !ruby/object:BigDecimal 18:0.0
+  average_revenue_per_shop: !ruby/object:BigDecimal 27:-0.2842e2
+  average_revenue_per_charge: !ruby/object:BigDecimal 27:-0.2842e2
+  shop_churn: !ruby/object:BigDecimal 18:0.0
+  revenue_churn: !ruby/object:BigDecimal 18:0.0
+  lifetime_value: !ruby/object:BigDecimal 18:0.0
+
+onetime:
+  user: regular
+  import: completed
+  metric_date: 2023-01-01
+  charge_type: onetime_revenue
+  app_title: test-app
+  revenue: !ruby/object:BigDecimal 18:0.1e2
+  number_of_charges: 1
+  number_of_shops: 1
+  repeat_customers: 0
+  repeat_vs_new_customers: !ruby/object:BigDecimal 18:0.0
+  average_revenue_per_shop: !ruby/object:BigDecimal 27:-0.2842e2
+  average_revenue_per_charge: !ruby/object:BigDecimal 27:-0.2842e2
+  shop_churn: !ruby/object:BigDecimal 18:0.0
+  revenue_churn: !ruby/object:BigDecimal 18:0.0
+  lifetime_value: !ruby/object:BigDecimal 18:0.0
+
+affiliate:
+  user: regular
+  import: completed
+  metric_date: 2023-01-01
+  charge_type: affiliate_revenue
+  app_title: test-app
+  revenue: !ruby/object:BigDecimal 18:0.1e2
+  number_of_charges: 1
+  number_of_shops: 1
+  repeat_customers: 0
+  repeat_vs_new_customers: !ruby/object:BigDecimal 18:0.0
+  average_revenue_per_shop: !ruby/object:BigDecimal 27:-0.2842e2
+  average_revenue_per_charge: !ruby/object:BigDecimal 27:-0.2842e2
+  shop_churn: !ruby/object:BigDecimal 18:0.0
+  revenue_churn: !ruby/object:BigDecimal 18:0.0
+  lifetime_value: !ruby/object:BigDecimal 18:0.0

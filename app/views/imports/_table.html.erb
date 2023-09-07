@@ -3,7 +3,7 @@
   <% table.with_column(t('imports.imported_at', date: nil)) do |import| %>
     <br>
     <%= polaris_link(url: import_path(import), monochrome: true, no_underline: true) do %>
-      <%= polaris_text_style(variation: :strong) { import.created_at.to_s(:long) }%>
+      <%= polaris_text_style(variation: :strong) { import.created_at.to_fs(:long) }%>
     <% end %><br>
     <br>
   <% end %>

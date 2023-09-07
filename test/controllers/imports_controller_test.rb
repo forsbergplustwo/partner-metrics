@@ -2,7 +2,8 @@ require "test_helper"
 
 class ImportsControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @import = imports(:one)
+    sign_in users(:regular)
+    @import = imports(:completed)
   end
 
   test "should get index" do
@@ -17,8 +18,10 @@ class ImportsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create import" do
     assert_difference("Import.count") do
-      post imports_url, params: {import: {ended_at: @import.ended_at, import_type: @import.import_type, progress: @import.progress, started_at: @import.started_at, status: @import.status, timestamps: @import.timestamps, user_id: @import.user_id}}
+      post imports_url, params: {import: {payouts_file: fixture_file_upload("payouts-recurring.csv", "text/csv")}}
     end
+
+    assert_enqueued_jobs 1, only: ImportJob
 
     assert_redirected_to import_url(Import.last)
   end
@@ -26,16 +29,6 @@ class ImportsControllerTest < ActionDispatch::IntegrationTest
   test "should show import" do
     get import_url(@import)
     assert_response :success
-  end
-
-  test "should get edit" do
-    get edit_import_url(@import)
-    assert_response :success
-  end
-
-  test "should update import" do
-    patch import_url(@import), params: {import: {ended_at: @import.ended_at, import_type: @import.import_type, progress: @import.progress, started_at: @import.started_at, status: @import.status, timestamps: @import.timestamps, user_id: @import.user_id}}
-    assert_redirected_to import_url(@import)
   end
 
   test "should destroy import" do

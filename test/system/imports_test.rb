@@ -2,52 +2,52 @@ require "application_system_test_case"
 
 class ImportsTest < ApplicationSystemTestCase
   setup do
-    @import = imports(:one)
+    sign_in users(:regular)
+    @import = imports(:completed)
   end
 
-  test "visiting the index" do
+  test "visiting the index with an import" do
     visit imports_url
-    assert_selector "h1", text: "Imports"
+    assert_selector "h1", text: "Data imports"
+
+    assert_text "View details"
+  end
+
+  test "visiting the index with no import" do
+    Import.destroy_all
+
+    visit imports_url
+    assert_selector "h1", text: "Data imports"
+
+    assert_text "No imports yet"
   end
 
   test "should create import" do
     visit imports_url
     click_on "New import"
 
-    fill_in "Ended at", with: @import.ended_at
-    fill_in "Import type", with: @import.import_type
-    fill_in "Progress", with: @import.progress
-    fill_in "Started at", with: @import.started_at
-    fill_in "Status", with: @import.status
-    fill_in "Timestamps", with: @import.timestamps
-    fill_in "User", with: @import.user_id
-    click_on "Create Import"
+    assert_text "Import"
+    assert_text "Draft"
+    assert_text "Add file"
 
-    assert_text "Import was successfully created"
-    click_on "Back"
-  end
+    attach_to_import("payouts-recurring.csv")
 
-  test "should update Import" do
-    visit import_url(@import)
-    click_on "Edit this import", match: :first
+    assert_button "Import", disabled: false
+    click_on "Import"
 
-    fill_in "Ended at", with: @import.ended_at
-    fill_in "Import type", with: @import.import_type
-    fill_in "Progress", with: @import.progress
-    fill_in "Started at", with: @import.started_at
-    fill_in "Status", with: @import.status
-    fill_in "Timestamps", with: @import.timestamps
-    fill_in "User", with: @import.user_id
-    click_on "Update Import"
-
-    assert_text "Import was successfully updated"
-    click_on "Back"
+    assert_text "Import successfully created."
+    assert_text "Import details"
   end
 
   test "should destroy Import" do
     visit import_url(@import)
-    click_on "Destroy this import", match: :first
 
-    assert_text "Import was successfully destroyed"
+    accept_alert do
+      click_on "Delete import", match: :first
+    end
+
+    assert_text "Import successfully destroyed."
+
+    assert_selector "h1", text: "Data imports"
   end
 end

@@ -1,0 +1,13 @@
+regular:
+  email: regular@example.com
+  import: Complete
+  import_status: 100
+  partner_api_access_token: "abcdefg"
+  partner_api_organization_id: 123456
+
+new:
+  email: new@example.com
+  import:
+  import_status:
+  partner_api_access_token:
+  partner_api_organization_id:

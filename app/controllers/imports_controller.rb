@@ -21,7 +21,7 @@ class ImportsController < ApplicationController
     @import = current_user.imports.new(source: Import::IMPORT_FILE_SOURCE, **import_params)
 
     if @import.save!
-      redirect_to @import, notice: "Import was successfully created."
+      redirect_to @import, notice: "Import successfully created."
     else
       flash.now[:alert] = "Import failed to create."
       render :new, status: :unprocessable_entity
@@ -31,7 +31,7 @@ class ImportsController < ApplicationController
   # DELETE /imports/1
   def destroy
     @import.destroy
-    redirect_to imports_url, notice: "Import was successfully destroyed.", status: :see_other
+    redirect_to imports_url, notice: "Import successfully destroyed.", status: :see_other
   end
 
   private
