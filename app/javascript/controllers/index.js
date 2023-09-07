@@ -4,6 +4,9 @@
 
 import { application } from "./application"
 
+import ChartkickController from "./chartkick_controller"
+application.register("chartkick", ChartkickController)
+
 import FiltersController from "./filters_controller"
 application.register("filters", FiltersController)
 

@@ -3,7 +3,10 @@
   subtitle: t("metrics.#{@filter.charge_type}.subtitle"),
 ) do |page| %>
 
-  <%= turbo_frame_tag :metrics do %>
+  <%= turbo_frame_tag :metrics, data: {
+    controller: "chartkick",
+    action: "turbo:load@window->chartkick#createChart"
+  } do %>
 
     <%= polaris_vertical_stack(gap: "5") do %>
 

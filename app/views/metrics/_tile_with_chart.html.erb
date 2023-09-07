@@ -19,7 +19,11 @@
 
     <% end %>
 
-    <%= area_chart(tile.chart_data, **metrics_chart_options)%>
+    <div id="chart-1" style="height: 300px; width: 100%;" data-chartkick-target="chart">
+     <canvas style="box-sizing: border-box;" width="300"></canvas>
+   </div>
+    <%= tag.script  type: "application/json", data: { chartkick_target: "data"} do %><%= tile.chart_data.to_json.html_safe %><% end %>
+    <%= tag.script  type: "application/json", data: { chartkick_target: "options"} do %><%= metrics_chart_options.to_json.html_safe %><% end %>
 
     <%= polaris_divider %>
 
