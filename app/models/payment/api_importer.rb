@@ -40,14 +40,14 @@ class Payment::ApiImporter
     @batch_of_payments = []
   end
 
-  attr_reader :import, :user
+  attr_accessor :import, :user
 
   def import!
-    @import.processing!
+    import.processing!
     user.clear_old_payments
     import_new_payments
   rescue => error
-    @import.failed!
+    import.failed!
     handle_import_error(error)
     raise error
   end
@@ -101,8 +101,8 @@ class Payment::ApiImporter
     charge_type = lookup_charge_type(node.__typename)
     return nil if charge_type.nil?
 
-    payment = Payment.new(
-      user_id: user.id,
+    payment = user.payments.new(
+      import: import,
       charge_type: charge_type,
       payment_date: created_at
     )

@@ -1,5 +1,6 @@
 class Metric < ApplicationRecord
   belongs_to :user
+  belongs_to :import
 
   PERIODS = [7, 28, 29, 30, 31, 90, 180, 365].freeze
   PERIODS_AGO = [1, 2, 3, 6, 12].freeze

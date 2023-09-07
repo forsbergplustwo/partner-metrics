@@ -1,5 +1,7 @@
 class Import < ApplicationRecord
   belongs_to :user
+  has_many :payments, dependent: :delete_all
+  has_many :metrics, dependent: :delete_all
   has_one_attached :payouts_file, dependent: :destroy
 
   ACCEPTED_FILE_TYPES = %w[text/csv application/zip].freeze
@@ -31,8 +33,8 @@ class Import < ApplicationRecord
   after_update_commit :broadcast_status_change, if: -> { saved_change_to_status? }
 
   def schedule!
-    ImportJob.perform_later(import: self)
     scheduled!
+    ImportJob.perform_later(import: self)
   end
 
   def broadcast_status_change

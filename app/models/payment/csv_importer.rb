@@ -65,14 +65,14 @@ class Payment::CsvImporter
     @batch_of_payments = []
   end
 
-  attr_accessor :user, :temp_files
+  attr_accessor :import, :user, :temp_files
 
   def import!
-    @import.processing!
+    import.processing!
     user.clear_old_payments
     import_new_payments
   rescue => error
-    @import.failed!
+    import.failed!
     handle_import_error(error)
     raise error
   ensure
@@ -100,7 +100,7 @@ class Payment::CsvImporter
   end
 
   def prepared_csv_file
-    file = @import.payouts_file
+    file = import.payouts_file
     if zipped?(file.content_type)
       extracted_zip_file(ActiveStorage::Blob.service.path_for(file.key))
     else
@@ -110,6 +110,7 @@ class Payment::CsvImporter
 
   def new_payment(csv_row)
     user.payments.new(
+      import: import,
       app_title: csv_row[:app_title].presence || Payment::UNKNOWN_APP_TITLE,
       charge_type: lookup_charge_type(csv_row),
       shop: csv_row[:shop],

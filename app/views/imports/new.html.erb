@@ -1,3 +1,5 @@
+<%= turbo_stream_from [current_user, :imports] %>
+
 <%= polaris_page(
   narrow_width: true,
   title: t(".title"),
