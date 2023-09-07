@@ -2,6 +2,7 @@ class PaymentsController < ApplicationController
   before_action :authenticate_user!
 
   def index
+    @payments = []
   end
 
   # TODO: Refactor -> This one is different from the others and needs re-thinking separately

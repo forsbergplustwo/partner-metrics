@@ -1,0 +1,17 @@
+<%= polaris_card do %>
+  <%= polaris_empty_state(
+    heading: t(".title", resource: resource_name(resource, true)),
+    classes: "empty-state",
+    image: image_path("empty_state/ImportMinor"),
+  ) do |state| %>
+
+    <% state.with_primary_action(url: new_import_path) { "New import" } %>
+    <p><%= t(".description")%></p>
+
+    <% state.with_footer do %>
+      <p>
+        <%= t(".footer_html", url: polaris_link(url: "#", monochrome: true) { "Shopify Partner API" } )%>
+      </p>
+    <% end %>
+  <% end %>
+<% end %>

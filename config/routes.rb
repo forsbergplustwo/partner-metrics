@@ -12,6 +12,7 @@ Rails.application.routes.draw do
 
   resources :imports, except: [:edit, :update] do
     resource :globe, only: [:show], controller: "imports/globes"
+    delete :destroy_all, on: :collection, to: "imports/destroy_all#destroy"
   end
 
   scope controller: :home do

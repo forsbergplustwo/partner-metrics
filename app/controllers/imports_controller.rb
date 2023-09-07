@@ -4,7 +4,7 @@ class ImportsController < ApplicationController
 
   # GET /imports
   def index
-    @imports = Import.all
+    @imports = current_user.imports.all
   end
 
   # GET /imports/1

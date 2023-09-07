@@ -1,0 +1,30 @@
+<%= polaris_index_table(imports) do |table| %>
+
+  <% table.with_column(t('imports.imported_at', date: nil)) do |import| %>
+    <br>
+    <%= polaris_link(url: import_path(import), monochrome: true, no_underline: true) do %>
+      <%= polaris_text_style(variation: :strong) { import.created_at.to_s(:long) }%>
+    <% end %><br>
+    <br>
+  <% end %>
+
+  <% table.with_column(t('imports.status')) do |import| %>
+    <%= render "status", import: import %>
+  <% end %>
+
+  <% table.with_column(t('imports.source')) do |import| %>
+    <%= polaris_text_style() { t("imports.sources.#{import.source}") } %>
+  <% end %>
+
+  <% table.with_column(t('imports.imported')) do |import| %>
+    <%= number_with_delimiter(import.payments.count) %> <%= t("imports.payments") %>
+  <% end %>
+
+  <% table.with_column(t('imports.metrics_date_range')) do |import| %>
+    <%= metrics_date_range_text(import)%>
+  <% end %>
+
+  <% table.with_column(t('actions.title')) do |import| %>
+    <%= polaris_button(url: import_path(import)) { t('actions.view_details') } %>
+  <% end %>
+<% end %>

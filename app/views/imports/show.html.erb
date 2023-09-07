@@ -3,6 +3,7 @@
 <%= polaris_page(
   narrow_width: true,
   title: t(".title"),
+  subtitle: @import.created_at.to_s(:long),
   id: dom_id(@import),
   back_url: imports_path,
 ) do |page| %>
@@ -11,7 +12,6 @@
     <%= render "status", import: @import %>
   <% end %>
 
-
   <%= render @import %>
 
   <%= polaris_page_actions do |actions| %>
@@ -19,16 +19,18 @@
       destructive: true,
       outline: true,
       url: @import,
-      data: {turbo_method: :delete},
-    ) { "Delete import" } %>
+      data: {
+        turbo_method: :delete,
+        turbo_confirm: t("imports.confirm_destroy"),
+      },
+    ) { t("actions.delete", resource: resource_name(Import)) } %>
   <% end %>
 
 <% end %>
-
-<br><br>
+<br>
 <%= tag.div style: "width: 80%; height: 800px; margin: 0 auto; opacity: 0; transition: opacity 3s ease-in-out;",
     data: {
       controller: "globe",
       globe_target: "container",
-      globe_fetch_url_value: import_globe_path(@import, offset: 0),
+      globe_fetch_url_value: import_globe_path(@import),
     } %>

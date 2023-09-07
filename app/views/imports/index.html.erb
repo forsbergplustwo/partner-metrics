@@ -5,16 +5,21 @@
 
   <% page.with_primary_action(url: new_import_path) { "New import" } %>
 
-  <%= turbo_frame_tag :imports, target: "_top" do %>
+  <% if @imports.any? %>
+    <%= render "table", imports: @imports %>
 
-  <% end %>
-
-  <%= polaris_page_actions do |actions| %>
-    <% actions.with_secondary_action(
-      destructive: true,
-      outline: true,
-      url: metrics_path,
-      data: {turbo_method: :delete,turbo_confirm: "Are you sure? This removes all payments and metrics."},
-    ) { "Reset all data" } %>
+    <%= polaris_page_actions do |actions| %>
+      <% actions.with_secondary_action(
+        destructive: true,
+        outline: true,
+        url: destroy_all_imports_path,
+        data: {
+          turbo_method: :delete,
+          turbo_confirm: t("imports.confirm_destroy")
+        },
+      ) { t("actions.delete_all", resource: resource_name(Import, true)) } %>
+    <% end %>
+  <% else %>
+    <%= render "shared/empty_state", resource: Import %>
   <% end %>
 <% end %>

@@ -78,6 +78,7 @@ class Payment::ApiImporter
       end
 
       Payment.import(@batch_of_payments, validate: false, no_returning: true)
+      import.touch
       @batch_of_payments = []
     end
   end

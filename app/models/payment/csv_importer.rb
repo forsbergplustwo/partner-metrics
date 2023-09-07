@@ -123,7 +123,7 @@ class Payment::CsvImporter
   def save_and_reset_batch(payments)
     # Uses "activerecord-import", which is much faster than saving each row individually
     Payment.import(payments, validate: false, no_returning: true) if payments.present?
-    Rails.logger.info("Imported #{payments.count} rows")
+    import.touch
     @batch_of_payments = []
   end
 

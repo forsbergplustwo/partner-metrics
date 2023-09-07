@@ -31,9 +31,13 @@
 
 en:
   actions:
+    title: "Actions"
+    view_details: "View details"
     save: "Save"
     discard: "Discard"
     choose_file: "Choose file"
+    delete: "Delete %{resource}"
+    delete_all: "Delete all %{resource}"
   statuses:
     draft: "Draft"
     scheduled: "Scheduled"
@@ -42,6 +46,11 @@ en:
     completed: "Completed"
     failed: "Failed"
     cancelled: "Cancelled"
+  shared:
+    empty_state:
+      title: "No %{resource} yet"
+      description: "Import your payouts data to get started."
+      footer_html: If you don’t want to upload historical data, connect your %{url} data source.
   metrics:
     title: "Metrics"
     subtitle: "An overview of all your recurring, one-time, and affiliate revenue."
@@ -58,9 +67,20 @@ en:
   payments:
     index:
       title: "Payments"
-      subtitle: "A list of all payments made to you."
+      subtitle: "All payments made to you."
       no_payments: "No payments have been made to you yet."
   imports:
+    status: "Status"
+    source: "Source"
+    imported_at: "Imported at %{date}"
+    imported: "Imported"
+    payments: payments
+    metrics_date_range: "Metrics calculated for"
+    no_metrics: "..."
+    confirm_destroy: "Are you sure? This also deletes associated payments and metrics."
+    sources:
+      import_file: "CSV payouts file"
+      shopify_payments_api: "Shopify Partner API"
     new:
       title: "Import"
       subtitle: "Import your historical payouts data to get a complete overview of your revenue."
@@ -68,9 +88,7 @@ en:
       title: "Import details"
     index:
       title: "Data imports"
-      subtitle: "A list of all data imports for your account."
+      subtitle: "All data imports for your account, from both CSV files and the Shopify Partner API."
       no_imports: "No imports have been made yet."
     form:
       payouts_file_help_text: "Export your payouts from the Shopify Partners Dashboard, then drop the received ZIP file above."
-    insights:
-      title: Import details

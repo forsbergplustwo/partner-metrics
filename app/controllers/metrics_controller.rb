@@ -10,6 +10,7 @@ class MetricsController < ApplicationController
   end
 
   def destroy
+    current_user.imports.delete_all
     current_user.metrics.delete_all
     current_user.payments.delete_all
     flash[:notice] = "Metrics reset!"

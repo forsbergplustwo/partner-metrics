@@ -5,7 +5,16 @@
 
   <% page.with_primary_action(disabled: true) { "Save" } %>
 
-  <%= turbo_frame_tag :payments, target: "_top" do %>
+  <% if @payments.any? %>
+
+    <%= turbo_frame_tag :payments, target: "_top" do %>
+
+    <% end %>
+
+  <% else %>
+
+    <%= render "shared/empty_state", resource: Payment %>
 
   <% end %>
+
 <% end %>

@@ -1,36 +1,37 @@
-<%= polaris_card do %>
-  <!--
-  <div>
-    <p>
-      <strong>Import type:</strong>
-      <%= import.source %>
-    </p>
+<%= tag.div id: dom_id(import, :details) do %>
+  <%= polaris_card do %>
+    <%= polaris_vertical_stack(gap: "5") do |stack| %>
 
-    <p>
-      <strong>Progress:</strong>
-      <%= import.progress %>
-    </p>
+      <%= polaris_stack(alignment: :center) do |nested_stack| %>
+        <% nested_stack.with_item do %>
+          <%= polaris_icon(name: "DynamicSourceMajor", color: :base) %>
+        <% end %>
+        <% nested_stack.with_item do %>
+          <%= polaris_text_strong { t("imports.source") } %><br>
+          <%= t("imports.sources.#{import.source}") %>
+        <% end %>
+      <% end %>
 
-    <p>
-      <strong>User:</strong>
-      <%= import.user_id %>
-    </p>
+      <%= polaris_stack(alignment: :center) do |nested_stack| %>
+        <% nested_stack.with_item do %>
+          <%= polaris_icon(name: "CashDollarMajor", color: :base) %>
+        <% end %>
+        <% nested_stack.with_item do %>
+          <%= polaris_text_strong { t("imports.imported") } %><br>
+          <%= number_with_delimiter(import.payments.count) %> <%= t("imports.payments") %>
+        <% end %>
+      <% end %>
 
-    <p>
-      <strong>Timestamps:</strong>
-      <%= import.timestamps %>
-    </p>
+      <%= polaris_stack(alignment: :center) do |nested_stack| %>
+        <% nested_stack.with_item do %>
+          <%= polaris_icon(name: "CalendarTimeMinor", color: :base) %>
+        <% end %>
+        <% nested_stack.with_item do %>
+          <%= polaris_text_strong { t("imports.metrics_date_range") } %><br>
+          <%= metrics_date_range_text(import)%>
+        <% end %>
+      <% end %>
 
-    <p>
-      <strong>Started at:</strong>
-      <%= import.started_at %>
-    </p>
-
-    <p>
-      <strong>Ended at:</strong>
-      <%= import.ended_at %>
-    </p>
-
-  </div>
-  -->
+    <% end %>
+  <% end %>
 <% end %>

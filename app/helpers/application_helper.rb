@@ -1,4 +1,8 @@
 module ApplicationHelper
+  def resource_name(klass, pluralize = false)
+    klass.name.pluralize(pluralize ? 2 : 1).downcase
+  end
+
   def status_badge(status)
     badge_status = case status
     when "complete" then :success

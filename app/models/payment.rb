@@ -122,6 +122,7 @@ class Payment < ApplicationRecord
             end
           end
           Metric.import!(metrics_for_date, validate: false, no_returning: true)
+          import.touch
           days_processed += 1
           import_status = ((days_processed.to_f / total_days.to_f) * 100.0).to_i
           user.update(import: "Calculating metrics (#{date} processed)", import_status: import_status)

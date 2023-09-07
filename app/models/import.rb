@@ -1,4 +1,6 @@
 class Import < ApplicationRecord
+  include ActionView::RecordIdentifier
+
   belongs_to :user
   has_many :payments, dependent: :delete_all
   has_many :metrics, dependent: :delete_all
@@ -30,17 +32,29 @@ class Import < ApplicationRecord
   validates :status, presence: true
 
   after_create_commit :schedule!
-  after_update_commit :broadcast_status_change, if: -> { saved_change_to_status? }
+  after_update_commit :broadcast_details_update
+  after_update_commit :broadcast_status_update, if: -> { saved_change_to_status? }
 
   def schedule!
     scheduled!
     ImportJob.perform_later(import: self)
   end
 
-  def broadcast_status_change
+  private
+
+  def broadcast_details_update
     broadcast_replace_to(
       [user, :imports],
-      target: "#{id}_status",
+      target: dom_id(self, :details),
+      partial: "imports/import",
+      locals: {import: self}
+    )
+  end
+
+  def broadcast_status_update
+    broadcast_replace_to(
+      [user, :imports],
+      target: dom_id(self, :status),
       partial: "imports/status",
       locals: {import: self}
     )
