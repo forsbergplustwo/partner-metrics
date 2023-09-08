@@ -1,7 +1,7 @@
 require "zip"
 require "csvreader"
 
-class Payment::CsvImporter
+class Import::CsvFile
   SAVE_EVERY_N_ROWS = 500
 
   CSV_READER_OPTIONS = {
@@ -67,13 +67,11 @@ class Payment::CsvImporter
 
   attr_accessor :import, :user, :temp_files
 
-  def import!
-    import.processing!
+  def import_payments!
     user.clear_old_payments
     import_new_payments
   rescue => error
     import.failed!
-    handle_import_error(error)
     raise error
   ensure
     close_and_unlink_temp_files
@@ -157,18 +155,6 @@ class Payment::CsvImporter
       end
     end
     temp_files[:csv]
-  end
-
-  # TODO: Create a generic import status class
-  def handle_import_error(error)
-    user.update(
-      import: "Failed",
-      import_status: 100,
-      partner_api_errors: "Error: #{error.message}"
-    )
-    # Resque swallows errors, so we need to log them here
-    Rails.logger.error("Error importing CSV: #{error.message}")
-    Rails.logger.error(error.backtrace.join("\n"))
   end
 
   def close_and_unlink_temp_files

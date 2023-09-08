@@ -21,7 +21,7 @@ class Import < ApplicationRecord
   enum status: {
     draft: "draft",
     scheduled: "scheduled",
-    processing: "processing",
+    importing: "importing",
     calculating: "calculating",
     completed: "completed",
     failed: "failed"
@@ -31,16 +31,36 @@ class Import < ApplicationRecord
   validates :source, presence: true
   validates :status, presence: true
 
-  after_create_commit :schedule!
+  after_create_commit :schedule
   after_update_commit :broadcast_details_update
   after_update_commit :broadcast_status_update, if: -> { saved_change_to_status? }
 
-  def schedule!
+  def schedule
     scheduled!
-    ImportJob.perform_later(import: self)
+    ImportPaymentsJob.perform_later(import: self)
+  end
+
+  def import
+    importing!
+    importer_for_source.new(import: self).import_payments!
+    imported
+  end
+
+  def imported
+    CalculateMetricsJob.perform_later(import: self)
+  end
+
+  def calculate
+    calculating!
+    Import::MetricCalculator.new(import: self).calculate_metrics!
+    completed!
   end
 
   private
+
+  def importer_for_source
+    (source == IMPORT_FILE_SOURCE) ? Import::CsvFile : Import::ShopifyPartnerApi
+  end
 
   def broadcast_details_update
     broadcast_replace_to(

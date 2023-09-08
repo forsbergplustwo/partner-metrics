@@ -1,7 +1,7 @@
 require "graphql/client"
 require "graphql/client/http"
 
-class Payment::ApiImporter
+class Import::ShopifyPartnerApi
   include ShopifyPartnerAPI
 
   THROTTLE_MIN_TIME_PER_CALL = 0.3
@@ -42,13 +42,11 @@ class Payment::ApiImporter
 
   attr_accessor :import, :user
 
-  def import!
-    import.processing!
+  def import_payments!
     user.clear_old_payments
     import_new_payments
   rescue => error
-    import.failed!
-    handle_import_error(error)
+    import&.failed!
     raise error
   end
 
@@ -150,16 +148,5 @@ class Payment::ApiImporter
       charge_type = (user.count_usage_charges_as_recurring == true) ? "recurring_revenue" : "onetime_revenue"
     end
     charge_type
-  end
-
-  def handle_import_error(error)
-    user.update(
-      import: "Failed",
-      import_status: 100,
-      partner_api_errors: "Error importing your data: #{error.message} - Please check your Account connection settings"
-    )
-    # Resque swallows errors, so we need to log them here
-    Rails.logger.error("Error importing API: #{error.message}")
-    Rails.logger.error(error.backtrace.join("\n"))
   end
 end

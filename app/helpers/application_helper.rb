@@ -6,16 +6,16 @@ module ApplicationHelper
   def status_badge(status)
     badge_status = case status
     when "complete" then :success
-    when "draft", "processing", "calculating" then :info
+    when "draft", "importing", "calculating" then :info
     when "cancelled" then :warning
     when "failed" then :attention
     else
       :default
     end
     badge_progress = case status
-    when "schedulled", "processing" then :incomplete
-    when "calculating", "failed", "cancelled" then :partially_complete
-    when "complete" then :complete
+    when "scheduled" then :incomplete
+    when "calculating", "importing", "failed" then :partially_complete
+    when "complete", "cancelled" then :complete
     else
       :default
     end
