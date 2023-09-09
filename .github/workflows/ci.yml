@@ -62,6 +62,12 @@ jobs:
           bin/rake db:create
           bin/rake db:schema:load
           bin/rake db:migrate
+      - name: build assets
+        env:
+          RAILS_ENV: test
+          RAILS_MASTER_KEY: ${{ secrets.master_key }}
+        run: |
+          bin/rake assets:precompile
       - name: Run tests
         env:
           AWS_REGION: us-east-1
