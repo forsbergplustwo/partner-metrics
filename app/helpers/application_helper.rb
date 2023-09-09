@@ -1,5 +1,5 @@
 module ApplicationHelper
-  def resource_name(klass, pluralize = false)
+  def resource_name_for(klass, pluralize = false)
     klass.name.pluralize(pluralize ? 2 : 1).downcase
   end
 

@@ -23,7 +23,7 @@
         turbo_method: :delete,
         turbo_confirm: t("imports.confirm_destroy"),
       },
-    ) { t("actions.delete", resource: resource_name(Import)) } %>
+    ) { t("actions.delete", resource: resource_name_for(Import)) } %>
   <% end %>
 
 <% end %>

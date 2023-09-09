@@ -17,7 +17,7 @@
           turbo_method: :delete,
           turbo_confirm: t("imports.confirm_destroy")
         },
-      ) { t("actions.delete_all", resource: resource_name(Import, true)) } %>
+      ) { t("actions.delete_all", resource: resource_name_for(Import, true)) } %>
     <% end %>
   <% else %>
     <%= render "shared/empty_state", resource: Import %>

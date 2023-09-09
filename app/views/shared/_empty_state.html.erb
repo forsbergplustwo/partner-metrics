@@ -1,6 +1,6 @@
 <%= polaris_card do %>
   <%= polaris_empty_state(
-    heading: t(".title", resource: resource_name(resource, true)),
+    heading: t(".title", resource: resource_name_for(resource, true)),
     classes: "empty-state",
     image: image_path("empty_state/ImportMinor"),
   ) do |state| %>

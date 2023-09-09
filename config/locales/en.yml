@@ -20,6 +20,23 @@ en:
       title: "No %{resource} yet"
       description: "Import your payouts data to get started."
       footer_html: If you don’t want to upload historical data, connect your %{url} data source.
+  devise:
+    sign_in: "Log in"
+    sign_out: "Log out"
+    sign_up: "Sign up"
+    edit: "Edit account"
+    forgot_password: "Forgot password"
+    email: "Email"
+    password: "Password"
+    new_password: "New password"
+    password_confirmation: "Confirm password"
+    remember_me: "Remember me"
+    leave_blank_if_you_don_t_want_to_change_it: "Leave blank if you don't want to change it"
+    we_need_your_current_password_to_confirm_your_changes: "We need your current password to confirm your changes"
+    delete_account: "Delete account"
+    confirm_destroy: "Are you sure? This will remove your account and all data, it cannot be undone."
+    send_me_reset_password_instructions: "Send me reset password instructions"
+    change_password: "Change password"
   metrics:
     title: "Metrics"
     subtitle: "An overview of all your recurring, one-time, and affiliate revenue."

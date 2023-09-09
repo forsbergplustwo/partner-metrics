@@ -1,13 +1,10 @@
 class User < ApplicationRecord
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
     :recoverable, :rememberable, :trackable, :validatable
 
   has_many :payments, dependent: :delete_all
   has_many :metrics, dependent: :delete_all
   has_many :imports, dependent: :delete_all
-  has_one_attached :import_file, dependent: :destroy
 
   def has_partner_api_credentials?
     partner_api_access_token.present? && partner_api_organization_id.present?
