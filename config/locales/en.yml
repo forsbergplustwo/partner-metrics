@@ -7,6 +7,7 @@ en:
     choose_file: "Choose file"
     delete: "Delete %{resource}"
     delete_all: "Delete all %{resource}"
+    more_actions: "More actions"
   statuses:
     draft: "Draft"
     scheduled: "Scheduled"
@@ -78,3 +79,8 @@ en:
       no_imports: "No imports have been made yet."
     form:
       payouts_file_help_text: "Export your payouts from the Shopify Partners Dashboard, then drop the received ZIP file above."
+  rename_apps:
+    rename: "Rename app"
+    from: "Old app name"
+    to: "Current app name"
+    subtitle: "If you have renamed your app in the Shopify Partners Dashboard, merge the data by renaming the old app to the new app name."

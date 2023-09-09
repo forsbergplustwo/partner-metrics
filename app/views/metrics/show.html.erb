@@ -1,7 +1,9 @@
 <%= polaris_page(
   title: t("metrics.#{@filter.charge_type}.title"),
-  subtitle: t("metrics.#{@filter.charge_type}.subtitle"),
+  subtitle: t("metrics.#{@filter.charge_type}.subtitle")
 ) do |page| %>
+
+  <%= render "shared/page_actions", page: page %>
 
   <%= turbo_frame_tag :metrics, data: {
     controller: "chartkick",

@@ -1,0 +1,48 @@
+<%= polaris_page(
+  narrow_width: true,
+  title: t("rename_apps.rename"),
+  subtitle: t("rename_apps.subtitle"),
+  back_to: :back
+) do |page| %>
+
+  <%= polaris_card do %>
+    <%= turbo_frame_tag :rename_apps, target: "_top" do %>
+      <%= form_for(:rename_app, url: rename_apps_path, builder: Polaris::FormBuilder) do |form| %>
+        <%= polaris_form_layout do |form_layout| %>
+
+          <%# if rename_app.errors.any? %>
+            <%# form_layout.with_item do %>
+              <%#= form.errors_summary %>
+            <%# end %>
+          <%# end %>
+
+          <% form_layout.with_item do %>
+            <%= form.polaris_select(:from,
+              label: t("rename_apps.from"),
+              options: @apps.map { |app| [app, app] },
+              selected: nil
+            ) %>
+          <% end %>
+
+          <% form_layout.with_item do %>
+            <%= form.polaris_select(:to,
+              label: t("rename_apps.to"),
+              options: @apps.map { |app| [app, app] },
+              selected: nil
+            ) %>
+            <% end %>
+
+          <% form_layout.with_item do %>
+            <%= polaris_button(
+              submit: true,
+              primary: true,
+              data: {form_target: "submitButton"},
+            ) { t('rename_apps.rename') } %>
+          <% end %>
+
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+
+<% end %>

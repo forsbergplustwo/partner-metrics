@@ -15,6 +15,13 @@ Rails.application.routes.draw do
     delete :destroy_all, on: :collection, to: "imports/destroy_all#destroy"
   end
 
+  resources :rename_apps, only: [] do
+    collection do
+      get :new
+      post :create
+    end
+  end
+
   scope controller: :home do
     post :import_status
     get :app_store_analytics

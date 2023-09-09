@@ -1,7 +1,9 @@
 <%= polaris_page(
   title: t(".title"),
-  subtitle: t(".subtitle"),
+  subtitle: t(".subtitle")
 ) do |page| %>
+
+  <%= render "shared/page_actions", page: page %>
 
   <% page.with_primary_action(disabled: true) { "Save" } %>
 

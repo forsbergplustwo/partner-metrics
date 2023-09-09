@@ -3,6 +3,8 @@
   subtitle: t(".subtitle")
 ) do |page| %>
 
+  <%= render "shared/page_actions", page: page %>
+
   <% page.with_primary_action(url: new_import_path) { "New import" } %>
 
   <% if @imports.any? %>
