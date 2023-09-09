@@ -21,7 +21,7 @@ class ImportsControllerTest < ActionDispatch::IntegrationTest
       post imports_url, params: {import: {payouts_file: fixture_file_upload("payouts-recurring.csv", "text/csv")}}
     end
 
-    assert_enqueued_jobs 1, only: ImportJob
+    assert_enqueued_jobs 1, only: ImportPaymentsJob
 
     assert_redirected_to import_url(Import.last)
   end

@@ -62,7 +62,7 @@ jobs:
           bin/rake db:create
           bin/rake db:schema:load
           bin/rake db:migrate
-      - name: build assets
+      - name: Build assets
         env:
           RAILS_ENV: test
           RAILS_MASTER_KEY: ${{ secrets.master_key }}

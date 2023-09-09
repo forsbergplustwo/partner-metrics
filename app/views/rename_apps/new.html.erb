@@ -19,7 +19,7 @@
           <% form_layout.with_item do %>
             <%= form.polaris_select(:from,
               label: t("rename_apps.from"),
-              options: @apps.map { |app| [app, app] },
+              options: @app_titles.map { |app_title| [app_title, app_title] },
               selected: nil
             ) %>
           <% end %>
@@ -27,7 +27,7 @@
           <% form_layout.with_item do %>
             <%= form.polaris_select(:to,
               label: t("rename_apps.to"),
-              options: @apps.map { |app| [app, app] },
+              options: @app_titles.map { |app_title| [app_title, app_title] },
               selected: nil
             ) %>
             <% end %>

@@ -1,9 +1,8 @@
 class RenameAppsController < ApplicationController
   before_action :authenticate_user!
+  before_action :get_app_titles
 
   def new
-    @apps = current_user.metrics.distinct.pluck(:app_title)
-    Rails.logger.info(@apps)
   end
 
   def create
@@ -20,6 +19,10 @@ class RenameAppsController < ApplicationController
   end
 
   private
+
+  def get_app_titles
+    @app_titles = current_user.metrics.distinct.pluck(:app_title)
+  end
 
   def rename_app_params
     params.require(:rename_app).permit(:from, :to)
