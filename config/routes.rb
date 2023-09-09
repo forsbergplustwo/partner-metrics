@@ -1,18 +1,22 @@
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
   devise_for :users
-  root to: "home#index"
+
+  resource :user, only: [:update]
 
   get "/metrics/(:charge_type)", to: "metrics#show", as: :metrics
-  delete "/metrics", to: "metrics#destroy"
 
-  resources :payments, only: [:index] do
+  resources :imports, only: [:index, :show, :new, :create, :destroy] do
+    resource :globe, only: [:show], controller: "imports/globes"
+    collection do
+      delete :destroy_all, to: "imports/destroy_all#destroy"
+    end
   end
 
-  resources :imports, except: [:edit, :update] do
-    resource :globe, only: [:show], controller: "imports/globes"
-    delete :destroy_all, on: :collection, to: "imports/destroy_all#destroy"
+  resources :summarys, only: [] do
+    collection do
+      get :monthly, to: "summarys/monthly#index"
+      get :shop, to: "summarys/shop#index"
+    end
   end
 
   resources :rename_apps, only: [] do
@@ -22,11 +26,11 @@ Rails.application.routes.draw do
     end
   end
 
-  scope controller: :home do
-    post :import_status
-    get :app_store_analytics
-    post :rename_app
+  resources :home, only: [:index] do
+    collection do
+      get :app_store_analytics
+    end
   end
 
-  resources :user, only: [:update]
+  root to: "home#index"
 end

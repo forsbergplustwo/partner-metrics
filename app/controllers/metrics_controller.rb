@@ -1,4 +1,3 @@
-# TODO: Refactor this controller to not use so many instance variables
 class MetricsController < ApplicationController
   before_action :authenticate_user!
 

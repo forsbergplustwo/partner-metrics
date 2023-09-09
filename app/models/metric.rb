@@ -5,7 +5,7 @@ class Metric < ApplicationRecord
   PERIODS = [7, 28, 29, 30, 31, 90, 180, 365].freeze
   PERIODS_AGO = [1, 2, 3, 6, 12].freeze
 
-  CHARGE_TYPES = [
+  DISPLAYABLE_TYPES = [
     :recurring_revenue,
     :onetime_revenue,
     :affiliate_revenue

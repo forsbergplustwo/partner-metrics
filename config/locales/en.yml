@@ -51,11 +51,24 @@ en:
     affiliate_revenue:
       title: "Affiliate"
       subtitle: "Revenue from the partner affiliate program."
-  payments:
-    index:
-      title: "Payments"
-      subtitle: "All payments made to you."
-      no_payments: "No payments have been made to you yet."
+  summarys:
+    monthly:
+      title: "Monthly summary"
+      subtitle: "A summary of your monthly payments and metrics for the last 36 months."
+      date: "Date"
+      payments: "Payments"
+      revenue: "Revenue"
+      revenue_per_payment: "Revenue per payment"
+      revenue_churn: "Revenue churn"
+      user_churn: "User churn"
+      last_payment: "Last payment"
+    shop:
+      title: "Shop summary"
+      subtitle: "A summary of each shop's revenue and payments"
+      shop: "Shop"
+      payments: "Payments"
+      revenue: "Revenue"
+      last_payment: "Last payment"
   imports:
     status: "Status"
     source: "Source"

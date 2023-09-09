@@ -9,7 +9,7 @@
         selected: nav_item_selected?(metrics_path),
         link_arguments: {}
       ) do |item| %>
-        <% Metric::CHARGE_TYPES.each do |charge_type|%>
+        <% Metric::DISPLAYABLE_TYPES.each do |charge_type|%>
           <% item.with_sub_item(
             url: metrics_path(charge_type: charge_type),
             label: t("metrics.#{charge_type}.title"),
@@ -20,12 +20,24 @@
       <% end %>
 
       <% section.with_item(
-        url: payments_path,
-        label: "Payments",
+        url: monthly_summarys_path,
+        label: "Summarys",
         icon: "CashDollarMajor",
-        selected: nav_item_selected?(payments_path),
+        selected: nav_item_selected?(monthly_summarys_path),
         link_arguments: {}
-      ) %>
+      ) do |item| %>
+        <% item.with_sub_item(
+          url: monthly_summarys_path,
+          label: "Monthly summary",
+          selected: nav_item_selected?(monthly_summarys_path),
+        ) %>
+        <% item.with_sub_item(
+          url: shop_summarys_path,
+          label: "Shop summary",
+          selected: nav_item_selected?(shop_summarys_path),
+        ) %>
+      <% end %>
+
     <% end %>
 
     <% navigation.with_section(title: "Data sources") do |section| %>
