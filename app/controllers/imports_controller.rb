@@ -13,12 +13,12 @@ class ImportsController < ApplicationController
 
   # GET /imports/new
   def new
-    @import = current_user.imports.new(source: Import::IMPORT_FILE_SOURCE)
+    @import = current_user.imports.new(source: Import.sources[:csv_file])
   end
 
   # POST /imports
   def create
-    @import = current_user.imports.new(source: Import::IMPORT_FILE_SOURCE, **import_params)
+    @import = current_user.imports.new(source: Import.sources[:csv_file], **import_params)
 
     if @import.save!
       redirect_to @import, notice: "Import successfully created."

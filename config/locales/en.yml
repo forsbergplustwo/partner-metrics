@@ -65,7 +65,7 @@ en:
     no_metrics: "..."
     confirm_destroy: "Are you sure? This also deletes associated payments and metrics."
     sources:
-      import_file: "CSV payouts file"
+      csv_file: "CSV payouts file"
       shopify_payments_api: "Shopify Partner API"
     new:
       title: "Import"

@@ -1,11 +1,11 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 completed:
-  source: <%= Import::IMPORT_FILE_SOURCE %>
+  source: <%= Import.sources[:csv_file] %>
   status: completed
   user: regular
 
 failed:
-  source: <%= Import::IMPORT_FILE_SOURCE %>
+  source: <%= Import.sources[:csv_file] %>
   status: failed
   user: regular

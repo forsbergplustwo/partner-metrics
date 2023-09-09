@@ -1,7 +1,7 @@
 require "graphql/client"
 require "graphql/client/http"
 
-class Import::ShopifyPartnerApi
+class Import::ShopifyPaymentsApi
   include ShopifyPartnerAPI
 
   THROTTLE_MIN_TIME_PER_CALL = 0.3

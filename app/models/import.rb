@@ -8,15 +8,11 @@ class Import < ApplicationRecord
 
   ACCEPTED_FILE_TYPES = %w[text/csv application/zip].freeze
 
-  IMPORT_FILE_SOURCE = "import_file"
-  SHOPIFY_PAYMENTS_API_SOURCE = "shopify_payments_api"
-  # SHOPIFY_APP_EVENTS_API_SOURCE = "shopify_app_events_api"
-
   enum source: {
-    import_file: IMPORT_FILE_SOURCE,
-    shopify_payments_api: SHOPIFY_PAYMENTS_API_SOURCE
-    # shopify_app_events_api: SHOPIFY_APP_EVENTS_API_SOURCE
-  }
+    csv_file: "csv_file",
+    shopify_payments_api: "shopify_payments_api"
+    # shopify_app_events_api: "shopify_app_events_api"
+  }, _suffix: true
 
   enum status: {
     draft: "draft",
@@ -27,8 +23,8 @@ class Import < ApplicationRecord
     failed: "failed"
   }, _default: "draft"
 
-  validates :payouts_file, attached: true, content_type: ACCEPTED_FILE_TYPES, if: -> { import_file? }
-  validates :source, presence: true
+  validates :payouts_file, attached: true, content_type: ACCEPTED_FILE_TYPES, if: -> { csv_file_source? }
+  validates :source, presence: true, inclusion: {in: sources.keys}
   validates :status, presence: true
 
   after_create_commit :schedule
@@ -59,7 +55,7 @@ class Import < ApplicationRecord
   private
 
   def importer_for_source
-    (source == IMPORT_FILE_SOURCE) ? Import::CsvFile : Import::ShopifyPartnerApi
+    csv_file_source? ? Import::CsvFile : Import::ShopifyPaymentsApi
   end
 
   def broadcast_details_update
