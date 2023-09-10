@@ -5,7 +5,7 @@
 
   <%= render "shared/page_actions", page: page %>
 
-  <% page.with_primary_action(url: new_import_path) { "New import" } %>
+  <% page.with_primary_action(url: new_import_path, disabled: @imports.in_progress.any?) { "New import" } %>
 
   <% if @imports.any? %>
     <%= render "table", imports: @imports %>

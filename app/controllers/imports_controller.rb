@@ -3,13 +3,14 @@ class ImportsController < ApplicationController
   before_action :set_import, only: %i[show update destroy]
 
   def index
-    @imports = current_user.imports.all
+    @imports = current_user.imports.all.order(created_at: :desc)
   end
 
   def show
   end
 
   def new
+    redirect_if_import_in_progress
     @import = current_user.imports.new(source: Import.sources[:csv_file])
   end
 
@@ -37,5 +38,11 @@ class ImportsController < ApplicationController
 
   def import_params
     params.require(:import).permit(:import_type, :payouts_file)
+  end
+
+  def redirect_if_import_in_progress
+    if current_user.imports.in_progress.any?
+      redirect_to imports_path, alert: "An import is already in progress."
+    end
   end
 end

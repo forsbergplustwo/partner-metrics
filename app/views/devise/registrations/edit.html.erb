@@ -1,7 +1,7 @@
 <%= polaris_page(
   narrow_width: true,
   title: t("devise.edit"),
-  back_to: :back
+  back_url: request.referer
 ) do |page| %>
 
   <%= polaris_card do %>

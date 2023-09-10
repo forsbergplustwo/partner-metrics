@@ -25,11 +25,13 @@ class Import < ApplicationRecord
 
   validates :payouts_file, attached: true, content_type: ACCEPTED_FILE_TYPES, if: -> { csv_file_source? }
   validates :source, presence: true, inclusion: {in: sources.keys}
-  validates :status, presence: true
+  validates :status, presence: true, inclusion: {in: statuses.keys}
 
   after_create_commit :schedule
   after_update_commit :broadcast_details_update
   after_update_commit :broadcast_status_update, if: -> { saved_change_to_status? }
+
+  scope :in_progress, -> { where(status: %i[scheduled importing calculating]) }
 
   def schedule
     scheduled!
