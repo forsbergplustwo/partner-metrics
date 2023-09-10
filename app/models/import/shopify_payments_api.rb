@@ -42,7 +42,7 @@ class Import::ShopifyPaymentsApi
 
   attr_accessor :import, :user
 
-  def import_payments!
+  def import!
     user.clear_old_payments
     import_new_payments
   rescue => error

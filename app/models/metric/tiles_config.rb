@@ -1,5 +1,4 @@
-module TilesConfig
-  # TODO: Use constants for calculation, charge_type, column, display etc.
+module Metric::TilesConfig
   OVERVIEW_TILES = [
     {
       handle: :total_revenue,

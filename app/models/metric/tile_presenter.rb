@@ -1,4 +1,4 @@
-class Metric::TileForFilter
+class Metric::TilePresenter
   def initialize(filter:, tile_config:)
     @filter = filter
 

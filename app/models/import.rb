@@ -38,7 +38,7 @@ class Import < ApplicationRecord
 
   def import
     importing!
-    importer_for_source.new(import: self).import_payments!
+    importer_for_source.new(import: self).import!
     imported
   end
 
@@ -48,7 +48,7 @@ class Import < ApplicationRecord
 
   def calculate
     calculating!
-    Import::MetricCalculator.new(import: self).calculate_metrics!
+    Import::Metrics.new(import: self).calculate!
     completed!
   end
 

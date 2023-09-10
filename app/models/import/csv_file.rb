@@ -67,7 +67,7 @@ class Import::CsvFile
 
   attr_accessor :import, :user, :temp_files
 
-  def import_payments!
+  def import!
     user.clear_old_payments
     import_new_payments
   rescue => error

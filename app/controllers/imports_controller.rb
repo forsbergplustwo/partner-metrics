@@ -2,21 +2,17 @@ class ImportsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_import, only: %i[show update destroy]
 
-  # GET /imports
   def index
     @imports = current_user.imports.all
   end
 
-  # GET /imports/1
   def show
   end
 
-  # GET /imports/new
   def new
     @import = current_user.imports.new(source: Import.sources[:csv_file])
   end
 
-  # POST /imports
   def create
     @import = current_user.imports.new(source: Import.sources[:csv_file], **import_params)
 
@@ -28,7 +24,6 @@ class ImportsController < ApplicationController
     end
   end
 
-  # DELETE /imports/1
   def destroy
     @import.destroy
     redirect_to imports_url, notice: "Import successfully destroyed.", status: :see_other
@@ -36,12 +31,10 @@ class ImportsController < ApplicationController
 
   private
 
-  # Use callbacks to share common setup or constraints between actions.
   def set_import
     @import = current_user.imports.find(params[:id])
   end
 
-  # Only allow a list of trusted parameters through.
   def import_params
     params.require(:import).permit(:import_type, :payouts_file)
   end
