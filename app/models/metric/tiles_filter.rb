@@ -3,7 +3,7 @@ class Metric::TilesFilter
     @user = user
     @date = params[:date]&.to_date || user.newest_metric_date_or_today
     @charge_type = params[:charge_type]&.to_s || nil
-    @chart = params[:chart]&.to_s
+    @chart = params[:chart]&.to_s || nil
     @period = params[:period]&.to_i || 30
     @app = params[:app]&.to_s || nil
   end
@@ -24,12 +24,12 @@ class Metric::TilesFilter
     tiles_presenter.selected_tile
   end
 
-  def user_metrics_by_app
-    @user.metrics.by_optional_app_title(@app)
-  end
-
   def has_metrics?
     current_period_metrics.any?
+  end
+
+  def user_metrics_by_app
+    @user.metrics.by_optional_app_title(@app)
   end
 
   def current_period_metrics
@@ -37,7 +37,6 @@ class Metric::TilesFilter
   end
 
   def previous_period_metrics
-    previous_date = @date - @period.days + 1
     user_metrics_by_app.by_date_and_period(date: previous_date, period: @period)
   end
 
@@ -52,6 +51,10 @@ class Metric::TilesFilter
   end
 
   private
+
+  def previous_date
+    @date - @period.days + 1
+  end
 
   def tiles_presenter
     @tiles_presenter ||= Metric::TilesPresenter.new(filter: self)

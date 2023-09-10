@@ -26,11 +26,5 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :home, only: [:index] do
-    collection do
-      get :app_store_analytics
-    end
-  end
-
   root to: "home#index"
 end

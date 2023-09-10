@@ -31,9 +31,9 @@ class Metric::TilePresenter
   end
 
   def period_ago_value(period_ago)
-    date = @filter.date - (period_ago * @filter.period).days
+    period_ago_date = @filter.date - (period_ago * @filter.period).days
     metrics = @filter.user_metrics_by_app.by_optional_charge_type(@charge_type)
-    metrics.by_date_and_period(date: date, period: @filter.period).calculate_value(@calculation, @column)
+    metrics.by_date_and_period(date: period_ago_date, period: @filter.period).calculate_value(@calculation, @column)
   end
 
   def period_ago_change(period_ago)

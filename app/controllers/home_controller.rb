@@ -4,8 +4,4 @@ class HomeController < ApplicationController
       redirect_to metrics_path
     end
   end
-
-  # TODO: Find a better place for this
-  def app_store_analytics
-  end
 end

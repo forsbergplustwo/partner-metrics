@@ -36,7 +36,7 @@ class User < ApplicationRecord
     @calculate_from_date ||= newest_metric_date.presence || Payment.default_start_date
   end
 
-  def clear_old_payments
+  def clear_old_payments!
     payments.where("payment_date > ?", calculate_from_date).delete_all
   end
 
