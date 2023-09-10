@@ -2,19 +2,13 @@
   narrow_width: true,
   title: t("rename_apps.rename"),
   subtitle: t("rename_apps.subtitle"),
-  back_to: :back
+  back_url: request.referer
 ) do |page| %>
 
   <%= polaris_card do %>
     <%= turbo_frame_tag :rename_apps, target: "_top" do %>
       <%= form_for(:rename_app, url: rename_apps_path, builder: Polaris::FormBuilder) do |form| %>
         <%= polaris_form_layout do |form_layout| %>
-
-          <%# if rename_app.errors.any? %>
-            <%# form_layout.with_item do %>
-              <%#= form.errors_summary %>
-            <%# end %>
-          <%# end %>
 
           <% form_layout.with_item do %>
             <%= form.polaris_select(:from,
