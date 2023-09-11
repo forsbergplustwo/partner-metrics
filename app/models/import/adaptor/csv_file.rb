@@ -65,17 +65,7 @@ class Import::Adaptor::CsvFile
   end
 
   def fetch_payments
-    Enumerator.new do |enum|
-      CsvHashReader.foreach(prepared_csv_file, **CSV_READER_OPTIONS) do |csv_row|
-        parsed_row = parse(csv_row)
-        break if parsed_row[:payment_date] <= @created_at_min
-
-        enum.yield parsed_row
-      end
-    end
-  ensure
-    Rails.logger.info "Closing and unlinking temp files"
-    close_and_unlink_temp_files
+    Enumerator.new { |main_enum| stream_payments(main_enum) }
   end
 
   def batch_size
@@ -83,6 +73,18 @@ class Import::Adaptor::CsvFile
   end
 
   private
+
+  def stream_payments(main_enum)
+    CsvHashReader.foreach(prepared_csv_file, **CSV_READER_OPTIONS) do |csv_row|
+      parsed_row = parse(csv_row)
+      break if parsed_row[:payment_date] <= @created_at_min
+
+      main_enum.yield parsed_row
+    end
+  ensure
+    Rails.logger.info "Closing and unlinking temp files"
+    close_and_unlink_temp_files
+  end
 
   def parse(csv_row)
     {

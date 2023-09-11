@@ -48,24 +48,7 @@ class Import::Adaptor::ShopifyPaymentsApi
   end
 
   def fetch_payments
-    Enumerator.new do |enum|
-      has_next_page = true
-
-      while has_next_page
-        @throttle_start_time = throttle(@throttle_start_time)
-
-        results = fetch_from_api(@cursor, @created_at_min)
-        break if results.data.nil?
-
-        transactions = results.data.transactions.edges
-        has_next_page = results.data.transactions.page_info.has_next_page
-        @cursor = results.data.transactions.edges.last.cursor
-
-        transactions.each do |transaction|
-          enum.yield parse(transaction.node)
-        end
-      end
-    end
+    Enumerator.new { |main_enum| stream_payments(main_enum) }
   end
 
   def batch_size
@@ -73,6 +56,25 @@ class Import::Adaptor::ShopifyPaymentsApi
   end
 
   private
+
+  def stream_payments(main_enum)
+    has_next_page = true
+
+    while has_next_page
+      @throttle_start_time = throttle(@throttle_start_time)
+
+      results = fetch_from_api(@cursor, @created_at_min)
+      break if results.data.nil?
+
+      transactions = results.data.transactions.edges
+      has_next_page = results.data.transactions.page_info.has_next_page
+      @cursor = results.data.transactions.edges.last.cursor
+
+      transactions.each do |transaction|
+        main_enum.yield parse(transaction.node)
+      end
+    end
+  end
 
   def fetch_from_api
     results = ShopifyPartnerAPI.client.query(
