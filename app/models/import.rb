@@ -40,7 +40,7 @@ class Import < ApplicationRecord
 
   def import
     importing!
-    importer_for_source.new(import: self).import!
+    Import::Payments.new(import: self).import!
     imported
   end
 
@@ -54,11 +54,11 @@ class Import < ApplicationRecord
     completed!
   end
 
-  private
-
-  def importer_for_source
-    csv_file_source? ? Import::CsvFile : Import::ShopifyPaymentsApi
+  def source_adaptor
+    csv_file_source? ? Import::Adaptor::CsvFile : Import::Adaptor::ShopifyPaymentsApi
   end
+
+  private
 
   def broadcast_details_update
     broadcast_replace_to(
