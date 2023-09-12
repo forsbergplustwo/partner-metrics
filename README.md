@@ -14,6 +14,14 @@ Partner Metrics was created by [@forsbergplustwo](@forsbergplustwo), and will re
 
 ## Development
 
+### Upgrading
+```
+bin/rails db:migrate
+bin/rails db:encryption:init
+bin/rails create_initial_import
+bin/rails migrate_partner_api_credentials
+```
+
 To get started:
 
 1. Setup dependencies, environment & database: `bin/setup`

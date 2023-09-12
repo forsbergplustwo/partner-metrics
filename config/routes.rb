@@ -12,6 +12,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :partner_api_credentials, only: [:new, :create, :edit, :update, :destroy]
+
   resources :summarys, only: [] do
     collection do
       get :monthly, to: "summarys/monthly#index"

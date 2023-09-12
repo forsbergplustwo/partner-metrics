@@ -5,10 +5,7 @@ class User < ApplicationRecord
   has_many :payments, dependent: :delete_all
   has_many :metrics, dependent: :delete_all
   has_many :imports, dependent: :delete_all
-
-  def has_partner_api_credentials?
-    partner_api_access_token.present? && partner_api_organization_id.present?
-  end
+  has_one :partner_api_credential, dependent: :destroy
 
   # TODO: These should probably be in metric model
 

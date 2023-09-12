@@ -9,7 +9,7 @@
 ) do |page| %>
 
   <% page.with_title_metadata do %>
-    <%= render "status", import: @import %>
+    <%= render "shared/status", resource: @import %>
   <% end %>
 
   <%= render @import %>

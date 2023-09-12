@@ -9,7 +9,7 @@
   <% end %>
 
   <% table.with_column(t('imports.status')) do |import| %>
-    <%= render "status", import: import %>
+    <%= render "shared/status", resource: import %>
   <% end %>
 
   <% table.with_column(t('imports.source')) do |import| %>

@@ -16,6 +16,9 @@ en:
     completed: "Completed"
     failed: "Failed"
     cancelled: "Cancelled"
+    pending_validation: "Pending validation"
+    valid: "Valid"
+    invalid: "Invalid"
   shared:
     empty_state:
       title: "No %{resource} yet"
@@ -97,3 +100,16 @@ en:
     from: "Old app name"
     to: "Current app name"
     subtitle: "If you have renamed your app in the Shopify Partners Dashboard, merge the data by renaming the old app to the new app name."
+  partner_api_credentials:
+    new:
+      title: "Add credentials"
+      subtitle: "Connect your Shopify Partner account to automatically import new data daily."
+    edit:
+      title: "Edit credentials"
+      subtitle: "Edit your Shopify Partner API credentials."
+      confirm_destroy: "Are you sure? This will remove your credentials and stop automatic imports."
+    form:
+      organization_id: "Shopify organization ID"
+      organization_id_help_text: "Find your organization ID in the Shopify Partners Dashboard."
+      access_token: "Shopify access token"
+      organization_id_help_text: "Generate an access token in the Shopify Partners Dashboard."

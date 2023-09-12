@@ -1,21 +1,21 @@
 module ApplicationHelper
   def resource_name_for(klass, pluralize = false)
-    klass.name.pluralize(pluralize ? 2 : 1).downcase
+    klass.model_name.human.pluralize(pluralize ? 2 : 1).downcase
   end
 
   def status_badge(status)
     badge_status = case status
-    when "complete" then :success
+    when "complete", "valid" then :success
     when "draft", "importing", "calculating" then :info
-    when "cancelled" then :warning
-    when "failed" then :attention
+    when "cancelled", "pending_validation" then :warning
+    when "failed", "invalid" then :attention
     else
       :default
     end
     badge_progress = case status
-    when "scheduled" then :incomplete
-    when "calculating", "importing", "failed" then :partially_complete
-    when "complete", "cancelled" then :complete
+    when "scheduled", "invalid" then :incomplete
+    when "calculating", "importing", "failed", "pending_validation" then :partially_complete
+    when "complete", "cancelled", "valid" then :complete
     else
       :default
     end

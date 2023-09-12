@@ -1,6 +1,6 @@
-<%= turbo_frame_tag import, target: "_top" do %>
+<%= turbo_frame_tag partner_api_credential, target: "_top" do %>
   <%= form_with(
-    model: import,
+    model: partner_api_credential,
     builder: Polaris::FormBuilder,
     data: {
       controller: "form",
@@ -12,9 +12,7 @@
       <%# Required to submit form via Return/Enter %>
       <%= form.submit hidden: true %>
 
-      <%= form.hidden_field :source %>
-
-      <% if current_user.errors.any? %>
+      <% if partner_api_credential.errors.any? %>
         <% layout.with_section do %>
           <%= form.errors_summary %>
         <% end %>
@@ -23,19 +21,18 @@
       <% layout.with_section do %>
         <%= polaris_card do %>
           <%= polaris_form_layout do |form_layout| %>
-            <%= form_layout.with_item do %>
-              <%= polaris_dropzone(
-                form: form,
-                attribute: :payouts_file,
-                error: form.error_for(:payouts_upload),
-                label: Import.human_attribute_name(:payouts_file),
-                label_hidden: false,
-                accept: Import::ACCEPTED_FILE_TYPES.join(","),
-                multiple: false,
-              ) %>
+
+            <% form_layout.with_item do %>
+              <%= form.polaris_text_field :organization_id,
+                label: t(".organization_id"),
+                required: true,
+                type: :number,
+                max: 9999999
+              %>
             <% end %>
-            <%= form_layout.with_item do %>
-              <%= polaris_text(variant: :bodySm, color: :subdued) { t(".payouts_file_help_text") } %>
+
+            <% form_layout.with_item do %>
+              <%= form.polaris_text_field :access_token, label: t(".access_token"), type: :password, required: true %>
             <% end %>
 
             <%= form_layout.with_item do %>

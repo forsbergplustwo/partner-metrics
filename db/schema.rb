@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_07_115433) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_11_110717) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -76,6 +76,17 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_07_115433) do
     t.index ["user_id", "metric_date"], name: "index_metrics_on_user_id_and_metric_date"
   end
 
+  create_table "partner_api_credentials", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "access_token", null: false
+    t.integer "organization_id", null: false
+    t.string "status", null: false
+    t.text "status_message"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_partner_api_credentials_on_user_id", unique: true
+  end
+
   create_table "payments", id: :serial, force: :cascade do |t|
     t.date "payment_date"
     t.text "charge_type"
@@ -122,4 +133,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_07_115433) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "imports", "users"
+  add_foreign_key "partner_api_credentials", "users"
 end

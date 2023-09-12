@@ -1,3 +1,4 @@
+require "shopify_partner_api"
 require "graphql/client"
 require "graphql/client/http"
 
@@ -39,10 +40,7 @@ class Import::Adaptor::ShopifyPaymentsApi
     @import = import
     @created_at_min = created_at_min.strftime("%Y-%m-%dT%H:%M:%S.%L%z")
 
-    @context = {
-      access_token: import.user.partner_api_access_token,
-      organization_id: import.user.partner_api_organization_id
-    }
+    @context = @import.partner_api_credential.context
     @cursor = ""
     @throttle_start_time = Time.zone.now
   end

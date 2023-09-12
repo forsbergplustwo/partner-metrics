@@ -1,0 +1,15 @@
+<%= turbo_stream_from [current_user, :partner_api_credential] %>
+
+<%= polaris_page(
+  narrow_width: true,
+  title: t(".title"),
+  subtitle: t(".subtitle")
+) do |page| %>
+
+  <% page.with_title_metadata do %>
+    <%= render "shared/status", resource: @partner_api_credential %>
+  <% end %>
+
+  <%= render "form", partner_api_credential: @partner_api_credential %>
+
+<% end %>

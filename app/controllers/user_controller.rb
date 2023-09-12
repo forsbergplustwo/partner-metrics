@@ -18,7 +18,7 @@ class UserController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:import_file, :partner_api_access_token, :partner_api_organization_id, :count_usage_charges_as_recurring)
+    params.require(:user).permit(:partner_api_access_token, :partner_api_organization_id, :count_usage_charges_as_recurring)
   end
 
   def save_partner_api_credentials

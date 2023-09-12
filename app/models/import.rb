@@ -5,6 +5,7 @@ class Import < ApplicationRecord
   has_many :payments, dependent: :delete_all
   has_many :metrics, dependent: :delete_all
   has_one_attached :payouts_file, dependent: :destroy
+  has_one :partner_api_credential, through: :user
 
   ACCEPTED_FILE_TYPES = %w[text/csv application/zip].freeze
 
