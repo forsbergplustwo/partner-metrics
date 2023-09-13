@@ -27,7 +27,12 @@ class DirtyForm {
 
   setupFieldsTracking() {
     this.fields.forEach(field => {
-      this.initialValues[field.name] = field.value
+      // If input save value, if checkbox save checked
+      if (field.type == 'checkbox') {
+        this.initialValues[field.name] = field.checked
+      } else {
+        this.initialValues[field.name] = field.value
+      }
 
       switch (field.tagName) {
         case 'TRIX-EDITOR':
@@ -91,7 +96,13 @@ class DirtyForm {
 
   valueChanged = (event) => {
     const field = event.target
-    if (this.initialValues[field.name] != field.value) {
+    let value
+    if (field.type == 'checkbox') {
+      value = field.checked
+    } else {
+      value = field.value
+    }
+    if (this.initialValues[field.name] != value) {
       this.markAsDirty()
     }
   }

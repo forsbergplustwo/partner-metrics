@@ -34,9 +34,15 @@
                 multiple: false,
               ) %>
             <% end %>
+
             <%= form_layout.with_item do %>
               <%= polaris_text(variant: :bodySm, color: :subdued) { t(".payouts_file_help_text") } %>
             <% end %>
+
+            <%= form_layout.with_item do %>
+              <%= render "users/count_usage_charges_as_recurring_fields", form: form %>
+            <% end %>
+
 
             <%= form_layout.with_item do %>
               <%= polaris_button(

@@ -7,6 +7,8 @@ class Import < ApplicationRecord
   has_one_attached :payouts_file, dependent: :destroy
   has_one :partner_api_credential, through: :user
 
+  accepts_nested_attributes_for :user, update_only: true
+
   ACCEPTED_FILE_TYPES = %w[text/csv application/zip].freeze
 
   enum source: {
@@ -74,8 +76,8 @@ class Import < ApplicationRecord
     broadcast_replace_to(
       [user, :imports],
       target: dom_id(self, :status),
-      partial: "imports/status",
-      locals: {import: self}
+      partial: "shared/status",
+      locals: {resource: self}
     )
   end
 end

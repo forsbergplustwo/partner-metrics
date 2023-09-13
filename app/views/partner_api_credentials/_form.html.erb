@@ -32,7 +32,11 @@
             <% end %>
 
             <% form_layout.with_item do %>
-              <%= form.polaris_text_field :access_token, label: t(".access_token"), type: :password, required: true %>
+              <%= form.polaris_text_field :access_token, value: partner_api_credential.access_token, label: t(".access_token"), type: :password, required: true %>
+            <% end %>
+
+            <%= form_layout.with_item do %>
+              <%= render "users/count_usage_charges_as_recurring_fields", form: form %>
             <% end %>
 
             <%= form_layout.with_item do %>

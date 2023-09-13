@@ -24,6 +24,9 @@ en:
       title: "No %{resource} yet"
       description: "Import your payouts data to get started."
       footer_html: If you don’t want to upload historical data, connect your %{url} data source.
+  user:
+    count_usage_charges_as_recurring: "Count usage charges as recurring revenue"
+    count_usage_charges_as_recurring_help_text: "Usage charges are counted as one-time revenue by default."
   devise:
     sign_in: "Log in"
     sign_out: "Log out"

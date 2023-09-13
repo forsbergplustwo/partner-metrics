@@ -25,7 +25,7 @@ class PartnerApiCredentialsController < ApplicationController
 
   def update
     if @partner_api_credential.update(partner_api_credential_params)
-      redirect_to @partner_api_credential, notice: "Partner api credential was successfully updated.", status: :see_other
+      redirect_to edit_partner_api_credential_path(@partner_api_credential), notice: "Partner api credential was successfully updated.", status: :see_other
     else
       render :edit, status: :unprocessable_entity
     end

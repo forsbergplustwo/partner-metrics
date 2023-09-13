@@ -79,7 +79,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_11_110717) do
   create_table "partner_api_credentials", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "access_token", null: false
-    t.integer "organization_id", null: false
+    t.string "organization_id", null: false
     t.string "status", null: false
     t.text "status_message"
     t.datetime "created_at", null: false
