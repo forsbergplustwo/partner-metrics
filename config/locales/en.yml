@@ -8,6 +8,7 @@ en:
     delete: "Delete %{resource}"
     delete_all: "Delete all %{resource}"
     more_actions: "More actions"
+    add: "Add %{resource}"
   statuses:
     draft: "Draft"
     scheduled: "Scheduled"
@@ -98,6 +99,9 @@ en:
       no_imports: "No imports have been made yet."
     form:
       payouts_file_help_text: "Export your payouts from the Shopify Partners Dashboard, then drop the received ZIP file above."
+    api_credentials_banner:
+      title: "Connect your Shopify Partner account"
+      message: "Connect your Shopify Partner account to automatically import new data daily."
   rename_apps:
     rename: "Rename app"
     from: "Old app name"
@@ -105,14 +109,18 @@ en:
     subtitle: "If you have renamed your app in the Shopify Partners Dashboard, merge the data by renaming the old app to the new app name."
   partner_api_credentials:
     new:
-      title: "Add credentials"
-      subtitle: "Connect your Shopify Partner account to automatically import new data daily."
+      title: "Add your Shopify Partner API credentials"
+      subtitle: "Add your Shopify Partner API credentials to automatically import new data daily. View the %{instructions_link} if needed."
     edit:
-      title: "Edit credentials"
-      subtitle: "Edit your Shopify Partner API credentials."
+      title: "Edit your Shopify Partner API credentials"
+      subtitle: "Your API credentials are used to automatically import new data daily."
       confirm_destroy: "Are you sure? This will remove your credentials and stop automatic imports."
     form:
       organization_id: "Shopify organization ID"
       organization_id_help_text: "Find your organization ID in the Shopify Partners Dashboard."
       access_token: "Shopify access token"
       organization_id_help_text: "Generate an access token in the Shopify Partners Dashboard."
+    instructions_banner:
+      title: "Instructions"
+      message: "View the wiki article for instructions on how to set up your Shopify Partner API credentials."
+      button_text: "View wiki article"

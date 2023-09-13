@@ -49,10 +49,10 @@
         link_arguments: {}
       ) %>
       <% section.with_item(
-        url: new_partner_api_credential_path,
-        label: "Partner API",
+        url: partner_api_credential_path_for(current_user),
+        label: "Partner API Credentials",
         icon: "InsertDynamicSourceMajor",
-        selected: nav_item_selected?(new_partner_api_credential_path),
+        selected: nav_item_selected?(partner_api_credential_path_for(current_user)),
         link_arguments: {}
       ) %>
     <% end %>

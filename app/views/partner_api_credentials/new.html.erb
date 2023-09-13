@@ -3,13 +3,17 @@
 <%= polaris_page(
   narrow_width: true,
   title: t(".title"),
-  subtitle: t(".subtitle")
+  subtitle: t(".subtitle", instructions_link: link_to("wiki article for instructions", "https://github.com/forsbergplustwo/partner-metrics/wiki/How-to-create-your-Shopify-Partner-API-credentials", target: "_blank")).html_safe
 ) do |page| %>
 
   <% page.with_title_metadata do %>
     <%= render "shared/status", resource: @partner_api_credential %>
   <% end %>
 
-  <%= render "form", partner_api_credential: @partner_api_credential %>
+  <%= polaris_vertical_stack(gap: "5") do %>
+
+    <%= render "form", partner_api_credential: @partner_api_credential %>
+
+  <% end %>
 
 <% end %>

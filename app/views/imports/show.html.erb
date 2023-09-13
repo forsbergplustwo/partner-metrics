@@ -6,24 +6,31 @@
   subtitle: @import.created_at.to_fs(:long),
   id: dom_id(@import),
   back_url: imports_path,
+  secondary_actions: [
+    {
+      content: t("actions.delete", resource: resource_name_for(Import)),
+      url: @import,
+      destructive: true,
+      data: {
+        turbo_method: :delete,
+        turbo_confirm: t("imports.confirm_destroy")
+      },
+    }
+  ],
 ) do |page| %>
 
   <% page.with_title_metadata do %>
     <%= render "shared/status", resource: @import %>
   <% end %>
 
-  <%= render @import %>
+  <%= polaris_vertical_stack(gap: "5") do %>
 
-  <%= polaris_page_actions do |actions| %>
-    <% actions.with_secondary_action(
-      destructive: true,
-      outline: true,
-      url: @import,
-      data: {
-        turbo_method: :delete,
-        turbo_confirm: t("imports.confirm_destroy"),
-      },
-    ) { t("actions.delete", resource: resource_name_for(Import)) } %>
+    <% if current_user.partner_api_credential.blank? %>
+      <%= render "api_credentials_banner" %>
+    <% end %>
+
+    <%= render @import %>
+
   <% end %>
 
 <% end %>

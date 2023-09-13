@@ -3,7 +3,18 @@
 <%= polaris_page(
   narrow_width: true,
   title: t(".title"),
-  subtitle: t(".subtitle")
+  subtitle: t(".subtitle"),
+  secondary_actions: [
+    {
+      content: t("actions.delete", resource: nil),
+      url: partner_api_credential_path,
+      destructive: true,
+      data: {
+        turbo_method: :delete,
+        turbo_confirm: t(".confirm_destroy")
+      },
+    }
+  ],
 ) do |page| %>
 
   <% page.with_title_metadata do %>
@@ -12,15 +23,4 @@
 
   <%= render "form", partner_api_credential: @partner_api_credential %>
 
-  <%= polaris_page_actions do |actions| %>
-    <% actions.with_secondary_action(
-      destructive: true,
-      outline: true,
-      url: partner_api_credential_path,
-      data: {
-        turbo_method: :delete,
-        turbo_confirm: t(".confirm_destroy"),
-      },
-    ) { t("actions.delete", resource: nil) } %>
-  <% end %>
 <% end %>
