@@ -6,4 +6,8 @@ module PartnerApiCredentialsHelper
       new_partner_api_credential_path
     end
   end
+
+  def partner_api_credential_badge_for(current_user)
+    current_user.partner_api_credential&.status_message.present? ? "!" : nil
+  end
 end

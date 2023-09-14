@@ -4,7 +4,6 @@ class Import::Payments
     @user = @import.user
     @created_at_min = @user.calculate_from_date
     @source_adaptor = @import.source_adaptor.new(import: @import, created_at_min: @created_at_min)
-    @batch_of_payments = []
   end
 
   def import!
@@ -28,10 +27,8 @@ class Import::Payments
         new_payment(transaction)
       end.compact
 
-      @batch_of_payments.concat(payments)
-      Payment.import!(@batch_of_payments, validate: false, no_returning: true)
+      Payment.import!(payments, validate: false, no_returning: true)
       @import.touch
-      @batch_of_payments.clear
     end
   end
 

@@ -10,10 +10,6 @@
     <%= render "shared/status", resource: @partner_api_credential %>
   <% end %>
 
-  <%= polaris_vertical_stack(gap: "5") do %>
-
-    <%= render "form", partner_api_credential: @partner_api_credential %>
-
-  <% end %>
+  <%= render "form", partner_api_credential: @partner_api_credential %>
 
 <% end %>

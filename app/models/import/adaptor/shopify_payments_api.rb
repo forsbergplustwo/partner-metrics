@@ -80,7 +80,7 @@ class Import::Adaptor::ShopifyPaymentsApi
       variables: {createdAtMin: @created_at_min, cursor: @cursor, first: batch_size},
       context: @context
     )
-    raise StandardError.new(results.errors.messages.map { |k, v| "#{k}=#{v}" }.join("&")) if results.errors.any?
+    handle_error(results.errors) if results.errors.any?
     results
   end
 
@@ -139,5 +139,9 @@ class Import::Adaptor::ShopifyPaymentsApi
     wait_time = (THROTTLE_MIN_TIME_PER_CALL - processing_duration).round(1)
     sleep wait_time if wait_time > 0.0
     Time.zone.now
+  end
+
+  def handle_error(api_error)
+    @import.partner_api_credential.invalidate_with_message!(results.errors.messages.map { |k, v| "#{k}=#{v}" }.join("&"))
   end
 end

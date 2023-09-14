@@ -53,6 +53,7 @@
         label: "Partner API Credentials",
         icon: "InsertDynamicSourceMajor",
         selected: nav_item_selected?(partner_api_credential_path_for(current_user)),
+        badge: partner_api_credential_badge_for(current_user),
         link_arguments: {}
       ) %>
     <% end %>

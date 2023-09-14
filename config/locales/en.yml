@@ -120,7 +120,6 @@ en:
       organization_id_help_text: "Find your organization ID in the Shopify Partners Dashboard."
       access_token: "Shopify access token"
       organization_id_help_text: "Generate an access token in the Shopify Partners Dashboard."
-    instructions_banner:
-      title: "Instructions"
-      message: "View the wiki article for instructions on how to set up your Shopify Partner API credentials."
-      button_text: "View wiki article"
+    status_message_banner:
+      title: "Shopify API import error"
+      message: "We couldn't import your data from the Shopify API, due to the following error:"

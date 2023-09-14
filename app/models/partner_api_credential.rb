@@ -28,11 +28,17 @@ class PartnerApiCredential < ApplicationRecord
     }
   end
 
+  def invalidate_with_message!(message)
+    update!(status: :invalid, status_message: message)
+  end
+
   private
 
   def credentials_have_access
     errors.add(:access_token, "is required") if access_token.blank?
     errors.add(:organization_id, "is required") if organization_id.blank?
+
+    return if !will_save_change_to_access_token? && !will_save_change_to_organization_id?
 
     if errors.empty?
       response = test_api_credentials

@@ -11,6 +11,7 @@ class PartnerApiCredentialsController < ApplicationController
   end
 
   def edit
+    add_status_messsage_error if @partner_api_credential.invalid_status?
   end
 
   def create
@@ -46,8 +47,16 @@ class PartnerApiCredentialsController < ApplicationController
     @partner_api_credential = current_user.partner_api_credential
   end
 
+  def add_status_messsage_error
+    @partner_api_credential.errors.add(:base, @partner_api_credential.status_message)
+  end
+
   # Only allow a list of trusted parameters through.
   def partner_api_credential_params
-    params.require(:partner_api_credential).permit(:access_token, :organization_id)
+    params.require(:partner_api_credential).permit(
+      :access_token,
+      :organization_id,
+      user_attributes: [:count_usage_charges_as_recurring]
+    )
   end
 end
