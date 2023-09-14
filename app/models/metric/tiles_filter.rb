@@ -10,7 +10,7 @@ class Metric::TilesFilter
 
   attr_reader :user, :date, :charge_type, :chart, :period, :app
 
-  delegate :oldest_metric_date, :newest_metric_date_or_today, to: :user
+  delegate :show_forecasts?, :oldest_metric_date, :newest_metric_date_or_today, to: :user
 
   def app_titles
     @user.app_titles(@charge_type)
@@ -53,7 +53,7 @@ class Metric::TilesFilter
   private
 
   def previous_date
-    @date - @period.days + 1
+    @date - @period.days
   end
 
   def tiles_presenter

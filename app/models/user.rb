@@ -29,12 +29,8 @@ class User < ApplicationRecord
     metrics.minimum("metric_date")
   end
 
-  def calculate_from_date
-    @calculate_from_date ||= newest_metric_date.presence || Payment.default_start_date
-  end
-
-  def clear_old_payments!
-    payments.where("payment_date > ?", calculate_from_date).delete_all
+  def clear_old_payments!(after:)
+    payments.where("payment_date > ?", after).delete_all
   end
 
   # TODO: DRY the following methods up

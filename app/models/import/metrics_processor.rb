@@ -1,15 +1,16 @@
-class Import::Metrics
+class Import::MetricsProcessor
   def initialize(import:)
     @import = import
-    @user = @import.user
-    @import_from, @import_to = import_dates
+    @user = import.user
+    @import_from = import.import_metrics_after_date
+    @import_to = import.import_metrics_before_date
   end
 
   def calculate!
     return if @import_from.blank? || @import_to.blank?
     calculate_new_metrics
   rescue => error
-    @import&.failed!
+    @import&.fail
     raise error
   end
 
@@ -32,7 +33,7 @@ class Import::Metrics
           metrics << new_metric_from(calculator: calculator) if calculator.has_metrics?
         end
       end
-      Metric.import!(metrics.flatten.compact, validate: false, no_returning: true)
+      Metric.import!(metrics, validate: false, no_returning: true) if metrics.present?
       @import.touch
     end
   end
@@ -42,8 +43,9 @@ class Import::Metrics
   end
 
   def new_metric_from(calculator:)
-    @user.metrics.new(
-      import: @import,
+    {
+      user_id: @user.id,
+      import_id: @import.id,
       metric_date: calculator.date,
       charge_type: calculator.charge_type,
       app_title: calculator.app_title,
@@ -57,19 +59,6 @@ class Import::Metrics
       lifetime_value: calculator.lifetime_value,
       repeat_customers: calculator.repeat_customers,
       repeat_vs_new_customers: calculator.repeat_vs_new_customers
-    )
-  end
-
-  def import_dates
-    # TODO: Returns dates for all payments, instead of just this Imports payments, because of partial dates.
-    latest_calculated_metric = @user.metrics.order("metric_date").last
-    import_from = if latest_calculated_metric.present?
-      latest_calculated_metric.metric_date + 1.day
-    else
-      @user.payments.minimum("payment_date")
-    end
-    last_imported_payment = @user.payments.maximum(:payment_date)
-    import_to = last_imported_payment - 1.day
-    [import_from, import_to]
+    }
   end
 end

@@ -5,7 +5,7 @@ class ImportPaymentsJob < ApplicationJob
   def perform(import:)
     import.import
   rescue => e
-    import&.failed!
+    import&.fail
     raise e
   end
 end

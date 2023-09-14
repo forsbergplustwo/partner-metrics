@@ -9,12 +9,12 @@
   secondary_actions: [
     {
       content: t("actions.delete", resource: resource_name_for(Import)),
-      url: @import,
       destructive: true,
       data: {
-        turbo_method: :delete,
-        turbo_confirm: t("imports.confirm_destroy")
-      },
+        controller: "polaris",
+        target: "#destroy-modal",
+        action: "polaris#openModal"
+      }
     }
   ],
 ) do |page| %>
@@ -41,3 +41,11 @@
       globe_target: "container",
       globe_fetch_url_value: import_globe_path(@import),
     } %>
+
+<%= render "modals/destroy",
+  id: "destroy-modal",
+  url: @import,
+  title: t("actions.delete", resource: resource_name_for(Import)) + "?",
+  message: t("imports.confirm_destroy"),
+  primary_action_text: t("actions.delete", resource: resource_name_for(Import))
+%>

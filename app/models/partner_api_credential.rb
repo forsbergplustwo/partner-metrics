@@ -21,6 +21,8 @@ class PartnerApiCredential < ApplicationRecord
   validates :status, presence: true, inclusion: {in: statuses.keys}
   validate :credentials_have_access, on: [:create, :update]
 
+  accepts_nested_attributes_for :user, update_only: true
+
   def context
     {
       access_token: access_token,

@@ -2,9 +2,19 @@ class Imports::GlobesController < ApplicationController
   before_action :authenticate_user!
 
   def show
-    payments = current_user.payments.pluck(:shop_country, :charge_type).last(30)
-    globe_data = payments.map { |c| {countryCode: c[0], reverse: c[1] == "refund"} }
+    @import = current_user.imports.find(params[:import_id])
 
     render json: globe_data
+  end
+
+  private
+
+  def globe_data
+    payments = @import.payments.pluck(:shop_country, :charge_type).last(80)
+    globe_data = []
+    payments.each do |c|
+      globe_data << {countryCode: c[0], reverse: c[1] == "refund"}
+    end
+    globe_data
   end
 end

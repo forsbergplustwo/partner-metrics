@@ -4,15 +4,16 @@
   narrow_width: true,
   title: t(".title"),
   subtitle: t(".subtitle"),
+  back_url: imports_path,
   secondary_actions: [
     {
       content: t("actions.delete", resource: nil),
-      url: partner_api_credential_path,
       destructive: true,
       data: {
-        turbo_method: :delete,
-        turbo_confirm: t(".confirm_destroy")
-      },
+        controller: "polaris",
+        target: "#destroy-modal",
+        action: "polaris#openModal"
+      }
     }
   ],
 ) do |page| %>
@@ -24,3 +25,11 @@
   <%= render "form", partner_api_credential: @partner_api_credential %>
 
 <% end %>
+
+<%= render "modals/destroy",
+  id: "destroy-modal",
+  url: partner_api_credential_path,
+  title: t("actions.delete", resource: resource_name_for(PartnerApiCredential, true)) + "?",
+  message: t(".confirm_destroy"),
+  primary_action_text: t("actions.delete", resource: nil)
+%>

@@ -26,6 +26,7 @@ gem "polaris_view_components"
 gem "chartkick"
 gem "groupdate"
 gem "convenient_grouper"
+gem "prophet-rb"
 
 # Importing
 gem "csvreader"

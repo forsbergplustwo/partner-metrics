@@ -5,8 +5,9 @@ require "graphql/client/http"
 class Import::Adaptor::ShopifyPaymentsApi
   include ShopifyPartnerAPI
 
-  THROTTLE_MIN_TIME_PER_CALL = 0.3
   BATCH_SIZE = 100
+  MAX_HISTORY = 7.days
+  THROTTLE_MIN_TIME_PER_CALL = 0.3.seconds
 
   API_REVENUE_TYPES = {
     "recurring_revenue" => [
@@ -36,11 +37,11 @@ class Import::Adaptor::ShopifyPaymentsApi
     ]
   }.freeze
 
-  def initialize(import:, created_at_min:)
+  def initialize(import:, import_payments_after_date:)
     @import = import
-    @created_at_min = created_at_min.strftime("%Y-%m-%dT%H:%M:%S.%L%z")
+    @import_payments_after_date = import_payments_after_date.strftime("%Y-%m-%dT%H:%M:%S.%L%z")
 
-    @context = @import.partner_api_credential.context
+    @context = import.partner_api_credential.context
     @cursor = ""
     @throttle_start_time = Time.zone.now
   end
@@ -61,7 +62,7 @@ class Import::Adaptor::ShopifyPaymentsApi
     while has_next_page
       @throttle_start_time = throttle(@throttle_start_time)
 
-      results = fetch_from_api(@cursor, @created_at_min)
+      results = fetch_from_api(@cursor)
       break if results.data.nil?
 
       transactions = results.data.transactions.edges
@@ -74,10 +75,10 @@ class Import::Adaptor::ShopifyPaymentsApi
     end
   end
 
-  def fetch_from_api
+  def fetch_from_api(cursor)
     results = ShopifyPartnerAPI.client.query(
       Graphql::TransactionsQuery,
-      variables: {createdAtMin: @created_at_min, cursor: @cursor, first: batch_size},
+      variables: {cursor: cursor, createdAtMin: @import_payments_after_date, first: batch_size},
       context: @context
     )
     handle_error(results.errors) if results.errors.any?

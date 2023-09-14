@@ -5,7 +5,7 @@ class CalculateMetricsJob < ApplicationJob
   def perform(import:)
     import.calculate
   rescue => e
-    import&.failed!
+    import&.fail
     raise e
   end
 end

@@ -3,8 +3,7 @@
     model: import,
     builder: Polaris::FormBuilder,
     data: {
-      controller: "form",
-      form_show_save_bar_value: false
+      controller: "form"
     }
   ) do |form| %>
 
@@ -32,6 +31,9 @@
                 label_hidden: false,
                 accept: Import::ACCEPTED_FILE_TYPES.join(","),
                 multiple: false,
+                data: {
+                  action: "ondrop@window->form#markAsDirty"
+                }
               ) %>
             <% end %>
 

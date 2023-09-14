@@ -15,9 +15,12 @@ class ImportsController < ApplicationController
   end
 
   def create
-    @import = current_user.imports.new(source: Import.sources[:csv_file], **import_params)
-    @import.user.count_usage_charges_as_recurring = import_params.dig(:user_attributes, :count_usage_charges_as_recurring)
+    @import = current_user.imports.new(
+      source: Import.sources[:csv_file],
+      **import_params.except(:user_attributes)
+    )
     if @import.save
+      save_user_attributes
       redirect_to @import, notice: "Import successfully created."
     else
       flash.now[:alert] = "Import failed to create."
@@ -40,7 +43,13 @@ class ImportsController < ApplicationController
     params.require(:import).permit(
       :import_type,
       :payouts_file,
-      user_attributes: [:count_usage_charges_as_recurring]
+      user_attributes: [:id, :count_usage_charges_as_recurring]
+    )
+  end
+
+  def save_user_attributes
+    current_user.update(
+      count_usage_charges_as_recurring: import_params.dig(:user_attributes, :count_usage_charges_as_recurring)
     )
   end
 

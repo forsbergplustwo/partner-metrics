@@ -6,12 +6,23 @@
   <% page.with_primary_action(url: new_import_path, disabled: @imports.in_progress.any?) { "New import" } %>
 
     <% page.with_action_group(
-    title: t("actions.more_actions"),
-    actions: [
-      { content: t("rename_apps.rename"), url: rename_apps_path },
-      { content: t("actions.delete_all", resource: resource_name_for(Import, true)), url: destroy_all_imports_path, data: { turbo_method: :delete, turbo_confirm: t("imports.confirm_destroy") }, destructive: true }
-    ]
-  ) %>
+      title: t("actions.more_actions"),
+      actions: [
+        {
+          content: t("rename_apps.rename"),
+          url: rename_apps_path
+        },
+        {
+          content: t("actions.delete_all", resource: resource_name_for(Import, true)),
+          destructive: true,
+          data: {
+            controller: "polaris",
+            target: "#destroy-modal",
+            action: "polaris#openModal"
+          }
+        }
+      ]
+    ) %>
 
 
   <% if @imports.any? %>
@@ -30,3 +41,11 @@
     <%= render "shared/empty_state", resource: Import %>
   <% end %>
 <% end %>
+
+<%= render "modals/destroy",
+  id: "destroy-modal",
+  url: destroy_all_imports_path,
+  title: t("actions.delete", resource: resource_name_for(Import, true)) + "?",
+  message: t("imports.confirm_destroy"),
+  primary_action_text: t("actions.delete", resource: resource_name_for(Import, true))
+%>

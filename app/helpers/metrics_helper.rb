@@ -80,6 +80,7 @@ module MetricsHelper
       download: true,
       library: {
         pointSize: 6,
+        isStacked: false,
         backgroundColor: "transparent",
         animation: {
           startup: true,
@@ -87,7 +88,7 @@ module MetricsHelper
           easing: "inAndOut"
         },
         lineWidth: 3,
-        colors: ["#5912D5", "rgba(89, 18, 213, 0.2)"],
+        colors: ["#5912D5", "#5912D5"],
         explorer: {
           keepInBounds: true,
           axis: "horizontal",
@@ -101,10 +102,24 @@ module MetricsHelper
             color: "#F1F2F4"
           }
         },
+        timeline: {
+          tooltipDateFormat: "MMM d, yyyy"
+        },
+        hAxis: {
+          format: "MMM d, y"
+        },
         chartArea: {
           width: "100%",
           height: "80%",
           left: "5%"
+        },
+        focusTarget: "category",
+        series: {
+          "1": {
+            visibleInLegend: false,
+            lineWidth: 0,
+            areaOpacity: 0
+          }
         }
       }
     }

@@ -2,10 +2,10 @@ require "zip"
 require "csvreader"
 
 class Import::Adaptor::CsvFile
-  BATCH_SIZE = 500
+  BATCH_SIZE = 1000
+  MAX_HISTORY = 4.years
 
   CSV_READER_OPTIONS = {
-    converters: :all,
     header_converters: :symbol,
     encoding: "UTF-8"
   }.freeze
@@ -57,11 +57,12 @@ class Import::Adaptor::CsvFile
     ]
   }.freeze
 
-  def initialize(import:, created_at_min:)
+  def initialize(import:, import_payments_after_date:)
     @import = import
-    @created_at_min = created_at_min
+    @import_payments_after_date = import_payments_after_date
 
     @temp_files = {}
+    @prepared_csv_file = prepared_csv_file
   end
 
   def fetch_payments
@@ -75,9 +76,9 @@ class Import::Adaptor::CsvFile
   private
 
   def stream_payments(main_enum)
-    CsvHashReader.foreach(prepared_csv_file, **CSV_READER_OPTIONS) do |csv_row|
+    CsvHashReader.foreach(@prepared_csv_file, **CSV_READER_OPTIONS) do |csv_row|
       parsed_row = parse(csv_row)
-      break if parsed_row[:payment_date] <= @created_at_min
+      break if parsed_row[:payment_date] <= @import_payments_after_date
 
       main_enum.yield parsed_row
     end
@@ -122,6 +123,8 @@ class Import::Adaptor::CsvFile
   end
 
   def prepared_csv_file
+    return @prepared_csv_file if @prepared_csv_file
+
     file = @import.payouts_file
     if zipped?(file.content_type)
       extracted_zip_file(ActiveStorage::Blob.service.path_for(file.key))

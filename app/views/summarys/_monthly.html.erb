@@ -1,9 +1,7 @@
 <%= polaris_index_table(rows) do |table| %>
 
   <% table.with_column(t('.date', date: nil)) do |row| %>
-    <br>
-      <%= row[0].strftime('%b %Y') %>
-    <br>
+    <%= row[0].strftime('%b %Y') %>
   <% end %>
 
   <% table.with_column(t('.payments')) do |row| %>

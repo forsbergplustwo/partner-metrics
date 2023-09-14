@@ -7,12 +7,24 @@
 
   <%= turbo_frame_tag :metrics, data: {
     controller: "chartkick",
-    action: "turbo:load@window->chartkick#createChart"
+    action: "turbo:load@window->chartkick#createChart turbo:frame-load->chartkick#createChart"
   } do %>
 
     <%= polaris_vertical_stack(gap: "5") do %>
 
-      <%= render "filter", filter: @filter, app_titles: @app_titles %>
+      <%= polaris_stack(alignment: :center) do |stack| %>
+
+        <% stack.with_item(fill:true) do %>
+          <%= render "filter", filter: @filter, app_titles: @app_titles %>
+        <% end %>
+
+        <% stack.with_item do %>
+          <%= render "forecasts_form", user: current_user %>
+        <% end %>
+
+      <% end %>
+
+
 
       <% if @filter.has_metrics? %>
 

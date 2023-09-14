@@ -4,6 +4,7 @@ en:
     view_details: "View details"
     save: "Save"
     discard: "Discard"
+    cancel: "Cancel"
     choose_file: "Choose file"
     delete: "Delete %{resource}"
     delete_all: "Delete all %{resource}"
@@ -26,6 +27,8 @@ en:
       description: "Import your payouts data to get started."
       footer_html: If you don’t want to upload historical data, connect your %{url} data source.
   user:
+    show_forecasts: "Show forecasts"
+    show_forecasts_help_text: "Requires a minimum of 10 data points. Can be slow to calculate."
     count_usage_charges_as_recurring: "Count usage charges as recurring revenue"
     count_usage_charges_as_recurring_help_text: "Usage charges are counted as one-time revenue by default."
   devise:

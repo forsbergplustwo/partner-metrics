@@ -15,9 +15,11 @@ class PartnerApiCredentialsController < ApplicationController
   end
 
   def create
-    @partner_api_credential = current_user.build_partner_api_credential(partner_api_credential_params)
-
+    @partner_api_credential = current_user.build_partner_api_credential(
+      partner_api_credential_params.except(:user_attributes)
+    )
     if @partner_api_credential.save
+      save_user_attributes
       redirect_to edit_partner_api_credential_path(@partner_api_credential), notice: "Partner api credential was successfully created."
     else
       render :new, status: :unprocessable_entity, notice: "Partner api credential was not created."
@@ -51,12 +53,17 @@ class PartnerApiCredentialsController < ApplicationController
     @partner_api_credential.errors.add(:base, @partner_api_credential.status_message)
   end
 
-  # Only allow a list of trusted parameters through.
+  def save_user_attributes
+    current_user.update(
+      count_usage_charges_as_recurring: partner_api_credential_params.dig(:user_attributes, :count_usage_charges_as_recurring)
+    )
+  end
+
   def partner_api_credential_params
     params.require(:partner_api_credential).permit(
       :access_token,
       :organization_id,
-      user_attributes: [:count_usage_charges_as_recurring]
+      user_attributes: [:id, :count_usage_charges_as_recurring]
     )
   end
 end

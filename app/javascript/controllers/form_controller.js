@@ -4,7 +4,7 @@ import DirtyForm from '../libraries/dirty-form'
 export default class extends Controller {
   static targets = ['submitButton']
   static values = {
-    showSaveBar: { type: Boolean, default: true },
+    showSaveBar: { type: Boolean, default: false },
     submitButtonTarget: String
   }
 

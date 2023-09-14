@@ -43,7 +43,7 @@ class Import < ApplicationRecord
 
   def import
     importing!
-    Import::Payments.new(import: self).import!
+    Import::PaymentsProcessor.new(import: self).import!
     imported
   end
 
@@ -53,12 +53,40 @@ class Import < ApplicationRecord
 
   def calculate
     calculating!
-    Import::Metrics.new(import: self).calculate!
+    Import::MetricsProcessor.new(import: self).calculate!
     completed!
+  end
+
+  def fail
+    failed!
+    payments.delete_all
+    metrics.delete_all
   end
 
   def source_adaptor
     csv_file_source? ? Import::Adaptor::CsvFile : Import::Adaptor::ShopifyPaymentsApi
+  end
+
+  def import_payments_after_date
+    max_allowed_ago = source_adaptor.const_get(:MAX_HISTORY).ago
+    if user.newest_metric_date.to_i < max_allowed_ago.to_i
+      max_allowed_ago
+    else
+      user.newest_metric_date
+    end
+  end
+
+  def import_metrics_after_date
+    if user.newest_metric_date.present?
+      user.newest_metric_date + 1.day
+    else
+      user.payments.minimum("payment_date")
+    end
+  end
+
+  def import_metrics_before_date
+    # Don't include the latest day, because it may not be complete
+    user.payments.maximum(:payment_date) - 1.day
   end
 
   private

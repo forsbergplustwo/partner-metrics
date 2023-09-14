@@ -1,8 +1,10 @@
+require "prophet-rb"
+
 class Metric < ApplicationRecord
   belongs_to :user
   belongs_to :import
 
-  PERIODS = [7, 28, 29, 30, 31, 90, 180, 365].freeze
+  PERIODS = [1, 7, 28, 29, 30, 31, 90, 180, 365].freeze
   PERIODS_AGO = [1, 2, 3, 6, 12].freeze
 
   CHARGE_TYPES = ["recurring_revenue", "onetime_revenue", "affiliate_revenue", "refund"].freeze
@@ -48,6 +50,13 @@ class Metric < ApplicationRecord
 
       # Sort the dates and return the metrics
       metrics.sort_by { |h| h[0].to_datetime }
+    end
+
+    def forecast_for_chart_data(chart_data)
+      Prophet.forecast(chart_data, count: 3)
+    rescue ArgumentError
+      # Forecasts require a minimum of 10 data points
+      []
     end
 
     # Build a hash of dates containing date ranges,
