@@ -143,6 +143,9 @@ class Import::Adaptor::ShopifyPaymentsApi
   end
 
   def handle_error(api_error)
-    @import.partner_api_credential.invalidate_with_message!(results.errors.messages.map { |k, v| "#{k}=#{v}" }.join("&"))
+    error_message = api_error.messages.map { |k, v| "#{k}=#{v}" }.join("&")
+    if error_message.include?("Unauthorized") || error_message.include?("Forbidden") || error_message.include?("permissions")
+      @import.partner_api_credential.invalidate_with_message!(error_message)
+    end
   end
 end

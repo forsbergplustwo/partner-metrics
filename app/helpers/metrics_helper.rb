@@ -56,14 +56,6 @@ module MetricsHelper
     end
   end
 
-  def select_chart(tiles, selected)
-    if selected.present?
-      tiles.find { |t| t.handle == selected }
-    else
-      tiles.first
-    end
-  end
-
   def metric_chart_url(tile_type, date, period, app)
     url_for(
       action: action_name,
@@ -88,7 +80,7 @@ module MetricsHelper
           easing: "inAndOut"
         },
         lineWidth: 3,
-        colors: ["#5912D5", "#5912D5"],
+        colors: ["#5a24cd", "#7945e3"],
         explorer: {
           keepInBounds: true,
           axis: "horizontal",

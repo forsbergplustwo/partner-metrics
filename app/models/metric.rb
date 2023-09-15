@@ -1,5 +1,3 @@
-require "prophet-rb"
-
 class Metric < ApplicationRecord
   belongs_to :user
   belongs_to :import
@@ -50,13 +48,6 @@ class Metric < ApplicationRecord
 
       # Sort the dates and return the metrics
       metrics.sort_by { |h| h[0].to_datetime }
-    end
-
-    def forecast_for_chart_data(chart_data)
-      Prophet.forecast(chart_data, count: 3)
-    rescue ArgumentError
-      # Forecasts require a minimum of 10 data points
-      []
     end
 
     # Build a hash of dates containing date ranges,

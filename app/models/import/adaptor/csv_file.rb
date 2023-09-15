@@ -83,7 +83,6 @@ class Import::Adaptor::CsvFile
       main_enum.yield parsed_row
     end
   ensure
-    Rails.logger.info "Closing and unlinking temp files"
     close_and_unlink_temp_files
   end
 

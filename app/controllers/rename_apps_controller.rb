@@ -11,7 +11,7 @@ class RenameAppsController < ApplicationController
       from: rename_app_params[:from],
       to: rename_app_params[:to]
     )
-    if app_renamer.rename!
+    if app_renamer.rename
       redirect_to rename_apps_path, notice: "App renamed successfully"
     else
       flash.now[:error] = "App rename failed"

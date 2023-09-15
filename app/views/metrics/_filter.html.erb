@@ -1,7 +1,7 @@
   <%= form_tag(
     url_for(action: action_name, charge_type: filter.charge_type),
     method: :get,
-    data: {controller: "filters daterangepicker", daterangepicker_target: "form", turbo_frame: :metrics, turbo_action: :advance},
+    data: {controller: "filters", turbo_frame: :metrics, turbo_action: :advance},
   ) do %>
 
     <%= hidden_field_tag :chart, filter.chart %>
@@ -29,7 +29,14 @@
         <% end %>
       <% end %>
 
-      <% filters.with_item(label: filter.date.to_s, sectioned: false, style: "white-space: nowrap;") do %>
+      <% filters.with_item(
+        label: filter.date.to_s,
+        sectioned: false,
+        style: "white-space: nowrap;",
+        data: {
+          controller: "datefield",
+          action: "click->datefield#show"}
+      ) do %>
         <%= polaris_text_field(
           name: :date,
           value: filter.date,
@@ -37,9 +44,12 @@
           label_hidden: true,
           input_options: {
             min: (filter.oldest_metric_date),
-            max: (filter.newest_metric_date_or_today)
-          },
-          data: {action: "input->filters#submit change->filters#submit"}
+            max: (filter.newest_metric_date_or_today),
+            data: {
+              datefield_target: "input",
+              action: "input->filters#submit change->filters#submit"
+            }
+          }
         ) %>
       <% end %>
 

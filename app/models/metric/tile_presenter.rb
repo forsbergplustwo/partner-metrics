@@ -44,7 +44,7 @@ class Metric::TilePresenter
   def chart_data
     chart_data = basic_chart_data
 
-    if @filter.show_forecasts?
+    if @filter.show_forecasts? && @filter.period == 30
       forecast_data = forecast_chart_data(chart_data)
       return chart_data if forecast_data[:data].empty?
       chart_data << forecast_data
@@ -55,17 +55,17 @@ class Metric::TilePresenter
   private
 
   def basic_chart_data
-    metrics_chart = fetch_metrics_chart
+    metrics_chart = metrics_chart_data
     [{name: @display, data: metrics_chart}]
   end
 
   def forecast_chart_data(chart_data)
-    forecast_data = Metric.forecast_for_chart_data(fetch_metrics_chart)
+    forecast_data = Metric::ForecastCharter.new(chart_data: metrics_chart_data).chart_data
     {name: "Forecast", data: forecast_data}
   end
 
-  def fetch_metrics_chart
-    @fetch_metrics_chart ||= begin
+  def metrics_chart_data
+    @metrics_chart_data ||= begin
       metrics = @filter.user_metrics_by_app.by_optional_charge_type(@charge_type)
       metrics.chart_data(@filter.date, @filter.period, @calculation, @column).to_h
     end
