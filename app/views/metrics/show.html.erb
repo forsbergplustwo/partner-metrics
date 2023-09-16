@@ -7,7 +7,7 @@
 
   <%= turbo_frame_tag :metrics, data: {
     controller: "chartkick",
-    action: "turbo:load@window->chartkick#createChart turbo:frame-load->chartkick#createChart"
+    action: "turbo:load@window->chartkick#createChart turbo:frame-load->chartkick#createChart",
   } do %>
 
     <%= polaris_vertical_stack(gap: "5") do %>
@@ -36,7 +36,7 @@
             <% end %>
           <% end %>
 
-          <%#= render "#{params[:controller]}/revenue_per", q: current_query %>
+          <%= render "#{params[:controller]}/revenue_per", filter: @filter %>
 
       <% else %>
 
