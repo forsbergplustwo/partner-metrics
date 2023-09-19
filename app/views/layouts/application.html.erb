@@ -20,19 +20,6 @@
     <%= javascript_include_tag "application" %>
     <%= hotwire_livereload_tags if Rails.env.development? %>
     <%= javascript_include_tag "https://www.gstatic.com/charts/loader.js" %>
-
-    <% if !current_user.blank? %>
-      <%#= intercom_script_tag({
-        :app_id => 'gworkb82',
-        :user_id => current_user.id,
-        :email => current_user.email,
-        :created_at => current_user.created_at,
-        :custom_data => {
-          'partnermetrics_last_seen_at' => Time.now.to_i,
-          'partnermetrics_signup_at' => current_user.created_at
-        }
-      }) %>
-    <% end %>
   </head>
 
   <body style="<%= polaris_html_styles %>">
@@ -51,7 +38,9 @@
       <%= yield %>
 
       <%= polaris_footer_help do %>
-        Made with ❤ by <%= polaris_link(url: "https://www.forsbergplustwo.com", external: true) { "FORSBERG+two" } %>. Available on Github as <%= polaris_link(url: "https://github.com/forsbergplustwo/partner-metrics", external: true) { "open-source" } %>.
+        <%= polaris_text(alignment: :center) do %>
+          Made with ❤ by <%= polaris_link(url: "https://www.forsbergplustwo.com", external: true) { "FORSBERG+two" } %>.<br>Available on Github as <%= polaris_link(url: "https://github.com/forsbergplustwo/partner-metrics", external: true) { "open-source" } %>. For questions, please <%= polaris_link(url: "https://github.com/forsbergplustwo/partner-metrics/issues/new?labels=question&body=%0A%0A%0A---%0AI%27m+a+human.+Please+be+nice.", external: true) { "create an issue" } %> on the repo.
+        <% end %>
       <% end %>
 
       <%= turbo_frame_tag :remote_modal %>
