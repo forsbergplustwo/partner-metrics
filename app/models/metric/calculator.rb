@@ -1,4 +1,7 @@
 class Metric::Calculator
+  MONTHLY_RECURRING_BILLING_FREQUENCY = 30.days
+  MONTHLY_RECURRING_BILLING_CHURN_WINDOW = 15.days
+
   def initialize(user:, date:, charge_type:, app_title:)
     @user = user
     @date = date
@@ -79,11 +82,18 @@ class Metric::Calculator
   end
 
   def current_shops
-    @current_shops ||= user.payments.where(payment_date: date - 29.days..date, charge_type: charge_type, app_title: app_title).group_by(&:shop)
+    churn_calulation_date_lower_bound = date - (MONTHLY_RECURRING_BILLING_CHURN_WINDOW * 2)
+    @current_shops ||= user.payments.where(payment_date: churn_calulation_date_lower_bound..date, charge_type: charge_type, app_title: app_title).group_by(&:shop)
   end
 
   def previous_shops
-    @previous_shops ||= user.payments.where(payment_date: date - 59.days..date - 30.days, charge_type: charge_type, app_title: app_title).group_by(&:shop)
+    @previous_shops ||= user.payments.where(payment_date: churn_calculation_date, charge_type: charge_type, app_title: app_title).group_by(&:shop)
+  end
+
+  def churn_calculation_date
+    # To calculate churn, we need to look at the previous set of payments but also
+    # allow for a lookahead window (due to shifted payment dates).
+    date - MONTHLY_RECURRING_BILLING_FREQUENCY - MONTHLY_RECURRING_BILLING_CHURN_WINDOW
   end
 
   def churned_shops
