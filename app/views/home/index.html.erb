@@ -1,23 +1,24 @@
-<div id="heading_row" class="row animated fadeIn text-center">
-  <div id="title" class="col-md-8 col-md-offset-2">
-    <h1 style="font-size: 42px;">A <b>free</b> metrics dashboard for<br><b>Shopify Partners</b></h1>
-  </div>
-</div>
-<div class="row animated fadeIn text-center">
-  <div class="col-md-8 col-md-offset-2">
-    <%= link_to "Get started", new_user_registration_path, class: "btn btn-lg btn-primary" %>
-    <p id="by-line">
-      Created with &hearts; by <a href="http://www.forsbergplustwo.com" target="_blank" style="color: #fff;">Bjorn @ FORSBERG+two</a>,<br>with help from <a href="https://www.danielrsim.com" target="_blank" style="color: #fff;">Daniel Sim</a>
-    </p>
-    <p id="by-line-security">
-      This tool was originally create for myself and released a <a href="https://github.com/forsbergplustwo/partner-metrics-for-shopify" target="_blank" style="color: #fff;">self-hosted version on GitHub</a>. I kept being asked to create a hosted version and so I did. I will never look at, share or otherwise analyze your data in any way (unless you ask me to in order to solve an issue). Please do get in <a href="https://forsbergplustwo.com/contact" target="_blank" style="color: #fff;">contact</a> with any questions or if you'd just like to say <i>Hi</i> at the next Unite :)
-    </p>
-  </div>
-</div>
-<div class="row text-center">
-  <div class="col-md-8 col-md-offset-2">
-    <img src="<%= image_url("index_hero.png") %>" alt="Recurring Revenue Metrics" class="animated fadeIn" style="max-width:100%;-webkit-box-shadow: 0px 8px 23px 2px rgba(0,0,0,0.75);
--moz-box-shadow: 0px 8px 23px 2px rgba(0,0,0,0.75);
-box-shadow: 0px 8px 23px 2px rgba(0,0,0,0.75);">
-  </div>
-</div>
+<%= polaris_page do %>
+  <%= polaris_card do %>
+    <%= polaris_empty_state(
+      heading: "A free metrics dashboard for Shopify Partners",
+      classes: "empty-state",
+      image: image_path("empty_state/AnalyticsMinor"),
+    ) do |state| %>
+
+      <% state.with_primary_action(url: new_user_registration_path) { "Sign up" } %>
+      <% state.with_secondary_action(url: new_user_session_path) { "Log in" } %>
+
+      <%= polaris_text(variant: :bodyLg, as: :p) do %>
+        Get every revenue metric you care about — Total Revenue, Churn, LTV and more in one central hub. Dive deeper by app or revenue type, with graphs and forecasts included.
+      <% end %>
+
+      <% state.with_footer do %>
+        <%= polaris_text(variant: :bodySm, as: :p) do %>
+          PartnerMetrics.io is not affiliated with or endorsed by Shopify in any way. Shopify is a trademark of Shopify Inc.
+        <% end %>
+      <% end %>
+
+    <% end %>
+  <% end %>
+<% end %>
