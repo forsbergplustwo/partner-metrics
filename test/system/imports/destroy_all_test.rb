@@ -15,8 +15,10 @@ class Imports::DestroyAllTest < ApplicationSystemTestCase
 
     assert_text "View details", count: 2
 
-    accept_alert do
-      click_on "Delete all imports"
+    click_on "More actions"
+    click_on "Delete all imports"
+    within "#destroy-modal" do
+      click_on "Delete imports"
     end
     assert_text "All imports deleted"
     assert_text "No imports yet"

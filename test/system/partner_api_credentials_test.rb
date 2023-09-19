@@ -5,45 +5,45 @@ class PartnerApiCredentialsTest < ApplicationSystemTestCase
     @partner_api_credential = partner_api_credentials(:one)
   end
 
-  test "visiting the index" do
-    visit partner_api_credentials_url
-    assert_selector "h1", text: "Partner api credentials"
-  end
-
   test "should create partner api credential" do
-    visit partner_api_credentials_url
-    click_on "New partner api credential"
+    sign_in users(:new)
+    PartnerApiCredential.any_instance.expects(:credentials_have_access).returns(true)
 
-    fill_in "Access token", with: @partner_api_credential.access_token
-    fill_in "Organization", with: @partner_api_credential.organization_id
-    fill_in "Status", with: @partner_api_credential.status
-    fill_in "Status message", with: @partner_api_credential.status_message
-    fill_in "User", with: @partner_api_credential.user_id
-    click_on "Create Partner api credential"
+    visit root_url
+    find('span', text: 'Partner API Credentials').click
+
+    fill_in "Shopify organization ID", with: @partner_api_credential.organization_id
+    fill_in "Shopify access token", with: @partner_api_credential.access_token
+
+    click_on "Save"
 
     assert_text "Partner api credential was successfully created"
-    click_on "Back"
   end
 
   test "should update Partner api credential" do
-    visit partner_api_credential_url(@partner_api_credential)
-    click_on "Edit this partner api credential", match: :first
+    sign_in users(:regular)
+    PartnerApiCredential.any_instance.expects(:credentials_have_access).returns(true)
 
-    fill_in "Access token", with: @partner_api_credential.access_token
-    fill_in "Organization", with: @partner_api_credential.organization_id
-    fill_in "Status", with: @partner_api_credential.status
-    fill_in "Status message", with: @partner_api_credential.status_message
-    fill_in "User", with: @partner_api_credential.user_id
-    click_on "Update Partner api credential"
+    visit root_url
+    find('span', text: 'Partner API Credentials').click
+
+    fill_in "Shopify organization ID", with: "54321"
+    fill_in "Shopify access token", with: @partner_api_credential.access_token
+
+    click_on "Save"
 
     assert_text "Partner api credential was successfully updated"
-    click_on "Back"
   end
 
   test "should destroy Partner api credential" do
-    visit partner_api_credential_url(@partner_api_credential)
-    click_on "Destroy this partner api credential", match: :first
+    sign_in users(:regular)
 
+    visit edit_partner_api_credential_url(@partner_api_credential)
+
+    click_on "Delete"
+    within "#destroy-modal" do
+      click_on "Delete"
+    end
     assert_text "Partner api credential was successfully destroyed"
   end
 end

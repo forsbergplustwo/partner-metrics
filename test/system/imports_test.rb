@@ -32,8 +32,8 @@ class ImportsTest < ApplicationSystemTestCase
 
     attach_to_import("payouts-recurring.csv")
 
-    assert_button "Import", disabled: false
-    click_on "Import"
+    assert_button "Save", disabled: false
+    click_on "Save"
 
     assert_text "Import successfully created."
     assert_text "Import details"
@@ -42,8 +42,9 @@ class ImportsTest < ApplicationSystemTestCase
   test "should destroy Import" do
     visit import_url(@import)
 
-    accept_alert do
-      click_on "Delete import", match: :first
+    click_on "Delete import"
+    within "#destroy-modal" do
+      click_on "Delete import"
     end
 
     assert_text "Import successfully destroyed."
