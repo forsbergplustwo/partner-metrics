@@ -61,6 +61,13 @@ en:
     affiliate_revenue:
       title: "Affiliate"
       subtitle: "Revenue from the partner affiliate program."
+    tiles:
+      recurring_avg_revenue_per_charge: "Avg. revenue per charge"
+      recurring_avg_revenue_per_shop: "Avg. revenue per shop"
+      onetime_avg_revenue_per_charge: "Avg. revenue per charge"
+      onetime_avg_revenue_per_shop: "Avg. revenue per shop"
+      affiliate_avg_revenue_per_charge: "Avg. revenue per charge"
+      affiliate_avg_revenue_per_shop: "Avg. revenue per shop"
   summarys:
     monthly:
       title: "Monthly summary"

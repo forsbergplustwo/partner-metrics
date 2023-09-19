@@ -6,11 +6,13 @@
   <%= render "shared/page_actions", page: page %>
 
   <%= turbo_frame_tag :metrics, data: {
-    controller: "chartkick",
-    action: "turbo:load@window->chartkick#createChart turbo:frame-load->chartkick#createChart",
+    #controller: "chartkick",
+    #action: "turbo:frame-load->chartkick#createChart",
   } do %>
 
     <%= polaris_vertical_stack(gap: "5") do %>
+
+      <%= @filter.charge_type %>
 
       <%= polaris_stack(alignment: :center) do |stack| %>
 
@@ -36,7 +38,7 @@
             <% end %>
           <% end %>
 
-          <%= render "#{params[:controller]}/revenue_per", filter: @filter %>
+          <%= render revenue_per_partial_for(@filter.charge_type), filter: @filter %>
 
       <% else %>
 

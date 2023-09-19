@@ -4,9 +4,6 @@
 
 import { application } from "./application"
 
-import ChartkickController from "./chartkick_controller"
-application.register("chartkick", ChartkickController)
-
 import DatefieldController from "./datefield_controller"
 application.register("datefield", DatefieldController)
 

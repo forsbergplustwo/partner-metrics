@@ -76,4 +76,15 @@ class User < ApplicationRecord
       metrics.where(metric_date: from_date..date)
     end.group(:app_title).sum(:revenue)
   end
+
+  def total_revenue_per_plan(date:, charge_type:, period: nil, app_title: nil)
+    per_plan_payments = payments.where(charge_type: charge_type)
+    per_plan_payments = per_plan_payments.where(app_title: app_title) if app_title.present?
+    per_plan_payments = if period.present?
+      per_plan_payments.where(payment_date: (date - period.days)..date)
+    else
+      per_plan_payments.where(payment_date: ..date)
+    end
+    per_plan_payments.group(:revenue).order("revenue DESC").count
+  end
 end

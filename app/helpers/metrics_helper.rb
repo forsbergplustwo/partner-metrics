@@ -1,4 +1,12 @@
 module MetricsHelper
+  def revenue_per_partial_for(charge_type)
+    if charge_type.blank?
+      "metrics/revenue_per"
+    else
+      "metrics/#{charge_type}/revenue_per"
+    end
+  end
+
   def metric_display_value(selected_chart_display, value)
     case selected_chart_display
     when :number

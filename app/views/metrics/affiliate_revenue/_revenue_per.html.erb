@@ -1,0 +1,18 @@
+<%= polaris_divider %>
+
+<%= polaris_layout do |layout| %>
+  <% layout.with_section(one_half: true) do %>
+    <%= polaris_card(title: "Revenue per plan (All time)") do %>
+      <%= column_chart current_user.total_revenue_per_plan(
+        date: filter.date,
+        charge_type: filter.charge_type,
+        app_title: filter.app
+        ), id: "revenue-per-plan" %>
+    <% end %>
+  <% end %>
+  <% layout.with_section(one_half: true) do %>
+    <%= polaris_card(title: "Revenue per country (12 Months)") do %>
+      <%= pie_chart current_user.yearly_revenue_per_country(charge_type: filter.charge_type, date: filter.date), id: "revenue-per-country" %>
+    <% end %>
+  <% end %>
+<% end %>

@@ -1,6 +1,6 @@
 <div>
   <%= polaris_card(
-    title: tile.handle.to_s.humanize,
+    title: t("metrics.tiles.#{tile.handle}", default: tile.handle.to_s.humanize),
     actions: [{
       content: polaris_icon(name: "ViewMinor", color: :subdued),
       title: "View chart",

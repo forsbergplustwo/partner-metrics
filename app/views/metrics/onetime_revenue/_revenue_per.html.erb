@@ -15,13 +15,13 @@
 
 <%= polaris_layout do |layout| %>
   <% layout.with_section(one_half: true) do %>
-    <%= polaris_card(title: "Revenue per charge type (12 Months)") do %>
-      <%= column_chart current_user.yearly_revenue_per_charge_type(charge_type: filter.charge_type, date: filter.date), id: "revenue-per-charge-type-12-months" %>
+    <%= polaris_card(title: "Revenue per app (12 Months)") do %>
+      <%= column_chart current_user.yearly_revenue_per_product(charge_type: filter.charge_type, date: filter.date), id: "revenue-per-app-column" %>
     <% end %>
   <% end %>
-  <% layout.with_section(one_half: true) do %>
-    <%= polaris_card(title: "Revenue per charge type (All time)") do %>
-      <%= column_chart current_user.total_revenue_per_charge_type(charge_type: filter.charge_type, date: filter.date), id: "revenue-per-charve-type" %>
+    <% layout.with_section(one_half: true) do %>
+    <%= polaris_card(title: "Revenue per app (All time)") do %>
+      <%= column_chart current_user.total_revenue_per_app(charge_type: filter.charge_type, date: filter.date), id: "revenue-per-app-total" %>
     <% end %>
   <% end %>
 <% end %>
