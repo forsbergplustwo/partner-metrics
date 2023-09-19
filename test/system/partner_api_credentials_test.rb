@@ -10,7 +10,7 @@ class PartnerApiCredentialsTest < ApplicationSystemTestCase
     PartnerApiCredential.any_instance.expects(:credentials_have_access).returns(true)
 
     visit root_url
-    find('span', text: 'Partner API Credentials').click
+    find("span", text: "Partner API Credentials").click
 
     fill_in "Shopify organization ID", with: @partner_api_credential.organization_id
     fill_in "Shopify access token", with: @partner_api_credential.access_token
@@ -25,7 +25,7 @@ class PartnerApiCredentialsTest < ApplicationSystemTestCase
     PartnerApiCredential.any_instance.expects(:credentials_have_access).returns(true)
 
     visit root_url
-    find('span', text: 'Partner API Credentials').click
+    find("span", text: "Partner API Credentials").click
 
     fill_in "Shopify organization ID", with: "54321"
     fill_in "Shopify access token", with: @partner_api_credential.access_token

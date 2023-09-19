@@ -23,7 +23,7 @@ class PartnerApiCredentialsControllerTest < ActionDispatch::IntegrationTest
     PartnerApiCredential.any_instance.expects(:credentials_have_access).returns(true)
 
     assert_difference("PartnerApiCredential.count") do
-      post partner_api_credentials_url, params: { partner_api_credential: { access_token: @partner_api_credential.access_token, organization_id: @partner_api_credential.organization_id } }
+      post partner_api_credentials_url, params: {partner_api_credential: {access_token: @partner_api_credential.access_token, organization_id: @partner_api_credential.organization_id}}
     end
 
     assert_redirected_to edit_partner_api_credential_url(PartnerApiCredential.last)
