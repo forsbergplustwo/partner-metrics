@@ -69,7 +69,7 @@ class Import < ApplicationRecord
 
   def import_payments_after_date
     max_allowed_ago = source_adaptor.const_get(:MAX_HISTORY).ago
-    if (user.newest_metric_date&.to_time).to_i < max_allowed_ago.to_i
+    if user.newest_metric_date&.to_time.to_i < max_allowed_ago.to_i
       max_allowed_ago
     else
       user.newest_metric_date

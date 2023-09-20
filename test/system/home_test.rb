@@ -1,7 +1,6 @@
 require "application_system_test_case"
 
 class HomeTest < ApplicationSystemTestCase
-
   test "Can visit home page" do
     visit root_url
 

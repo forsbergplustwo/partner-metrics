@@ -77,12 +77,10 @@ class Metric::TilePresenter
   end
 
   def metrics_chart_data
-    @metrics_chart_data ||= begin
-      @filter.user_metrics_by_app
-        .by_optional_charge_type(@charge_type)
-        .by_optional_is_yearly_revenue(@is_yearly_revenue)
-        .chart_data(@filter.date, @filter.period, @calculation, @column)
-        .to_h
-    end
+    @metrics_chart_data ||= @filter.user_metrics_by_app
+      .by_optional_charge_type(@charge_type)
+      .by_optional_is_yearly_revenue(@is_yearly_revenue)
+      .chart_data(@filter.date, @filter.period, @calculation, @column)
+      .to_h
   end
 end
