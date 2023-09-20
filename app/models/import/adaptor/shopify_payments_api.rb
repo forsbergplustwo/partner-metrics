@@ -6,7 +6,7 @@ class Import::Adaptor::ShopifyPaymentsApi
   include ShopifyPartnerAPI
 
   BATCH_SIZE = 100
-  MAX_HISTORY = 7.days
+  MAX_HISTORY = 3.months
   THROTTLE_MIN_TIME_PER_CALL = 0.3.seconds
 
   API_REVENUE_TYPES = {
