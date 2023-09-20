@@ -38,6 +38,9 @@
       <%= yield %>
 
       <%= polaris_footer_help do %>
+
+        <%= polaris_spacer(vertical: :base) %>
+
         <%= polaris_text(alignment: :center) do %>
           Made with ❤ by <%= polaris_link(url: "https://www.forsbergplustwo.com", external: true) { "FORSBERG+two" } %>.<br>Available on Github as <%= polaris_link(url: "https://github.com/forsbergplustwo/partner-metrics", external: true) { "open-source" } %>. For questions, please <%= polaris_link(url: "https://github.com/forsbergplustwo/partner-metrics/issues/new?labels=question&body=%0A%0A%0A---%0AI%27m+a+human.+Please+be+nice.", external: true) { "create an issue" } %> on the repo.
         <% end %>

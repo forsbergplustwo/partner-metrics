@@ -3,7 +3,7 @@ recurring:
   import: completed
   metric_date: 2023-01-01
   charge_type: recurring_revenue
-  app_title: test-app
+  app_title: test-app-1
   revenue: !ruby/object:BigDecimal 18:0.1e2
   number_of_charges: 1
   number_of_shops: 1
@@ -20,7 +20,7 @@ onetime:
   import: completed
   metric_date: 2023-01-01
   charge_type: onetime_revenue
-  app_title: test-app
+  app_title: test-app-1
   revenue: !ruby/object:BigDecimal 18:0.1e2
   number_of_charges: 1
   number_of_shops: 1
@@ -37,7 +37,7 @@ affiliate:
   import: completed
   metric_date: 2023-01-01
   charge_type: affiliate_revenue
-  app_title: test-app
+  app_title: test-app-2
   revenue: !ruby/object:BigDecimal 18:0.1e2
   number_of_charges: 1
   number_of_shops: 1

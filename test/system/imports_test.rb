@@ -8,6 +8,8 @@ class ImportsTest < ApplicationSystemTestCase
 
   test "visiting the index with an import" do
     visit imports_url
+    find("span.Polaris-Navigation__Text", text: "Data imports").click
+
     assert_selector "h1", text: "Data imports"
 
     assert_text "View details"

@@ -48,12 +48,20 @@
     <% actions.with_secondary_action(
       destructive: true,
       outline: true,
-      url: user_registration_path,
       data: {
-        turbo_method: :delete,
-        turbo_confirm: t("devise.confirm_destroy")
+        controller: "polaris",
+        target: "#destroy-modal",
+        action: "polaris#openModal"
       }
     ) { t("devise.delete_account") } %>
   <% end %>
 
 <% end %>
+
+<%= render "modals/destroy",
+  id: "destroy-modal",
+  url: user_registration_path,
+  title: t("actions.delete", resource: "account?"),
+  message: t("devise.confirm_destroy"),
+  primary_action_text: t("actions.delete", resource: "account")
+%>

@@ -14,7 +14,7 @@ class RenameAppsController < ApplicationController
     if app_renamer.rename
       redirect_to rename_apps_path, notice: "App renamed successfully"
     else
-      flash.now[:error] = "App rename failed"
+      flash[:alert] = "App rename failed"
       render :new, status: :unprocessable_entity
     end
   end

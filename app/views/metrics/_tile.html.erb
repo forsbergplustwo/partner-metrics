@@ -14,7 +14,7 @@
       <%= polaris_stack(alignment: :center) do |stack| %>
 
         <% stack.with_item(fill: true) do %>
-          <%= polaris_text(variant: :heading2xl, as: :h2) do %>
+          <%= polaris_text(variant: :heading2xl, as: :h3) do %>
             <%= metric_display_value(tile.display, tile.current_value)%>
           <% end %>
         <% end %>
