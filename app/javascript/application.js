@@ -2,6 +2,8 @@
 import "@hotwired/turbo-rails"
 import "./controllers"
 import "chartkick"
+import * as ActiveStorage from "@rails/activestorage"
+ActiveStorage.start()
 
 // Polaris
 import { registerPolarisControllers } from "polaris-view-components"
