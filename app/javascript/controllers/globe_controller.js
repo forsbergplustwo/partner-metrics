@@ -32,7 +32,7 @@ const ARC_ALTITUDES = [0.5, 0.55, 0.55, 0.6, 0.6];
 const ARC_DASH_LENGTHS = [1.5, 1.8, 1.9, 1.9, 2, 2.2];
 const ARC_SPEEDS = [0.6, 0.65, 0.75, 0.95, 1];
 
-const ARCS_AT_ONCE = 8;
+const ARCS_AT_ONCE = 6;
 const ARC_EMIT_DELAY = 300;
 
 export default class extends Controller {

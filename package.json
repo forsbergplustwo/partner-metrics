@@ -12,6 +12,6 @@
     "polaris-view-components": "^1.1.0"
   },
   "scripts": {
-    "build": "esbuild app/javascript/*.* --bundle --sourcemap --outdir=app/assets/builds --public-path=/assets"
+    "build": "esbuild app/javascript/*.* --bundle --minify --outdir=app/assets/builds --public-path=/assets"
   }
 }

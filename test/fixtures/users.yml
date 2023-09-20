@@ -1,5 +1,6 @@
 regular:
   email: regular@example.com
+  encrypted_password: <%= User.new.send(:password_digest, 'password') %>
   import: Complete
   import_status: 100
   partner_api_access_token: "abcdefg"

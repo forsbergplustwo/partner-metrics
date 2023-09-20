@@ -36,10 +36,11 @@ class HomeTest < ApplicationSystemTestCase
     assert_selector ".Polaris-Button__Text", text: "Forgot password"
 
     fill_in "Email", with: user.email
-    fill_in "Password", with: user.password
+    fill_in "Password", with: "password"
 
     click_on "Log in"
 
+    assert_text "Signed in successfully."
     assert current_path, metrics_path
   end
 end

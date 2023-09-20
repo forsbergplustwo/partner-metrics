@@ -10,7 +10,7 @@ class Imports::GlobesController < ApplicationController
   private
 
   def globe_data
-    payments = @import.payments.pluck(:shop_country, :charge_type).last(80)
+    payments = @import.payments.pluck(:shop_country, :charge_type).last(72)
     globe_data = []
     payments.each do |c|
       globe_data << {countryCode: c[0], reverse: c[1] == "refund"}
