@@ -20,17 +20,20 @@ class Import::MetricsProcessor
     @import_from.upto(@import_to) do |date|
       metrics = []
       Metric::CHARGE_TYPES.each do |charge_type|
-        app_titles = app_titles_for(date: date, charge_type: charge_type)
-        next if app_titles.empty?
+        is_yearly_revenue_intervals_for(charge_type).each do |is_yearly_revenue|
+          app_titles = app_titles_for(date: date, charge_type: charge_type, is_yearly_revenue: is_yearly_revenue)
+          next if app_titles.empty?
 
-        app_titles.each do |app_title|
-          calculator = Metric::Calculator.new(
-            user: @user,
-            date: date,
-            charge_type: charge_type,
-            app_title: app_title
-          )
-          metrics << new_metric_from(calculator: calculator) if calculator.has_metrics?
+          app_titles.each do |app_title|
+            calculator = Metric::Calculator.new(
+              user: @user,
+              date: date,
+              charge_type: charge_type,
+              app_title: app_title,
+              is_yearly_revenue: is_yearly_revenue
+            )
+            metrics << new_metric_from(calculator: calculator) if calculator.has_metrics?
+          end
         end
       end
       Metric.import!(metrics, validate: false, no_returning: true) if metrics.present?
@@ -38,8 +41,20 @@ class Import::MetricsProcessor
     end
   end
 
-  def app_titles_for(date:, charge_type:)
-    @user.payments.where(payment_date: date, charge_type: charge_type).pluck(:app_title).uniq
+  def is_yearly_revenue_intervals_for(charge_type)
+    if Metric::CHARGE_TYPE_CAN_HAVE_YEARLY_INTERVAL[charge_type]
+      [true, false]
+    else
+      [false]
+    end
+  end
+
+  def app_titles_for(date:, charge_type:, is_yearly_revenue:)
+    @user.payments.where(
+      payment_date: date,
+      charge_type: charge_type,
+      is_yearly_revenue: is_yearly_revenue
+    ).pluck(:app_title).uniq
   end
 
   def new_metric_from(calculator:)
@@ -50,6 +65,7 @@ class Import::MetricsProcessor
       charge_type: calculator.charge_type,
       app_title: calculator.app_title,
       revenue: calculator.revenue,
+      is_yearly_revenue: calculator.is_yearly_revenue,
       number_of_charges: calculator.number_of_charges,
       number_of_shops: calculator.number_of_shops,
       average_revenue_per_shop: calculator.average_revenue_per_shop,

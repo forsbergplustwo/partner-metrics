@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_14_091554) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_19_173404) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -69,6 +69,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_14_091554) do
     t.datetime "updated_at", precision: nil
     t.integer "user_id"
     t.bigint "import_id"
+    t.boolean "is_yearly_revenue", default: false
     t.index ["import_id"], name: "index_metrics_on_import_id"
     t.index ["metric_date"], name: "index_metrics_on_metric_date"
     t.index ["user_id", "app_title"], name: "index_metrics_on_user_id_and_app_title"
@@ -98,6 +99,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_14_091554) do
     t.integer "user_id"
     t.string "shop_country"
     t.bigint "import_id"
+    t.boolean "is_yearly_revenue", default: false
     t.index ["import_id"], name: "index_payments_on_import_id"
     t.index ["payment_date"], name: "index_payments_on_payment_date"
     t.index ["user_id", "app_title"], name: "index_payments_on_user_id_and_app_title"

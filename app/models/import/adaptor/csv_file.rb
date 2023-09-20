@@ -10,6 +10,8 @@ class Import::Adaptor::CsvFile
     encoding: "UTF-8"
   }.freeze
 
+  CSV_YEARLY_IDENTIFIER = "yearly".freeze
+
   CSV_REVENUE_TYPES = {
     "recurring_revenue" => [
       "RecurringApplicationFee",
@@ -91,6 +93,7 @@ class Import::Adaptor::CsvFile
       charge_type: charge_type(csv_row),
       payment_date: payment_date(csv_row),
       revenue: revenue(csv_row),
+      is_yearly_revenue: is_yearly_revenue(csv_row),
       app_title: app_title(csv_row),
       shop: shop(csv_row),
       shop_country: shop_country(csv_row)
@@ -107,6 +110,10 @@ class Import::Adaptor::CsvFile
 
   def revenue(csv_row)
     csv_row[:partner_share]&.to_f || 0.0
+  end
+
+  def is_yearly_revenue(csv_row)
+    csv_row[:charge_type].to_s.include?(CSV_YEARLY_IDENTIFIER)
   end
 
   def app_title(csv_row)

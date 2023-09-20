@@ -1,16 +1,20 @@
 class Metric::Calculator
-  MONTHLY_RECURRING_BILLING_FREQUENCY = 30.days
-  MONTHLY_RECURRING_BILLING_CHURN_WINDOW = 15.days
+  MONTHLY_BILLING_FREQUENCY = 30.days
+  MONTHLY_BILLING_CHURN_WINDOW = 15.days
 
-  def initialize(user:, date:, charge_type:, app_title:)
+  YEARLY_BILLING_FREQUENCY = 1.year
+  YEARLY_BILLING_CHURN_WINDOW = 30.days
+
+  def initialize(user:, date:, charge_type:, app_title:, is_yearly_revenue:)
     @user = user
     @date = date
     @charge_type = charge_type
     @app_title = app_title
-    @payments = user.payments.where(payment_date: date, charge_type: charge_type, app_title: app_title)
+    @is_yearly_revenue = is_yearly_revenue
+    @payments = payments_by_options_and_date(date)
   end
 
-  attr_reader :user, :date, :charge_type, :app_title, :payments
+  attr_reader :user, :date, :charge_type, :app_title, :is_yearly_revenue, :payments
 
   def has_metrics?
     payments.any?
@@ -82,18 +86,29 @@ class Metric::Calculator
   end
 
   def current_shops
-    churn_calulation_date_lower_bound = date - (MONTHLY_RECURRING_BILLING_CHURN_WINDOW * 2)
-    @current_shops ||= user.payments.where(payment_date: churn_calulation_date_lower_bound..date, charge_type: charge_type, app_title: app_title).group_by(&:shop)
+    @current_shops ||= payments_by_options_and_date(churn_calculations_date_lower_bound..date).group_by(&:shop)
   end
 
   def previous_shops
-    @previous_shops ||= user.payments.where(payment_date: churn_calculation_date, charge_type: charge_type, app_title: app_title).group_by(&:shop)
+    @previous_shops ||= payments_by_options_and_date(churn_calculation_date).group_by(&:shop)
   end
 
   def churn_calculation_date
     # To calculate churn, we need to look at the previous set of payments but also
     # allow for a lookahead window (due to shifted payment dates).
-    date - MONTHLY_RECURRING_BILLING_FREQUENCY - MONTHLY_RECURRING_BILLING_CHURN_WINDOW
+    if is_yearly_revenue == true
+      date - YEARLY_BILLING_FREQUENCY - YEARLY_BILLING_CHURN_WINDOW
+    else
+      date - MONTHLY_BILLING_FREQUENCY - MONTHLY_BILLING_CHURN_WINDOW
+    end
+  end
+
+  def churn_calculations_date_lower_bound
+    if is_yearly_revenue == true
+      date - (YEARLY_BILLING_CHURN_WINDOW * 2)
+    else
+      date - (MONTHLY_BILLING_CHURN_WINDOW * 2)
+    end
   end
 
   def churned_shops
@@ -114,5 +129,14 @@ class Metric::Calculator
 
   def not_churnable_charge_type?
     charge_type != "recurring_revenue" && charge_type != "affiliate_revenue"
+  end
+
+  def payments_by_options_and_date(date)
+    user.payments.where(
+      payment_date: date,
+      charge_type: charge_type,
+      app_title: app_title,
+      is_yearly_revenue: is_yearly_revenue
+    )
   end
 end

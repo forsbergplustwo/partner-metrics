@@ -90,6 +90,7 @@ class Import::Adaptor::ShopifyPaymentsApi
       charge_type: charge_type(node),
       payment_date: payment_date(node),
       revenue: revenue(node),
+      is_yearly_revenue: is_yearly_revenue(node),
       app_title: app_title(node),
       shop: shop(node),
       # ShopifyPartnerApi does not return shop country
@@ -112,6 +113,15 @@ class Import::Adaptor::ShopifyPaymentsApi
     else
       node.net_amount&.amount&.to_f
     end || 0.0
+  end
+
+  def is_yearly_revenue(node)
+    case node.__typename
+    when "AppSubscriptionSale"
+      node.billing_interval&.to_s == "ANNUAL"
+    else
+      false
+    end
   end
 
   def app_title(node)

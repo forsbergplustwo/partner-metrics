@@ -7,6 +7,15 @@ class Metric < ApplicationRecord
 
   CHARGE_TYPES = ["recurring_revenue", "onetime_revenue", "affiliate_revenue", "refund"].freeze
 
+  # Used to calculate metrics in groups of not applicable, yearly & monthly
+  # nil = not applicable, true = yearly, false = monthly
+  CHARGE_TYPE_CAN_HAVE_YEARLY_INTERVAL = {
+    "recurring_revenue" => true,
+    "onetime_revenue" => false,
+    "affiliate_revenue" => false,
+    "refund" => false
+  }.freeze
+
   DISPLAYABLE_TYPES = [
     :recurring_revenue,
     :onetime_revenue,
@@ -20,6 +29,10 @@ class Metric < ApplicationRecord
 
     def by_optional_charge_type(charge_type)
       charge_type.blank? ? all : where(charge_type: charge_type)
+    end
+
+    def by_optional_is_yearly_revenue(is_yearly_revenue)
+      is_yearly_revenue.nil? ? all : where(is_yearly_revenue: is_yearly_revenue)
     end
 
     def by_date_and_period(date:, period:)

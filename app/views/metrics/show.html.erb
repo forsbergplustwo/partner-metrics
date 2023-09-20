@@ -5,14 +5,9 @@
 
   <%= render "shared/page_actions", page: page %>
 
-  <%= turbo_frame_tag :metrics, data: {
-    #controller: "chartkick",
-    #action: "turbo:frame-load->chartkick#createChart",
-  } do %>
+  <%= turbo_frame_tag :metrics do %>
 
     <%= polaris_vertical_stack(gap: "5") do %>
-
-      <%= @filter.charge_type %>
 
       <%= polaris_stack(alignment: :center) do |stack| %>
 

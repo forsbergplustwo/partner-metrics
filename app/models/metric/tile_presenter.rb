@@ -8,17 +8,24 @@ class Metric::TilePresenter
     @column = tile_config[:column]
     @display = tile_config[:display]
     @positive_change_is_good = tile_config[:positive_change_is_good]
+    @is_yearly_revenue = tile_config[:is_yearly_revenue]
   end
-  attr_reader :handle, :display, :calculation, :positive_change_is_good
+  attr_reader :handle, :display, :calculation, :positive_change_is_good, :is_yearly_revenue
 
   def current_value
-    metrics = @filter.current_period_metrics.by_optional_charge_type(@charge_type)
-    metrics.calculate_value(@calculation, @column)
+    metrics = @filter.current_period_metrics
+      .by_optional_charge_type(@charge_type)
+      .by_optional_is_yearly_revenue(@is_yearly_revenue)
+      .calculate_value(@calculation, @column)
+    metrics.blank? ? 0 : metrics
   end
 
   def previous_value
-    metrics = @filter.previous_period_metrics.by_optional_charge_type(@charge_type)
-    metrics.calculate_value(@calculation, @column)
+    metrics = @filter.previous_period_metrics
+      .by_optional_charge_type(@charge_type)
+      .by_optional_is_yearly_revenue(@is_yearly_revenue)
+      .calculate_value(@calculation, @column)
+    metrics.blank? ? 0 : metrics
   end
 
   def change
@@ -27,13 +34,17 @@ class Metric::TilePresenter
   end
 
   def average_value
+    return 0 if current_value.blank?
     current_value / @filter.period
   end
 
   def period_ago_value(period_ago)
     period_ago_date = @filter.date - (period_ago * @filter.period).days
-    metrics = @filter.user_metrics_by_app.by_optional_charge_type(@charge_type)
-    metrics.by_date_and_period(date: period_ago_date, period: @filter.period).calculate_value(@calculation, @column)
+    @filter.user_metrics_by_app
+      .by_date_and_period(date: period_ago_date, period: @filter.period)
+      .by_optional_charge_type(@charge_type)
+      .by_optional_is_yearly_revenue(@is_yearly_revenue)
+      .calculate_value(@calculation, @column)
   end
 
   def period_ago_change(period_ago)
@@ -66,8 +77,11 @@ class Metric::TilePresenter
 
   def metrics_chart_data
     @metrics_chart_data ||= begin
-      metrics = @filter.user_metrics_by_app.by_optional_charge_type(@charge_type)
-      metrics.chart_data(@filter.date, @filter.period, @calculation, @column).to_h
+      @filter.user_metrics_by_app
+        .by_optional_charge_type(@charge_type)
+        .by_optional_is_yearly_revenue(@is_yearly_revenue)
+        .chart_data(@filter.date, @filter.period, @calculation, @column)
+        .to_h
     end
   end
 end

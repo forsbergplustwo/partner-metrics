@@ -10,6 +10,7 @@ Graphql::TransactionsQuery = ShopifyPartnerAPI.client.parse <<~GRAPHQL
           createdAt,
           # Apps
           ... on AppSubscriptionSale {
+            billingInterval,
             netAmount {
               amount
             },

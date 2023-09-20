@@ -47,6 +47,7 @@ class Import::PaymentsProcessor
       payment_date: payment[:payment_date],
       charge_type: payment[:charge_type],
       revenue: payment[:revenue],
+      is_yearly_revenue: payment[:is_yearly_revenue],
       app_title: payment[:app_title],
       shop: payment[:shop],
       shop_country: payment[:shop_country]
