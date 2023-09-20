@@ -27,7 +27,7 @@
 
   <% if @imports.any? %>
 
-    <%= polaris_vertical_stack(gap: "5") do %>
+    <%= polaris_vertical_stack(gap: "6") do %>
 
       <% if current_user.partner_api_credential.blank? %>
         <%= render "api_credentials_banner" %>

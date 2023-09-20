@@ -111,15 +111,15 @@ module Metric::TilesConfig
       positive_change_is_good: true,
       is_yearly_revenue: true
     },
-    {
-      handle: :recurring_avg_revenue_per_shop,
-      calculation: :average,
-      charge_type: :recurring_revenue,
-      column: :average_revenue_per_shop,
-      display: :currency,
-      positive_change_is_good: true,
-      is_yearly_revenue: nil
-    },
+    # {
+    #   handle: :recurring_avg_revenue_per_shop,
+    #   calculation: :average,
+    #   charge_type: :recurring_revenue,
+    #   column: :average_revenue_per_shop,
+    #   display: :currency,
+    #   positive_change_is_good: true,
+    #   is_yearly_revenue: nil
+    # },
     {
       handle: :recurring_avg_revenue_per_shop_monthly,
       calculation: :average,
@@ -127,7 +127,8 @@ module Metric::TilesConfig
       column: :average_revenue_per_shop,
       display: :currency,
       positive_change_is_good: true,
-      is_yearly_revenue: false
+      is_yearly_revenue: false,
+      width: :half
     },
     {
       handle: :recurring_avg_revenue_per_shop_yearly,
@@ -136,17 +137,18 @@ module Metric::TilesConfig
       column: :average_revenue_per_shop,
       display: :currency,
       positive_change_is_good: true,
-      is_yearly_revenue: true
+      is_yearly_revenue: true,
+      width: :half
     },
-    {
-      handle: :shop_churn,
-      calculation: :average,
-      charge_type: :recurring_revenue,
-      column: :shop_churn,
-      display: :percentage,
-      positive_change_is_good: false,
-      is_yearly_revenue: nil
-    },
+    # {
+    #   handle: :shop_churn,
+    #   calculation: :average,
+    #   charge_type: :recurring_revenue,
+    #   column: :shop_churn,
+    #   display: :percentage,
+    #   positive_change_is_good: false,
+    #   is_yearly_revenue: nil
+    # },
     {
       handle: :shop_churn_monthly,
       calculation: :average,
@@ -154,7 +156,8 @@ module Metric::TilesConfig
       column: :shop_churn,
       display: :percentage,
       positive_change_is_good: false,
-      is_yearly_revenue: false
+      is_yearly_revenue: false,
+      width: :half
     },
     {
       handle: :shop_churn_yearly,
@@ -163,17 +166,18 @@ module Metric::TilesConfig
       column: :shop_churn,
       display: :percentage,
       positive_change_is_good: false,
-      is_yearly_revenue: true
+      is_yearly_revenue: true,
+      width: :half
     },
-    {
-      handle: :revenue_churn,
-      calculation: :average,
-      charge_type: :recurring_revenue,
-      column: :revenue_churn,
-      display: :percentage,
-      positive_change_is_good: false,
-      is_yearly_revenue: nil
-    },
+    # {
+    #   handle: :revenue_churn,
+    #   calculation: :average,
+    #   charge_type: :recurring_revenue,
+    #   column: :revenue_churn,
+    #   display: :percentage,
+    #   positive_change_is_good: false,
+    #   is_yearly_revenue: nil
+    # },
     {
       handle: :revenue_churn_monthly,
       calculation: :average,
@@ -181,7 +185,8 @@ module Metric::TilesConfig
       column: :revenue_churn,
       display: :percentage,
       positive_change_is_good: false,
-      is_yearly_revenue: false
+      is_yearly_revenue: false,
+      width: :half
     },
     {
       handle: :revenue_churn_yearly,
@@ -190,17 +195,18 @@ module Metric::TilesConfig
       column: :revenue_churn,
       display: :percentage,
       positive_change_is_good: false,
-      is_yearly_revenue: true
+      is_yearly_revenue: true,
+      width: :half
     },
-    {
-      handle: :lifetime_value,
-      calculation: :average,
-      charge_type: :recurring_revenue,
-      column: :lifetime_value,
-      display: :currency,
-      positive_change_is_good: true,
-      is_yearly_revenue: nil
-    },
+    # {
+    #   handle: :lifetime_value,
+    #   calculation: :average,
+    #   charge_type: :recurring_revenue,
+    #   column: :lifetime_value,
+    #   display: :currency,
+    #   positive_change_is_good: true,
+    #   is_yearly_revenue: nil
+    # },
     {
       handle: :lifetime_value_monthly,
       calculation: :average,
@@ -208,7 +214,8 @@ module Metric::TilesConfig
       column: :lifetime_value,
       display: :currency,
       positive_change_is_good: true,
-      is_yearly_revenue: false
+      is_yearly_revenue: false,
+      width: :half
     },
     {
       handle: :lifetime_value_yearly,
@@ -217,7 +224,8 @@ module Metric::TilesConfig
       column: :lifetime_value,
       display: :currency,
       positive_change_is_good: true,
-      is_yearly_revenue: true
+      is_yearly_revenue: true,
+      width: :half
     }
   ].freeze
 

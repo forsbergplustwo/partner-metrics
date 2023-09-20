@@ -9,8 +9,9 @@ class Metric::TilePresenter
     @display = tile_config[:display]
     @positive_change_is_good = tile_config[:positive_change_is_good]
     @is_yearly_revenue = tile_config[:is_yearly_revenue]
+    @width = tile_config[:width].presence || :third
   end
-  attr_reader :handle, :display, :calculation, :positive_change_is_good, :is_yearly_revenue
+  attr_reader :handle, :display, :calculation, :positive_change_is_good, :is_yearly_revenue, :width
 
   def current_value
     metrics = @filter.current_period_metrics
