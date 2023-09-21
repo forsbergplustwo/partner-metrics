@@ -56,7 +56,7 @@ Rails.application.configure do
   config.log_tags = [ :request_id ]
 
   # Use a different cache store in production.
-  # config.cache_store = :mem_cache_store
+  config.cache_store = :redis_cache_store, { url: ENV['REDIS_URL'], ssl_params: { verify_mode: OpenSSL::SSL::VERIFY_NONE } }
 
   # Use a real queuing backend for Active Job (and separate queues per environment).
   # config.active_job.queue_adapter     = :resque
@@ -67,9 +67,9 @@ Rails.application.configure do
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   config.action_mailer.default_url_options = {host: "partnermetrics.io"}
-  app.config.action_mailer.delivery_method = :sendgrid_actionmailer
-  app.config.action_mailer.sendgrid_actionmailer_settings = {
-    api_key: Rails.application.credentials[:sendgrid][:api_key],
+  config.action_mailer.delivery_method = :sendgrid_actionmailer
+  config.action_mailer.sendgrid_actionmailer_settings = {
+    api_key: Rails.application.credentials[Rails.env.to_sym][:sendgrid][:api_key],
     raise_delivery_errors: true
   }
 

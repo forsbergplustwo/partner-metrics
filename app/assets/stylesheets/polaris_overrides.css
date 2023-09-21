@@ -23,4 +23,8 @@
   .Polaris-HorizontalGrid {
     grid-template-columns: repeat(1, minmax(0, 1fr))
   }
+
+  .Polaris-LegacyStack.filter-stack {
+    margin-left: 0;
+  }
 }

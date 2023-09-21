@@ -2,7 +2,7 @@
   <%= polaris_empty_state(
     heading: t(".title", resource: resource_name_for(resource, true)),
     classes: "empty-state",
-    image: image_path("empty_state/ImportMinor"),
+    image: image_path("empty_state/ImportMinor.svg"),
   ) do |state| %>
 
     <% state.with_primary_action(url: new_import_path) { "New import" } %>

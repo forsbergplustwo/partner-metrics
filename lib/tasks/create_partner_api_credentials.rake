@@ -3,7 +3,7 @@ task create_partner_api_credentials: :environment do
   User.find_each do |user|
     if user.partner_api_access_token.present? && user.partner_api_organization_id.present? && !user.partner_api_errors&.include?("Unauthorized")
       if user.partner_api_credential.blank?
-        user.create_partner_api_credential!(
+        user.create_partner_api_credential(
           organization_id: user.partner_api_organization_id,
           access_token: user.partner_api_access_token
         )

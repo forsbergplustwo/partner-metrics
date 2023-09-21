@@ -10,11 +10,11 @@ local:
 # Cloudflare tutorial: https://kirillplatonov.com/posts/activestorage-cloudflare-r2/
 cloudflare:
   service: S3
-  endpoint: https://<%= Rails.application.credentials[:cloudflare_account_id] %>.r2.cloudflarestorage.com
-  access_key_id: <%= Rails.application.credentials[:cloudflare_access_key_id] %>
-  secret_access_key: <%= Rails.application.credentials[:cloudflare_secret_access_key] %>
+  endpoint: https://<%= Rails.application.credentials[Rails.env.to_sym][:cloudflare][:account_id] %>.r2.cloudflarestorage.com
+  access_key_id: <%= Rails.application.credentials[Rails.env.to_sym][:cloudflare][:access_key_id] %>
+  secret_access_key: <%= Rails.application.credentials[Rails.env.to_sym][:cloudflare][:secret_access_key] %>
   region: auto
-  bucket: <%= Rails.application.credentials[:cloudflare_bucket] %>
+  bucket: <%= Rails.application.credentials[Rails.env.to_sym][:cloudflare][:bucket] %>
 
 # amazon:
 #   service: S3
