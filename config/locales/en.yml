@@ -1,23 +1,156 @@
-# Files in the config/locales directory are used for internationalization
-# and are automatically loaded by Rails. If you want to use locales other
-# than English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t 'hello'
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t('hello') %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# To learn more, please read the Rails Internationalization guide
-# available at http://guides.rubyonrails.org/i18n.html.
-
 en:
-  hello: "Hello world"
+  actions:
+    title: "Actions"
+    view_details: "View details"
+    save: "Save"
+    discard: "Discard"
+    cancel: "Cancel"
+    choose_file: "Choose file"
+    delete: "Delete %{resource}"
+    delete_all: "Delete all %{resource}"
+    more_actions: "More actions"
+    add: "Add %{resource}"
+  statuses:
+    draft: "Draft"
+    scheduled: "Scheduled"
+    importing: "Importing"
+    calculating: "Calculating"
+    completed: "Completed"
+    failed: "Failed"
+    cancelled: "Cancelled"
+    pending_validation: "Pending validation"
+    valid: "Valid"
+    invalid: "Invalid"
+  shared:
+    empty_state:
+      title: "No %{resource} yet"
+      description: "Import your payouts data to get started."
+      footer_html: If you don’t want to upload historical data, connect your %{url} data source.
+  user:
+    show_forecasts: "Show forecasts"
+    show_forecasts_help_text: "Requires a minimum of 10 data points. Can be slow to calculate."
+    count_usage_charges_as_recurring: "Count usage charges as recurring revenue"
+    count_usage_charges_as_recurring_help_text: "Usage charges are counted as one-time revenue by default."
+  devise:
+    sign_in: "Log in"
+    sign_out: "Log out"
+    sign_up: "Sign up"
+    edit: "Edit account"
+    forgot_password: "Forgot password"
+    email: "Email"
+    password: "Password"
+    new_password: "New password"
+    password_confirmation: "Confirm password"
+    remember_me: "Remember me"
+    leave_blank_if_you_don_t_want_to_change_it: "Leave blank if you don't want to change it"
+    we_need_your_current_password_to_confirm_your_changes: "We need your current password to confirm your changes"
+    delete_account: "Delete account"
+    confirm_destroy: "Are you sure? This will remove your account and all data, it cannot be undone."
+    send_me_reset_password_instructions: "Send me reset password instructions"
+    change_password: "Change password"
+  metrics:
+    title: "Metrics"
+    subtitle: "An overview of all your recurring, one-time, and affiliate revenue."
+    no_metrics: "No revenue yet."
+    recurring_revenue:
+      title: "Recurring"
+      subtitle: "Revenue from recurring subscriptions, from both monthly and annual plans."
+    onetime_revenue:
+      title: "One-time"
+      subtitle: "Revenue from onetime payments, from both apps and themes."
+    affiliate_revenue:
+      title: "Affiliate"
+      subtitle: "Revenue from the partner affiliate program."
+    tiles:
+      recurring_revenue: "Total recurring revenue"
+      recurring_revenue_monthly: "Monthly recurring revenue"
+      recurring_revenue_yearly: "Annual recurring revenue"
+      paying_shops: "Total subscriptions"
+      paying_shops_monthly: "Monthly subscriptions"
+      paying_shops_yearly: "Annual subscriptions"
+      recurring_avg_revenue_per_charge: "Avg. revenue per charge"
+      recurring_avg_revenue_per_shop: "Avg. recurring payment"
+      recurring_avg_revenue_per_shop_monthly: "Avg. monthly payment"
+      recurring_avg_revenue_per_shop_yearly: "Avg. annual payment"
+      shop_churn: "Subscription churn"
+      shop_churn_monthly: "Monthly subscription churn"
+      shop_churn_yearly: "Annual subscription churn"
+      revenue_churn: "Revenue churn"
+      revenue_churn_monthly: "Monthly revenue churn"
+      revenue_churn_yearly: "Annual revenue churn"
+      lifetime_value: "Total LTV"
+      lifetime_value_monthly: "Monthly subscription LTV"
+      lifetime_value_yearly: "Annual subscription LTV"
+      onetime_avg_revenue_per_charge: "Avg. revenue per charge"
+      onetime_avg_revenue_per_shop: "Avg. revenue per shop"
+      affiliate_avg_revenue_per_charge: "Avg. revenue per charge"
+      affiliate_avg_revenue_per_shop: "Avg. revenue per shop"
+  summarys:
+    monthly:
+      title: "Monthly summary"
+      subtitle: "A summary of your monthly payments and metrics for the last 36 months."
+      date: "Date"
+      payments: "Payments"
+      revenue: "Revenue"
+      revenue_per_payment: "Revenue per payment"
+      revenue_churn: "Revenue churn"
+      user_churn: "User churn"
+      last_payment: "Last payment"
+    shop:
+      title: "Shop summary"
+      subtitle: "A summary of each shop's revenue and payments"
+      shop: "Shop"
+      payments: "Payments"
+      revenue: "Revenue"
+      last_payment: "Last payment"
+  imports:
+    status: "Status"
+    source: "Source"
+    imported_at: "Imported at %{date}"
+    imported: "Imported"
+    payments: payments
+    metrics_date_range: "Metrics calculated for"
+    no_metrics: "..."
+    confirm_destroy: "Are you sure? This also deletes associated payments and metrics."
+    sources:
+      csv_file: "CSV payouts file"
+      shopify_payments_api: "Shopify Partner API"
+    new:
+      title: "Import"
+      subtitle: "Import your historical payouts data to get a complete overview of your revenue."
+    show:
+      title: "Import details"
+    index:
+      title: "Data imports"
+      subtitle: "All data imports for your account, from both CSV files and the Shopify Partner API."
+      no_imports: "No imports have been made yet."
+    form:
+      payouts_file_help_text: "Export your payouts from the Shopify Partners Dashboard, then drop the received ZIP file above."
+    api_credentials_banner:
+      title: "Connect your Shopify Partner account"
+      message: "Connect your Shopify Partner account to automatically import new data daily."
+  rename_apps:
+    rename: "Rename app"
+    from: "Old app name"
+    to: "Current app name"
+    subtitle: "If you have renamed your app in the Shopify Partners Dashboard, merge the data by renaming the old app to the new app name."
+  delete_apps:
+    delete: "Delete app"
+    app_title: "App to delete"
+    subtitle: "Delete an app to remove it's metrics and payment information. Useful if you want to share your account with others. We recommend you also remove your Partner API Credentials so new data is not imported automatically."
+  partner_api_credentials:
+    new:
+      title: "Add your Shopify Partner API credentials"
+      subtitle: "Add your Shopify Partner API credentials to automatically import new data daily. View the %{instructions_link} if needed."
+    edit:
+      title: "Edit your Shopify Partner API credentials"
+      subtitle: "Your API credentials are used to automatically import new data daily."
+      confirm_destroy: "Are you sure? This will remove your credentials and stop automatic imports."
+    form:
+      organization_id: "Shopify organization ID"
+      organization_id_help_text: "Find your organization ID in the Shopify Partners Dashboard."
+      access_token: "Shopify access token"
+      organization_id_help_text: "Generate an access token in the Shopify Partners Dashboard."
+    status_message_banner:
+      title: "Shopify API import error"
+      message: "We couldn't import your data from the Shopify API, due to the following error:"

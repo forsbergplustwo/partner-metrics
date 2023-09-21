@@ -1,0 +1,42 @@
+<% frame.with_top_bar do |top_bar| %>
+
+  <% if user_signed_in? %>
+    <% top_bar.with_user_menu(name: "Account", detail: current_user.email) do |user_menu| %>
+
+      <% user_menu.with_avatar(
+        source: avatar_url(current_user, 80),
+        name: current_user.email,
+      ) %>
+
+      <%= polaris_action_list do |action_list| %>
+
+        <% action_list.with_item(
+          icon: "ProfileMajor",
+          url: edit_user_registration_path
+        ) { 'Edit account' } %>
+
+        <% action_list.with_item(
+          icon: "LogOutMinor",
+          url: destroy_user_session_path,
+          data: { turbo_method: :delete }
+        ) { 'Log out' } %>
+
+      <% end %>
+
+    <% end %>
+
+  <% else %>
+
+    <% top_bar.with_user_menu(name: "Account", detail: "Not logged in") do |user_menu| %>
+      <%= polaris_action_list do |action_list| %>
+        <% action_list.with_item(
+          url: new_user_session_path,
+        ) { 'Log in' } %>
+        <% action_list.with_item(
+          url: new_user_registration_path,
+        ) { 'Sign up' } %>
+      <% end %>
+    <% end %>
+
+  <% end %>
+<% end %>

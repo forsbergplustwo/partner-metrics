@@ -1,0 +1,35 @@
+<%= turbo_stream_from [current_user, :partner_api_credential] %>
+
+<%= polaris_page(
+  narrow_width: true,
+  title: t(".title"),
+  subtitle: t(".subtitle"),
+  back_url: imports_path,
+  secondary_actions: [
+    {
+      content: t("actions.delete", resource: nil),
+      destructive: true,
+      data: {
+        controller: "polaris",
+        target: "#destroy-modal",
+        action: "polaris#openModal"
+      }
+    }
+  ],
+) do |page| %>
+
+  <% page.with_title_metadata do %>
+    <%= render "shared/status", resource: @partner_api_credential %>
+  <% end %>
+
+  <%= render "form", partner_api_credential: @partner_api_credential %>
+
+<% end %>
+
+<%= render "modals/destroy",
+  id: "destroy-modal",
+  url: partner_api_credential_path,
+  title: t("actions.delete", resource: resource_name_for(PartnerApiCredential, true)) + "?",
+  message: t(".confirm_destroy"),
+  primary_action_text: t("actions.delete", resource: nil)
+%>

@@ -1,0 +1,5 @@
+
+import_completed_file:
+  name: :payouts_file
+  record: import_completed (Import)
+  blob: import_completed_payouts_recurring_file_blob

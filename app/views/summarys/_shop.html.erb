@@ -1,0 +1,19 @@
+<%= polaris_index_table(rows) do |table| %>
+
+  <% table.with_column(t('.shop', date: nil)) do |row| %>
+    <%= row[0] %>
+  <% end %>
+
+  <% table.with_column(t('.payments')) do |row| %>
+    <%= row[1][:payments] %>
+  <% end %>
+
+  <% table.with_column(t('.revenue')) do |row| %>
+    <%= number_to_currency(row[1][:revenue], precision: 0) %>
+  <% end %>
+
+    <% table.with_column(t('.last_payment')) do |row| %>
+    <%= row[1][:last_payment] %>
+  <% end %>
+
+<% end %>

@@ -1,70 +1,60 @@
 source "https://rubygems.org"
-ruby "2.6.8"
+git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-gem "activerecord-import"
-gem "aws-sdk", "~> 2"
-gem "bootstrap-datepicker-rails"
-gem "bootstrap-sass"
-gem "bootstrap-select-rails", "~> 1.12.0"
-gem "chartkick"
-gem "coffee-rails", "~> 4.0.0"
-gem "convenient_grouper"
-gem "devise"
-gem "devise-bootstrap-views"
-gem "font-awesome-rails", "~> 4.7.0"
-gem "font-awesome-sass", "~> 4.7.0"
-gem "groupdate"
-gem "high_voltage"
-gem "intercom-rails"
-gem "jbuilder", "~> 2.0"
-gem "jquery-rails"
-gem "jquery-tablesorter"
-gem "pg", "< 1.0.0"
-gem "pkg-config"
+ruby "3.2.0"
+
+# Backend
+gem "rails", "~> 7.0.5"
+gem "pg", "~> 1.1"
+gem "puma", "~> 6.0"
+gem "redis", "~> 5.0"
+gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
+gem "bootsnap", require: false
+gem "sidekiq"
 gem "rack-timeout", require: "rack/timeout/base"
-gem "rails", "~> 4.2"
-gem "redis", "~> 4.0"
-gem "remotipart", "~> 1.0"
-gem "resque"
-gem "resque-pool"
-gem "resque-web", require: "resque_web"
-gem "rubyzip"
-gem "sass-rails", "~> 4.0.3"
-gem "sdoc", "~> 0.4.0", group: :doc
+gem "active_storage_validations"
+gem "sendgrid-actionmailer"
+
+# Frontend
+gem "sprockets-rails"
+gem "jsbundling-rails"
+gem "turbo-rails"
+gem "stimulus-rails"
+gem "devise"
+gem "polaris_view_components"
+
+# Charting + Metrics Display
+gem "chartkick"
+gem "groupdate"
+gem "convenient_grouper"
+gem "prophet-rb"
+
+# Importing
 gem "csvreader"
-gem "spring", group: :development
-gem "uglifier", ">= 1.3.0"
-gem "unicorn"
+gem "activerecord-import"
 gem "graphql-client"
+gem "aws-sdk-s3", require: false
 
 group :development, :test do
-  gem "foreman"
-  gem "dotenv-rails"
-
-  # Code analysis / linters
-  gem "brakeman"
-  gem "bullet"
-  gem "bundle-audit"
-  gem "standard"
-
-  gem "mocha"
-  gem "http_logger"
-
-  # TODO: Add these back when Ruby 2.7+ is supported
-  # gem "standard-rails"
-  # gem "standard-minitest"
-  # gem "standard-thread_safety"
+  gem "debug", platforms: %i[mri mingw x64_mingw]
 end
 
 group :development do
-  gem "better_errors"
-  gem "binding_of_caller"
-  gem "hub", require: nil
-  gem "quiet_assets"
-  gem "rails_layout"
-end
-group :production do
-  gem "rails_12factor"
+  gem "web-console"
+  gem "pry-rails"
+  gem "foreman"
+  gem "standard"
+  gem "standard-rails"
+  gem "standard-minitest"
+  gem "standard-thread_safety"
+  gem "hotwire-livereload"
+  gem "letter_opener"
+  gem "http_logger"
 end
 
-gem "graphiql-rails", group: :development
+group :test do
+  gem "capybara"
+  gem "selenium-webdriver"
+  gem "webdrivers"
+  gem "mocha"
+end

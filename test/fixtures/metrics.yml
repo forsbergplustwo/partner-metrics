@@ -1,14 +1,9 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-# This model initially had no columns defined.  If you add columns to the
-# model remove the '{}' from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
 recurring:
   user: regular
+  import: completed
   metric_date: 2023-01-01
   charge_type: recurring_revenue
-  app_title: test-app
+  app_title: test-app-1
   revenue: !ruby/object:BigDecimal 18:0.1e2
   number_of_charges: 1
   number_of_shops: 1
@@ -22,9 +17,10 @@ recurring:
 
 onetime:
   user: regular
+  import: completed
   metric_date: 2023-01-01
   charge_type: onetime_revenue
-  app_title: test-app
+  app_title: test-app-1
   revenue: !ruby/object:BigDecimal 18:0.1e2
   number_of_charges: 1
   number_of_shops: 1
@@ -38,9 +34,10 @@ onetime:
 
 affiliate:
   user: regular
+  import: completed
   metric_date: 2023-01-01
   charge_type: affiliate_revenue
-  app_title: test-app
+  app_title: test-app-2
   revenue: !ruby/object:BigDecimal 18:0.1e2
   number_of_charges: 1
   number_of_shops: 1

@@ -1,0 +1,26 @@
+<%= polaris_page(
+  title: t("summarys.#{controller_name}.title"),
+  subtitle: t("summarys.#{controller_name}.subtitle")
+) do |page| %>
+
+  <%= render "shared/page_actions", page: page %>
+
+  <% if @summaries.any? %>
+
+    <%= polaris_vertical_stack(gap: "6") do %>
+
+      <%= render "app_filter", selected_app: @selected_app, app_titles: @app_titles %>
+
+      <%= polaris_card do %>
+        <%= render controller_name, rows: @summaries %>
+      <% end %>
+
+    <% end %>
+
+  <% else %>
+
+    <%= render "shared/empty_state", resource: Payment %>
+
+  <% end %>
+
+<% end %>

@@ -1,6 +1,8 @@
-Graphql::TransactionsQuery = ShopifyPartnerAPI.client.parse <<~'GRAPHQL'
-  query($createdAtMin: DateTime, $cursor: String) {
-    transactions(createdAtMin: $createdAtMin, after: $cursor, first: 100) {
+require "shopify_partner_api"
+
+Graphql::TransactionsQuery = ShopifyPartnerAPI.client.parse <<~GRAPHQL
+  query($createdAtMin: DateTime, $cursor: String, $first: Int) {
+    transactions(createdAtMin: $createdAtMin, after: $cursor, first: $first) {
       edges {
         cursor
         node {
@@ -8,6 +10,7 @@ Graphql::TransactionsQuery = ShopifyPartnerAPI.client.parse <<~'GRAPHQL'
           createdAt,
           # Apps
           ... on AppSubscriptionSale {
+            billingInterval,
             netAmount {
               amount
             },

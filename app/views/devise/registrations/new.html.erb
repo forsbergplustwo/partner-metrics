@@ -1,26 +1,45 @@
-<div class="col-xs-12 col-sm-6 col-sm-offset-3">
-  <h1><%= t('.sign_up', default: 'Sign up') %></h1>
-</div>
-<div class="col-xs-12 col-sm-6 col-sm-offset-3">
-  <%= bootstrap_devise_error_messages! %>
-  <div class="panel panel-default devise-bs">
-    <div class="panel-body">
-      <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { role: 'form' }) do |f| %>
-        <div class="form-group">
-          <%= f.label :email %>
-          <%= f.email_field :email, autofocus: true, class: 'form-control' %>
-        </div>
-        <div class="form-group">
-          <%= f.label :password %>
-          <%= f.password_field :password, class: 'form-control' %>
-        </div>
-        <div class="form-group">
-          <%= f.label :password_confirmation %>
-          <%= f.password_field :password_confirmation, class: 'form-control' %>
-        </div>
-        <%= f.submit t('.sign_up', default: 'Sign up'), class: 'btn btn-primary' %>
+<%= polaris_page(
+  narrow_width: true,
+  title: t("devise.sign_up"),
+  secondary_actions: [
+    { content: t("devise.sign_in"), url: new_user_session_path },
+  ]
+) do |page| %>
+
+  <%= polaris_card do %>
+    <%= turbo_frame_tag resource, target: "_top" do %>
+      <%= form_with(model: resource, as: resource_name, url: registration_path(resource_name), builder: Polaris::FormBuilder, data: {turbo: false}, format: :html) do |form| %>
+        <%= polaris_form_layout do |form_layout| %>
+
+          <% if resource.errors.any? %>
+            <% form_layout.with_item do %>
+              <%= form.errors_summary %>
+            <% end %>
+          <% end %>
+
+          <% form_layout.with_item do %>
+            <%= form.polaris_text_field :email, label: t("devise.email"), type: :email, required: true %>
+          <% end %>
+
+          <% form_layout.with_item do %>
+            <%= form.polaris_text_field :password, label: t("devise.password"), type: :password, required: true %>
+          <% end %>
+
+          <% form_layout.with_item do %>
+            <%= form.polaris_text_field :password_confirmation, label: t("devise.password_confirmation"), type: :password, required: true %>
+          <% end %>
+
+          <% form_layout.with_item do %>
+            <%= polaris_button(
+              submit: true,
+              primary: true,
+              data: {form_target: "submitButton"},
+            ) { t('devise.sign_up') } %>
+          <% end %>
+
+        <% end %>
       <% end %>
-    </div>
-  </div>
-  <%= render 'devise/shared/links' %>
-</div>
+    <% end %>
+  <% end %>
+
+<% end %>

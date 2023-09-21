@@ -1,0 +1,22 @@
+  <%= form_with(
+    model: user,
+    builder: Polaris::FormBuilder,
+    data: {
+      controller: "submittable",
+      submittable_target: "form",
+      action: "change->submittable#submit",
+      turbo_frame: :metrics,
+      turbo_action: :advance
+    }
+  ) do |form| %>
+
+  <%= polaris_tooltip(text: t("user.show_forecasts_help_text")) do %>
+    <%= form.polaris_check_box(
+      :show_forecasts,
+      checked: user.show_forecasts?,
+      label: t('user.show_forecasts'),
+    ) %>
+
+  <% end %>
+
+<% end %>

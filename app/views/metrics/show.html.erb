@@ -1,0 +1,56 @@
+<%= polaris_page(
+  title: t("metrics.#{@filter.charge_type}.title"),
+  subtitle: t("metrics.#{@filter.charge_type}.subtitle")
+) do |page| %>
+
+  <%= render "shared/page_actions", page: page %>
+
+  <%= turbo_frame_tag :metrics do %>
+
+    <%= polaris_vertical_stack(gap: "6") do %>
+
+      <%= polaris_stack(alignment: :center) do |stack| %>
+
+        <% stack.with_item(fill:true) do %>
+          <%= render "filter", filter: @filter, app_titles: @app_titles %>
+        <% end %>
+
+        <% stack.with_item do %>
+          <%= render "forecasts_form", user: current_user %>
+        <% end %>
+
+      <% end %>
+
+
+
+      <% if @filter.has_metrics? %>
+
+          <%= render "tile_with_chart", tile: @selected_tile, filter: @filter %>
+
+          <%= polaris_horizontal_grid(gap: "6", columns: 3) do %>
+            <% @tiles.each do |tile| %>
+              <% next if tile.width != :third %>
+              <%= render "tile", tile: tile, filter: @filter %>
+            <% end %>
+          <% end %>
+
+          <%= polaris_horizontal_grid(gap: "6", columns: 2) do %>
+            <% @tiles.each do |tile| %>
+              <% next if tile.width != :half %>
+              <%= render "tile", tile: tile, filter: @filter %>
+            <% end %>
+          <% end %>
+
+          <%= render revenue_per_partial_for(@filter.charge_type), filter: @filter %>
+
+      <% else %>
+
+        <%= render "shared/empty_state", resource: Metric %>
+
+      <% end %>
+
+    <% end %>
+
+  <% end %>
+
+<% end %>

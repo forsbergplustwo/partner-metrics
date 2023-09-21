@@ -1,0 +1,34 @@
+<%= polaris_page(
+  narrow_width: true,
+  title: t("delete_apps.delete"),
+  subtitle: t("delete_apps.subtitle"),
+  back_url: imports_path
+) do |page| %>
+
+  <%= polaris_card do %>
+    <%= turbo_frame_tag :delete_apps, target: "_top" do %>
+      <%= form_for(:delete_apps, url: delete_apps_path, builder: Polaris::FormBuilder) do |form| %>
+        <%= polaris_form_layout do |form_layout| %>
+
+          <% form_layout.with_item do %>
+            <%= form.polaris_select(:app_title,
+              label: t("delete_apps.app_title"),
+              options: @app_titles.map { |app_title| [app_title, app_title] },
+              selected: nil
+            ) %>
+          <% end %>
+
+          <% form_layout.with_item do %>
+            <%= polaris_button(
+              submit: true,
+              destructive: true,
+              data: {form_target: "submitButton"},
+            ) { t('delete_apps.delete') } %>
+          <% end %>
+
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+
+<% end %>

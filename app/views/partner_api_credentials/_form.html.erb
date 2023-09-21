@@ -1,0 +1,56 @@
+<%= turbo_frame_tag partner_api_credential, target: "_top" do %>
+  <%= form_with(
+    model: partner_api_credential,
+    builder: Polaris::FormBuilder,
+    data: {
+      controller: "form"
+    }
+  ) do |form| %>
+
+    <%= polaris_layout do |layout| %>
+      <%# Required to submit form via Return/Enter %>
+      <%= form.submit hidden: true %>
+
+      <% if partner_api_credential.errors.any? %>
+        <% layout.with_section do %>
+          <%= form.errors_summary %>
+        <% end %>
+      <% end %>
+
+      <% layout.with_section do %>
+        <%= polaris_card do %>
+          <%= polaris_form_layout do |form_layout| %>
+
+            <% form_layout.with_item do %>
+              <%= form.polaris_text_field :organization_id,
+                label: t(".organization_id"),
+                required: true,
+                type: :number,
+                max: 9999999
+              %>
+            <% end %>
+
+            <% form_layout.with_item do %>
+              <%= form.polaris_text_field :access_token, value: partner_api_credential.access_token, label: t(".access_token"), type: :password, required: true %>
+            <% end %>
+
+            <%= form_layout.with_item do %>
+              <%= render "users/count_usage_charges_as_recurring_fields", form: form %>
+            <% end %>
+
+            <%= form_layout.with_item do %>
+              <%= polaris_button(
+                submit: true,
+                primary: true,
+                data: {form_target: "submitButton"},
+              ) { t('actions.save') } %>
+            <% end %>
+
+          <% end %>
+        <% end %>
+      <% end %>
+
+    <% end %>
+
+  <% end %>
+<% end %>

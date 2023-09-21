@@ -1,0 +1,15 @@
+<%= polaris_modal(id: id, title: title) do |modal| %>
+
+  <%= polaris_text_container do %>
+    <p><%= message %></p>
+  <% end %>
+
+  <% modal.with_primary_action(
+    destructive: true,
+    url: url,
+    data: {turbo_method: :delete}
+  ) { primary_action_text } %>
+
+  <% modal.with_secondary_action(data: {action: "polaris-modal#close"}) { t("actions.cancel") } %>
+
+<% end %>

@@ -1,29 +1,39 @@
-require "resque_web"
-
 Rails.application.routes.draw do
-  mount ResqueWeb::Engine => "/resque_web"
-
   devise_for :users
-  root to: "home#index"
 
-  resources :metrics, only: [:index]
+  resource :user, only: [:update]
 
-  namespace :metrics do
-    resources :recurring, only: [:index]
-    resources :onetime, only: [:index]
-    resources :affiliate, only: [:index]
-    resources :summary, only: [:index]
+  get "/metrics/(:charge_type)", to: "metrics#show", as: :metrics
 
-    resource :charts do
-      get :show, on: :member
+  resources :imports, only: [:index, :show, :new, :create, :destroy] do
+    resource :globe, only: [:show], controller: "imports/globes"
+    collection do
+      delete :destroy_all, to: "imports/destroy_all#destroy"
     end
   end
 
-  post "import" => "home#import"
-  post "import_status" => "home#import_status"
+  resources :partner_api_credentials, only: [:new, :create, :edit, :update, :destroy]
 
-  get "app_store_analytics" => "home#app_store_analytics"
+  resources :summarys, only: [] do
+    collection do
+      get :monthly, to: "summarys/monthly#index"
+      get :shop, to: "summarys/shop#index"
+    end
+  end
 
-  get "reset_metrics" => "home#reset_metrics"
-  post "rename_app" => "home#rename_app"
+  resources :rename_apps, only: [] do
+    collection do
+      get :new
+      post :create
+    end
+  end
+
+  resources :delete_apps, only: [] do
+    collection do
+      get :new
+      post :create
+    end
+  end
+
+  root to: "home#index"
 end

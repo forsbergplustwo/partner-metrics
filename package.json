@@ -1,0 +1,18 @@
+{
+  "name": "app",
+  "private": "true",
+  "dependencies": {
+    "@hotwired/stimulus": "^3.2.1",
+    "@hotwired/turbo-rails": "^7.3.0",
+    "@rails/activestorage": "7.0.8",
+    "@rails/request.js": "^0.0.8",
+    "chartkick": "^5.0.1",
+    "debounce": "^1.2.1",
+    "esbuild": "^0.19.2",
+    "globe.gl": "^2.29.2",
+    "polaris-view-components": "^1.1.0"
+  },
+  "scripts": {
+    "build": "esbuild app/javascript/*.* --bundle --minify --outdir=app/assets/builds --public-path=/assets"
+  }
+}

@@ -1,0 +1,70 @@
+  <%= form_tag(
+    url_for(action: action_name, charge_type: filter.charge_type),
+    method: :get,
+    data: {controller: "filters", turbo_frame: :metrics, turbo_action: :advance},
+  ) do %>
+
+    <%= hidden_field_tag :chart, filter.chart %>
+
+    <%= polaris_filters do |filters| %>
+
+      <% unless app_titles.blank? %>
+        <% filters.with_item(label: filter.app.presence || "All apps", sectioned: false, style: "white-space: nowrap;") do %>
+          <%= polaris_option_list(name: :app) do |list| %>
+            <% list.with_radio_button(
+              label: "All apps",
+              value: "",
+              checked: filter.app == nil,
+              data: {action: "filters#submit"}
+            ) %>
+            <% app_titles.each do |key| %>
+              <% list.with_radio_button(
+                label: key,
+                value: key,
+                checked: filter.app == key,
+                data: {action: "filters#submit"}
+              ) %>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+
+      <% filters.with_item(
+        label: filter.date.to_s,
+        sectioned: false,
+        style: "white-space: nowrap;",
+        data: {
+          controller: "datefield",
+          action: "click->datefield#show"}
+      ) do %>
+        <%= polaris_text_field(
+          name: :date,
+          value: filter.date,
+          type: :date,
+          label_hidden: true,
+          input_options: {
+            min: (filter.oldest_metric_date),
+            max: (filter.newest_metric_date_or_today),
+            data: {
+              datefield_target: "input",
+              action: "input->filters#submit change->filters#submit"
+            }
+          }
+        ) %>
+      <% end %>
+
+      <% filters.with_item(label: "#{filter.period} days", sectioned: false, style: "white-space: nowrap;") do %>
+        <%= polaris_option_list(name: :period,) do |list| %>
+          <% filter_periods.each do |key, value| %>
+            <% list.with_radio_button(
+              label: key,
+              value: value,
+              checked: filter.period == value,
+              data: {action: "filters#submit"}
+            ) %>
+          <% end %>
+        <% end %>
+      <% end %>
+
+    <% end %>
+  <% end %>

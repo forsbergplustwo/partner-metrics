@@ -1,0 +1,27 @@
+<%= polaris_divider %>
+
+<%= polaris_layout do |layout| %>
+  <% layout.with_section(one_half: true) do %>
+    <%= polaris_card(title: "Revenue per app (12 Months)") do %>
+      <%= pie_chart current_user.yearly_revenue_per_product(charge_type: filter.charge_type, date: filter.date), id: "revenue-per-app" %>
+    <% end %>
+  <% end %>
+  <% layout.with_section(one_half: true) do %>
+    <%= polaris_card(title: "Revenue per country (12 Months)") do %>
+      <%= pie_chart current_user.yearly_revenue_per_country(charge_type: filter.charge_type, date: filter.date), id: "revenue-per-country" %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<%= polaris_layout do |layout| %>
+  <% layout.with_section(one_half: true) do %>
+    <%= polaris_card(title: "Revenue per charge type (12 Months)") do %>
+      <%= column_chart current_user.yearly_revenue_per_charge_type(charge_type: filter.charge_type, date: filter.date), id: "revenue-per-charge-type-12-months" %>
+    <% end %>
+  <% end %>
+  <% layout.with_section(one_half: true) do %>
+    <%= polaris_card(title: "Revenue per charge type (All time)") do %>
+      <%= column_chart current_user.total_revenue_per_charge_type(charge_type: filter.charge_type, date: filter.date), id: "revenue-per-charve-type" %>
+    <% end %>
+  <% end %>
+<% end %>

@@ -1,0 +1,1 @@
+import_completed_payouts_recurring_file_blob: <%= ActiveStorage::FixtureSet.blob filename: 'payouts-recurring.csv' %>

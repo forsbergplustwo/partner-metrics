@@ -1,0 +1,62 @@
+<% !user_signed_in? || unless content_for?(:hide_navigation) %>
+  <% frame.with_navigation do |navigation| %>
+
+    <% navigation.with_section(fill: true) do |section| %>
+      <% section.with_item(
+        url: metrics_path,
+        label: "Metrics",
+        icon: "AnalyticsMajor",
+        selected: nav_item_selected?(metrics_path),
+        link_arguments: {}
+      ) do |item| %>
+        <% Metric::DISPLAYABLE_TYPES.each do |charge_type|%>
+          <% item.with_sub_item(
+            url: metrics_path(charge_type: charge_type),
+            label: t("metrics.#{charge_type}.title"),
+            selected: nav_item_selected?(metrics_path(charge_type: charge_type)),
+            link_arguments: {}
+          ) %>
+        <% end %>
+      <% end %>
+
+      <% section.with_item(
+        url: monthly_summarys_path,
+        label: "Summarys",
+        icon: "CashDollarMajor",
+        selected: nav_item_selected?(monthly_summarys_path),
+        link_arguments: {}
+      ) do |item| %>
+        <% item.with_sub_item(
+          url: monthly_summarys_path,
+          label: "Monthly summary",
+          selected: nav_item_selected?(monthly_summarys_path),
+        ) %>
+        <% item.with_sub_item(
+          url: shop_summarys_path,
+          label: "Shop summary",
+          selected: nav_item_selected?(shop_summarys_path),
+        ) %>
+      <% end %>
+
+    <% end %>
+
+    <% navigation.with_section(title: "Data sources") do |section| %>
+      <% section.with_item(
+        url: imports_path,
+        label: "Data imports",
+        icon: "ImportMinor",
+        selected: nav_item_selected?(imports_path),
+        link_arguments: {}
+      ) %>
+      <% section.with_item(
+        url: partner_api_credential_path_for(current_user),
+        label: "Partner API Credentials",
+        icon: "InsertDynamicSourceMajor",
+        selected: nav_item_selected?(partner_api_credential_path_for(current_user)),
+        badge: partner_api_credential_badge_for(current_user),
+        link_arguments: {}
+      ) %>
+    <% end %>
+
+  <% end %>
+<% end %>

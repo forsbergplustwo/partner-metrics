@@ -1,0 +1,51 @@
+<%= turbo_stream_from [current_user, :imports] %>
+
+<%= polaris_page(
+  narrow_width: true,
+  title: t(".title"),
+  subtitle: @import.created_at.to_fs(:long),
+  id: dom_id(@import),
+  back_url: imports_path,
+  secondary_actions: [
+    {
+      content: t("actions.delete", resource: resource_name_for(Import)),
+      destructive: true,
+      data: {
+        controller: "polaris",
+        target: "#destroy-modal",
+        action: "polaris#openModal"
+      }
+    }
+  ],
+) do |page| %>
+
+  <% page.with_title_metadata do %>
+    <%= render "shared/status", resource: @import %>
+  <% end %>
+
+  <%= polaris_vertical_stack(gap: "6") do %>
+
+    <% if current_user.partner_api_credential.blank? %>
+      <%= render "api_credentials_banner" %>
+    <% end %>
+
+    <%= render @import %>
+
+  <% end %>
+
+<% end %>
+<br>
+<%= tag.div style: "width: 80%; height: 800px; margin: 0 auto; opacity: 0; transition: opacity 3s ease-in-out;",
+    data: {
+      controller: "globe",
+      globe_target: "container",
+      globe_fetch_url_value: import_globe_path(@import),
+    } %>
+
+<%= render "modals/destroy",
+  id: "destroy-modal",
+  url: @import,
+  title: t("actions.delete", resource: resource_name_for(Import)) + "?",
+  message: t("imports.confirm_destroy"),
+  primary_action_text: t("actions.delete", resource: resource_name_for(Import))
+%>

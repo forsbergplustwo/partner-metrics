@@ -1,0 +1,27 @@
+<%= polaris_index_table(rows) do |table| %>
+
+  <% table.with_column(t('.date', date: nil)) do |row| %>
+    <%= row[0].strftime('%b %Y') %>
+  <% end %>
+
+  <% table.with_column(t('.payments')) do |row| %>
+    <%= row[1][:payments] %>
+  <% end %>
+
+  <% table.with_column(t('.revenue')) do |row| %>
+    <%= number_to_currency(row[1][:revenue], precision: 0)  %>
+  <% end %>
+
+    <% table.with_column(t('.revenue_per_payment')) do |row| %>
+    <%= number_to_currency(row[1][:revenue_per_payment], precision: 0) %>
+  <% end %>
+
+  <% table.with_column(t('.revenue_churn')) do |row| %>
+    <%= number_to_percentage(row[1][:revenue_churn], precision: 1) %>
+  <% end %>
+
+  <% table.with_column(t('.user_churn')) do |row| %>
+    <%= number_to_percentage(row[1][:user_churn], precision: 1) %>
+  <% end %>
+
+<% end %>

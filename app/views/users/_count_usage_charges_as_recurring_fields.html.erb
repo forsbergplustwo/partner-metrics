@@ -1,0 +1,6 @@
+<%= form.fields_for :user do |user_fields| %>
+  <%= user_fields.polaris_check_box :count_usage_charges_as_recurring,
+    label: t('user.count_usage_charges_as_recurring'),
+    help_text: t('user.count_usage_charges_as_recurring_help_text')
+    %>
+<% end %>

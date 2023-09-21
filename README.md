@@ -1,10 +1,8 @@
 # Partner Metrics
 
-Partner Metrics is an open-source project providing you with metrics of your app, theme and affiliate revenue from the Shopify Partner program. Currently it calculates metrics based on the Payouts data from Shopify.
+Partner Metrics is an open-source project providing you with metrics of your app, theme and affiliate revenue from the Shopify Partner program. Currently it calculates metrics based on monthly and yearly subscriptions, one-time charges and usage charges from Shopify.
 
 This project is not officially related to Shopify in any way.
-
-*Disclaimer: IThis project was created over about a week in 2015 when I was new to programming. We've added a few features over the years and kept it running, but other than that it's kind of a time capsule. I am proud that it's proved so useful to so many over the years, but be warned.. there is still code in this repo that could be better organized and structured.*
 
 ## Usage
 
@@ -14,83 +12,39 @@ Partner Metrics was created by [@forsbergplustwo](@forsbergplustwo), and will re
 
 ## Development
 
-To get started:
+### Upgrading
 
-1. Install dependencies: `bundle install`
-2. Setup environment: Rename `.env.example` to `.env` and add details
-3. Setup database: `bin/rake db:create && bin/rake db:migrate`
-4. Start servers and background workers: `bin/dev`
+The app in this repo was recently upgraded to Rails 7. If you had the earlier version running locally, you can upgrade by performing the following actions on your existing local app:
+
+```
+bin/rails db:migrate
+bin/rails db:encryption:init
+bin/rails create_initial_import
+bin/rails migrate_partner_api_credentials
+```
+
+Note: We recommend deleting your existing metrics data and re-importing to take advantage of improvements to churn calculations + yearly subscriptions support.
+
+### First time setup
+
+1. Setup dependencies, environment & database: `bin/setup`
+2. Setup encrypted attributes support: `bin/rails db:encryption:init`
+3. Create and add credentials `bin/rails credentials:edit` (use config/credentials.sample.yml as template)
+4. Start web server and sidekiq workers with: `bin/dev`
 
 Visit `localhost:4000`
 
 To run tests:
 
 ```bash
-bin/rake
+bin/rails test
+
+# including system tests
+bin/rails test:all
 ```
-
-*Note: As uploads use S3, you'll need to add details to the .env file for them to work. Alternatively, [replace S3 with ActiveStorage](https://github.com/forsbergplustwo/partner-metrics/issues/20).*
-
-## S3 - Minimum setup guide
-
-### 1. Sign up for or login to [Amazon AWS](https://aws.amazon.com)
-### 2. Create an S3 Bucket:
-* In the AWS console, search for S3 and click the offering in the drop down menu. 
-* In the S3 Management Console, click the "Create Bucket" button. 
-* In the bucket creation wizard - name it something cool. (eg... "ice-bucket")
-* Take note of the region your bucket is in. In my case I used the default presented ("us-east-2").
-* Leave all other default settings alone. Click create to finalize the creation of the bucket. 
-
-### 2b. Allow CORS
-* While looking at the individual bucket overview of the bucket you just created, click into the "Permissions" tab. Scroll down to "Cross-origin resource sharing (CORS)" and paste in the following:
-```
-[
-    {
-        "AllowedHeaders": [
-            "*"
-        ],
-        "AllowedMethods": [
-            "GET",
-            "HEAD",
-            "POST",
-            "PUT"
-        ],
-        "AllowedOrigins": [
-            "*"
-        ],
-        "ExposeHeaders": [],
-        "MaxAgeSeconds": 3000
-    }
-]
-```            
-Note: *Make sure to update the `AllowedOrigins` details above with your production app details, if your app is being made public.*
-
-### 3. Create a user in IAM:
-* Go back to the AWS console. This time search for IAM (Identity access management) and click it in the dropdown. 
-* Click "Add User"
-* Name your user `Partner Metrics S3 User` (or something else if you'd like) and give it only programmatic access. 
-* On the next screen you'll set the permissions. Click the tab for "Attach Existing Policies Directly". Next, search for S3 and click the checkbox next to AmazonS3FullAccess.
-* Leave all the other settings alone and create the new user. 
-* Take note of the access key ID and secret access key.
-
-
-### 4. Add credentials to .env
-* Go to your .env file and adjust the 4 AWS relevant definitions
-```
-S3_BUCKET=[aws bucket handle from step 2]
-AWS_REGION=[aws bucket region from step 2]
-AWS_ACCESS_KEY_ID=[access key id from step 3]
-AWS_SECRET_ACCESS_KEY=[secret access key from step 3]
-```
-* Restart your server if running just to be safe. 
-
 
 ## Contributing
-We'd love for you to contribute join us in making it better!
-
-The codebase could use some updates, so small PRs improving small things like code structure, readability and test of simple scenarios are more than welcome. It would be great to build up the test suite to make future development easier for everyone.
-
-In general, please follow the "fork-and-pull" Git workflow.
+We'd love for you to contribute join us in making it better! In general, please follow the "fork-and-pull" Git workflow.
 
 1. Check out the Issues page, feel free to pick an existing issue or add a new one with clear title and description.
 2. Fork and clone the repo on GitHub

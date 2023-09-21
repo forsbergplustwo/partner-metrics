@@ -1,8 +1,0 @@
-(function(){
-<% if flash[:notice].present? || flash[:error].present? %>
-  window.location.replace(window.location)
-<% else %>
-  $('#import_form :submit').prop('disabled', true)
-  pollImportStatus();
-<% end %>
-}());

@@ -1,0 +1,26 @@
+.empty-state img {
+  max-width: 100px;
+  border-radius: 50%;
+  background-color: var(--p-color-bg-app);
+  margin-bottom: var(--p-space-4);
+}
+
+.Polaris-Button--plain .Polaris-Icon--colorSubdued svg {
+  fill: var(--p-color-icon-subdued) !important;
+
+  &:hover {
+    fill: var(--p-color-icon) !important;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .Polaris-HorizontalGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr))
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .Polaris-HorizontalGrid {
+    grid-template-columns: repeat(1, minmax(0, 1fr))
+  }
+}
