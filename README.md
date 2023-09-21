@@ -27,10 +27,12 @@ Note: We recommend deleting your existing metrics data and re-importing to take 
 
 ### First time setup
 
-1. Setup dependencies, environment & database: `bin/setup`
-2. Setup encrypted attributes support: `bin/rails db:encryption:init`
-3. Create and add credentials `bin/rails credentials:edit` (use config/credentials.sample.yml as template)
-4. Start web server and sidekiq workers with: `bin/dev`
+1. Rename `.env.example` to `.env` and update redis path if needed.
+1. Delete `config/credentials.yml.enc`
+2. Create and add your own credentials `bin/rails credentials:edit` (use config/credentials.example.yml as template)
+3. Setup encrypted attributes support: `bin/rails db:encryption:init` and add to credentials
+4. Setup dependencies, environment & database: `bin/setup`
+5. Start web server and sidekiq workers with: `bin/dev`
 
 Visit `localhost:4000`
 
