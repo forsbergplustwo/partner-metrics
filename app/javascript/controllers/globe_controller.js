@@ -322,8 +322,8 @@ export default class extends Controller {
   // HELPER FUNCTIONS
 
   async setUserLocation() {
-    // Using http://ip-api.com/json/
-    const response = await get("http://ip-api.com/json/?fields=countryCode");
+    // Using https://ip-api.com/json/
+    const response = await get("https://ip-api.com/json/?fields=countryCode");
     if (response.ok) {
       const locationData = await response.json;
       this.myLocationValue = locationData.countryCode;
