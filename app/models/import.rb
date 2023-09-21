@@ -37,6 +37,7 @@ class Import < ApplicationRecord
   scope :in_progress, -> { where(status: %i[scheduled importing calculating]) }
 
   def schedule
+    return unless draft?
     scheduled!
     ImportPaymentsJob.perform_later(import: self)
   end
