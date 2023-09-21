@@ -6,7 +6,7 @@
 
     <%= hidden_field_tag :chart, filter.chart %>
 
-    <%= polaris_filters do |filters| %>
+    <%= polaris_filters(classes: "filter-margin") do |filters| %>
 
       <% unless app_titles.blank? %>
         <% filters.with_item(label: filter.app.presence || "All apps", sectioned: false, style: "white-space: nowrap;") do %>

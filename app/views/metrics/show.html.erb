@@ -9,7 +9,7 @@
 
     <%= polaris_vertical_stack(gap: "6") do %>
 
-      <%= polaris_stack(alignment: :center, classes: "filter-stack") do |stack| %>
+      <%= polaris_stack(alignment: :center) do |stack| %>
 
         <% stack.with_item(fill:true) do %>
           <%= render "filter", filter: @filter, app_titles: @app_titles %>

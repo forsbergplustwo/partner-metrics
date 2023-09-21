@@ -1,6 +1,6 @@
 <%= form_tag(url_for(action: action_name), method: :get, data: {controller: "filters", action: "change->filters#submit"}) do %>
 
-  <%= polaris_filters do |filters| %>
+  <%= polaris_filters(classes: "filter-margin") do |filters| %>
 
     <% unless app_titles.blank? %>
       <% filters.with_item(label: selected_app.presence || "All apps", sectioned: false, style: "white-space: nowrap;") do %>

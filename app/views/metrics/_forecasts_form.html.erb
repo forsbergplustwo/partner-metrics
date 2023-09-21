@@ -1,3 +1,4 @@
+<%= tag.div class: "filter-margin" do %>
   <%= form_with(
     model: user,
     builder: Polaris::FormBuilder,
@@ -10,13 +11,13 @@
     }
   ) do |form| %>
 
-  <%= polaris_tooltip(text: t("user.show_forecasts_help_text")) do %>
-    <%= form.polaris_check_box(
-      :show_forecasts,
-      checked: user.show_forecasts?,
-      label: t('user.show_forecasts'),
-    ) %>
+    <%= polaris_tooltip(text: t("user.show_forecasts_help_text")) do %>
+      <%= form.polaris_check_box(
+        :show_forecasts,
+        checked: user.show_forecasts?,
+        label: t('user.show_forecasts'),
+      ) %>
+    <% end %>
 
   <% end %>
-
 <% end %>
