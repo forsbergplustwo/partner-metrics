@@ -19,5 +19,4 @@ class AppDeleter
   def delete_payments
     @user.payments.where(app_title: @app_title).delete_all
   end
-
 end
