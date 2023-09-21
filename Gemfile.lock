@@ -293,11 +293,17 @@ GEM
       rubocop (>= 0.90.0)
     ruby-progressbar (1.13.0)
     ruby2_keywords (0.0.5)
+    ruby_http_client (3.5.5)
     rubyzip (2.3.2)
     selenium-webdriver (4.10.0)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
+    sendgrid-actionmailer (3.2.0)
+      mail (~> 2.7)
+      sendgrid-ruby (~> 6.4)
+    sendgrid-ruby (6.6.2)
+      ruby_http_client (~> 3.4)
     sidekiq (7.1.2)
       concurrent-ruby (< 2)
       connection_pool (>= 2.3.0)
@@ -398,6 +404,7 @@ DEPENDENCIES
   rails (~> 7.0.5)
   redis (~> 5.0)
   selenium-webdriver
+  sendgrid-actionmailer
   sidekiq
   sprockets-rails
   standard
