@@ -4,7 +4,7 @@
   narrow_width: true,
   title: t(".title"),
   subtitle: t(".subtitle", instructions_link: link_to("wiki article for instructions", "https://github.com/forsbergplustwo/partner-metrics/wiki/How-to-create-your-Shopify-Partner-API-credentials", target: "_blank")).html_safe,
-  back_url: request.referer,
+  back_url: imports_path
 ) do |page| %>
 
   <% page.with_title_metadata do %>

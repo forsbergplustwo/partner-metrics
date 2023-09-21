@@ -134,6 +134,10 @@ en:
     from: "Old app name"
     to: "Current app name"
     subtitle: "If you have renamed your app in the Shopify Partners Dashboard, merge the data by renaming the old app to the new app name."
+  delete_apps:
+    delete: "Delete app"
+    app_title: "App to delete"
+    subtitle: "Delete an app to remove it's metrics and payment information. Useful if you want to share your account with others. We recommend you also remove your Partner API Credentials so new data is not imported automatically."
   partner_api_credentials:
     new:
       title: "Add your Shopify Partner API credentials"

@@ -28,5 +28,12 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :delete_apps, only: [] do
+    collection do
+      get :new
+      post :create
+    end
+  end
+
   root to: "home#index"
 end
