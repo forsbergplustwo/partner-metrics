@@ -19,7 +19,7 @@ The app in this repo was recently upgraded to Rails 7. If you had the earlier ve
 ```
 bin/rails db:migrate
 bin/rails db:encryption:init
-bin/rails create_initial_import
+bin/rails create_initial_imports
 bin/rails migrate_partner_api_credentials
 ```
 
