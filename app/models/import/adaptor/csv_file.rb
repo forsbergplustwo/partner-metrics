@@ -1,4 +1,3 @@
-require "zip"
 require "csvreader"
 
 class Import::Adaptor::CsvFile
