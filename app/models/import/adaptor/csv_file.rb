@@ -1,3 +1,4 @@
+require "zip"
 require "csvreader"
 
 class Import::Adaptor::CsvFile
@@ -131,10 +132,15 @@ class Import::Adaptor::CsvFile
     return @prepared_csv_file if @prepared_csv_file
 
     file = @import.payouts_file
+
+    @temp_files[:raw] = Tempfile.new("raw")
+    @temp_files[:raw].write(file.download.force_encoding("UTF-8"))
+    @temp_files[:raw].rewind
+
     if zipped?(file.content_type)
-      extracted_zip_file(ActiveStorage::Blob.service.path_for(file.key))
+      extracted_zip_file(@temp_files[:raw].path)
     else
-      ActiveStorage::Blob.service.path_for(file.key)
+      @temp_files[:raw].path
     end
   end
 
