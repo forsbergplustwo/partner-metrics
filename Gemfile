@@ -14,6 +14,7 @@ gem "sidekiq"
 gem "rack-timeout", require: "rack/timeout/base"
 gem "active_storage_validations"
 gem "sendgrid-actionmailer"
+gem "rubyzip"
 
 # Frontend
 gem "sprockets-rails"

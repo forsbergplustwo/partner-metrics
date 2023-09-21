@@ -403,6 +403,7 @@ DEPENDENCIES
   rack-timeout
   rails (~> 7.0.5)
   redis (~> 5.0)
+  rubyzip
   selenium-webdriver
   sendgrid-actionmailer
   sidekiq
