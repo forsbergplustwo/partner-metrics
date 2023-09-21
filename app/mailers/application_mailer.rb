@@ -5,6 +5,6 @@ class ApplicationMailer < ActionMailer::Base
   private
 
   def default_from
-    Rails.application.credentials[:action_mailer][:email_from_address]
+    Rails.application.credentials[Rails.env.to_sym][:action_mailer][:email_from_address]
   end
 end
