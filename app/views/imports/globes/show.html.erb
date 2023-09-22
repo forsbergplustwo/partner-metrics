@@ -1,0 +1,14 @@
+<%= turbo_frame_tag :globe do %>
+  <% if @import.csv_file_source? || @globe_data.present? %>
+
+    <%= polaris_spacer(vertical: :base) %>
+
+    <%= tag.div style: "width: 80%; height: 800px; margin: 0 auto; opacity: 0; transition: opacity 3s ease-in-out;",
+      data: {
+        controller: "globe",
+        globe_target: "container",
+        globe_fetch_url_value: import_globe_path(@import, format: :json),
+      } %>
+
+  <% end %>
+<% end %>
