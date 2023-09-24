@@ -13,15 +13,19 @@
   }
 }
 
+.Polaris-Tooltip {
+  z-index: var(--p-z-index-1);
+}
+
 @media screen and (max-width: 1024px) {
   .Polaris-HorizontalGrid {
-    grid-template-columns: repeat(2, minmax(0, 1fr))
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media screen and (max-width: 500px) {
   .Polaris-HorizontalGrid {
-    grid-template-columns: repeat(1, minmax(0, 1fr))
+    grid-template-columns: repeat(1, minmax(0, 1fr));
   }
 
   .filter-margin {

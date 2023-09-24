@@ -16,5 +16,8 @@ application.register("form", FormController)
 import GlobeController from "./globe_controller"
 application.register("globe", GlobeController)
 
+import LoadingController from "./loading_controller"
+application.register("loading", LoadingController)
+
 import SubmittableController from "./submittable_controller"
 application.register("submittable", SubmittableController)

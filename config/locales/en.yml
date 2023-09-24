@@ -61,6 +61,8 @@ en:
     affiliate_revenue:
       title: "Affiliate"
       subtitle: "Revenue from the partner affiliate program."
+    chart:
+      loading: "Loading chart data..."
     tiles:
       recurring_revenue: "Total recurring revenue"
       recurring_revenue_monthly: "Monthly recurring revenue"
