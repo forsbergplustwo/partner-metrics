@@ -3,7 +3,7 @@ require "csvreader"
 
 class Import::Adaptor::CsvFile
   BATCH_SIZE = 1000
-  MAX_HISTORY = 12.years
+  MAX_HISTORY = 5.years
 
   CSV_READER_OPTIONS = {
     header_converters: :symbol,
