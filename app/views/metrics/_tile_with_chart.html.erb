@@ -1,4 +1,7 @@
-<%= polaris_card(title: t("metrics.tiles.#{tile.handle}", default: tile.handle.to_s.humanize)) do |card| %>
+<%= polaris_card(title: t("metrics.tiles.#{tile.handle}", default: tile.handle.to_s.humanize), classes: 'relative') do |card| %>
+  <%= polaris_card(classes: 'loading-overlay hidden', data: { loading_target: 'overlay' }) do %>
+    <%= polaris_spinner(accessibility_label: t("metrics.chart.loading")) %>
+  <% end %>
 
   <%= polaris_vertical_stack(gap: "6") do %>
 
