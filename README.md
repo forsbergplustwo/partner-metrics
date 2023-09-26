@@ -27,12 +27,8 @@ Note: We recommend deleting your existing metrics data and re-importing to take 
 
 ### First time setup
 
-1. Rename `.env.example` to `.env` and update redis path if needed.
-1. Delete `config/credentials.yml.enc`
-2. Create and add your own credentials `bin/rails credentials:edit` (use config/credentials.example.yml as template)
-3. Setup encrypted attributes support: `bin/rails db:encryption:init` and add to credentials
-4. Setup dependencies, environment & database: `bin/setup`
-5. Start web server and sidekiq workers with: `bin/dev`
+1. Setup dependencies, environment & database: `bin/setup`
+2. Start web server and sidekiq workers with: `bin/dev`
 
 Visit `localhost:4000`
 
@@ -44,6 +40,12 @@ bin/rails test
 # including system tests
 bin/rails test:all
 ```
+
+### Deploying to Production
+
+1. Delete `config/credentials/production.yml.enc`
+2. Run `bin/rails credentials:edit -e production` and update as necessary
+3. If deploying to Heroku, make sure to set `heroku config:set RAILS_MASTER_KEY=[key]` where `[key]` is the value of your `config/credentials/production.key` file.
 
 ## Contributing
 We'd love for you to contribute join us in making it better! In general, please follow the "fork-and-pull" Git workflow.
