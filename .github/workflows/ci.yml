@@ -59,22 +59,21 @@ jobs:
           RAILS_ENV: test
           RAILS_MASTER_KEY: ${{ secrets.master_key }}
         run: |
-          bin/rake db:create
-          bin/rake db:schema:load
-          bin/rake db:migrate
+          bin/rails db:create
+          bin/rails db:schema:load
+          bin/rails db:migrate
       - name: Build assets
         env:
           RAILS_ENV: test
           RAILS_MASTER_KEY: ${{ secrets.master_key }}
         run: |
-          bin/rake assets:precompile
+          bin/rails assets:precompile
       - name: Run tests
         env:
-          AWS_REGION: us-east-1
           REDIS_URL: redis://localhost:6379/0
           RAILS_MASTER_KEY: ${{ secrets.master_key }}
         run: |
-          bin/rake test
+          bin/rails test
       - name: Upload artifacts
         if: failure()
         uses: actions/upload-artifact@v3
