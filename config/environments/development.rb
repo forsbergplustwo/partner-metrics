@@ -46,7 +46,7 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { host: "localhost:4000" }
   config.action_mailer.asset_host = "http://localhost:4000"
   config.action_mailer.smtp_settings = {
-    from: Rails.application.credentials[Rails.env.to_sym][:action_mailer][:from_email_address],
+    from: Rails.application.credentials[:action_mailer][:from_email_address],
   }
 
   # Print deprecation notices to the Rails logger.
