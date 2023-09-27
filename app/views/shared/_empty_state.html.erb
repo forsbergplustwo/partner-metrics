@@ -5,7 +5,7 @@
     image: image_path("empty_state/ImportMinor.svg"),
   ) do |state| %>
 
-    <% state.with_primary_action(url: new_import_path) { "New import" } %>
+    <% state.with_primary_action(url: new_import_path, data: {turbo_frame: "_top"}) { "New import" } %>
     <p><%= t(".description")%></p>
 
     <% state.with_footer do %>
