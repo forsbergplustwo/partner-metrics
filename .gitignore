@@ -35,3 +35,5 @@
 # Ignore production credentials key
 # Note: Dev and Test keys are included for easier setup.
 /config/credentials/production.key
+
+.env
