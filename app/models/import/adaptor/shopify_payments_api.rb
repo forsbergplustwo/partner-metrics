@@ -108,7 +108,7 @@ class Import::Adaptor::ShopifyPaymentsApi
 
   def revenue(node)
     case node.__typename
-    when "ReferralAdjustment", "ReferralTransaction"
+    when "ReferralAdjustment", "ReferralTransaction", "TaxTransaction"
       node.amount&.amount&.to_f
     else
       node.net_amount&.amount&.to_f
@@ -126,7 +126,7 @@ class Import::Adaptor::ShopifyPaymentsApi
 
   def app_title(node)
     case node.__typename
-    when "ReferralAdjustment", "ReferralTransaction", "ServiceSale", "ServiceSaleAdjustment"
+    when "ReferralAdjustment", "ReferralTransaction", "ServiceSale", "ServiceSaleAdjustment", "TaxTransaction"
       Payment::UNKNOWN_APP_TITLE
     when "ThemeSaleAdjustment", "ThemeSale"
       node.theme&.name
