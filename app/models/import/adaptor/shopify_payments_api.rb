@@ -126,7 +126,7 @@ class Import::Adaptor::ShopifyPaymentsApi
 
   def app_title(node)
     case node.__typename
-    when "ReferralAdjustment", "ReferralTransaction", "ServiceSale", "ServiceSaleAdjustment"
+    when "ReferralAdjustment", "ReferralTransaction", "ServiceSale", "ServiceSaleAdjustment", "TaxTransaction"
       Payment::UNKNOWN_APP_TITLE
     when "ThemeSaleAdjustment", "ThemeSale"
       node.theme&.name
