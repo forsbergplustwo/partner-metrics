@@ -9,3 +9,8 @@ failed:
   source: <%= Import.sources[:csv_file] %>
   status: failed
   user: regular
+
+failed_shopify_payments_api:
+  source: <%= Import.sources[:shopify_payments_api] %>
+  status: failed
+  user: regular

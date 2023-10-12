@@ -7,6 +7,7 @@ Rails.application.routes.draw do
 
   resources :imports, only: [:index, :show, :new, :create, :destroy] do
     resource :globe, only: [:show], controller: "imports/globes"
+    resource :retry, only: [:create], controller: "imports/retry"
     collection do
       delete :destroy_all, to: "imports/destroy_all#destroy"
     end
