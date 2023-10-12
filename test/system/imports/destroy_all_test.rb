@@ -13,7 +13,7 @@ class Imports::DestroyAllTest < ApplicationSystemTestCase
 
     assert_selector "h1", text: "Data imports"
 
-    assert_text "View details", count: 2
+    assert_text "View details", count: Import.count
 
     click_on "More actions"
     click_on "Delete all imports"
