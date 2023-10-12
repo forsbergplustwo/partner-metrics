@@ -10,6 +10,7 @@ en:
     delete_all: "Delete all %{resource}"
     more_actions: "More actions"
     add: "Add %{resource}"
+    retry: "Retry %{resource}"
   statuses:
     draft: "Draft"
     scheduled: "Scheduled"

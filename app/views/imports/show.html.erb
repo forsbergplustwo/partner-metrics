@@ -6,17 +6,7 @@
   subtitle: @import.created_at.to_fs(:long),
   id: dom_id(@import),
   back_url: imports_path,
-  secondary_actions: [
-    {
-      content: t("actions.delete", resource: resource_name_for(Import)),
-      destructive: true,
-      data: {
-        controller: "polaris",
-        target: "#destroy-modal",
-        action: "polaris#openModal"
-      }
-    }
-  ],
+  secondary_actions: secondary_import_actions(@import),
 ) do |page| %>
 
   <% page.with_title_metadata do %>

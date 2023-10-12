@@ -36,6 +36,15 @@ class Import < ApplicationRecord
 
   scope :in_progress, -> { where(status: %i[scheduled importing calculating]) }
 
+  def retriable?
+    shopify_payments_api_source? && failed? && user.imports.in_progress.empty?
+  end
+
+  def retry
+    update(status: :draft)
+    schedule
+  end
+
   def schedule
     return unless draft?
     scheduled!

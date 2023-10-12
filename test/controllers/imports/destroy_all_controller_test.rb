@@ -8,10 +8,11 @@ class Imports::DestroyAllControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should destroy all imports" do
-    assert_difference("Import.count", -2) do
-      delete destroy_all_imports_url
-    end
+    assert_not Import.count.zero?
+
+    delete destroy_all_imports_url
 
     assert_redirected_to imports_url
+    assert Import.count.zero?
   end
 end
