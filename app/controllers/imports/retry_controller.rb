@@ -1,4 +1,6 @@
 class Imports::RetryController < ApplicationController
+  before_action :authenticate_user!
+
   def create
     @import = current_user.imports.find(params[:import_id])
     if @import.retriable? && @import.retry
