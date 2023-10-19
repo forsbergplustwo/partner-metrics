@@ -37,6 +37,11 @@ class Import::Adaptor::ShopifyPaymentsApi
     ]
   }.freeze
 
+  UNSUPPORTED_TRANSACTION_TYPES = [
+    "TaxTransaction",
+    "LegacyTransaction"
+  ].freeze
+
   def initialize(import:, import_payments_after_date:)
     @import = import
     @import_payments_after_date = import_payments_after_date.strftime("%Y-%m-%dT%H:%M:%S.%L%z")
@@ -70,6 +75,8 @@ class Import::Adaptor::ShopifyPaymentsApi
       @cursor = results.data.transactions.edges.last.cursor
 
       transactions.each do |transaction|
+        next if unsupported?(transaction.node)
+
         main_enum.yield parse(transaction.node)
       end
     end
@@ -96,6 +103,10 @@ class Import::Adaptor::ShopifyPaymentsApi
       # ShopifyPartnerApi does not return shop country
       shop_country: nil
     }
+  end
+
+  def unsupported?(node)
+    UNSUPPORTED_TRANSACTION_TYPES.find { |type| node&.id&.include?(type) }.present?
   end
 
   def charge_type(node)
