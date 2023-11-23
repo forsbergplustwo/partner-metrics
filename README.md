@@ -44,7 +44,7 @@ bin/rails test:all
 To import data from Partner API manually (once you have added your credentials in the app UI):
 ```bash
 bin/rails import_all_from_partner_api
-``````
+```
 
 ### Deploying to Production
 
