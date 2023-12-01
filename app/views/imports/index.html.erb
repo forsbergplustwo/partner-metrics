@@ -1,3 +1,5 @@
+<%= turbo_stream_from current_user %>
+
 <%= polaris_page(
   title: t(".title"),
   subtitle: t(".subtitle")
@@ -51,5 +53,6 @@
   url: destroy_all_imports_path,
   title: t("actions.delete", resource: resource_name_for(Import, true)) + "?",
   message: t("imports.confirm_destroy"),
-  primary_action_text: t("actions.delete", resource: resource_name_for(Import, true))
+  primary_action_text: t("actions.delete", resource: resource_name_for(Import, true)),
+  data: {"turbo-permanent": true}
 %>

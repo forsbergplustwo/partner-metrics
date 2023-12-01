@@ -1,4 +1,5 @@
-<%= tag.div id: dom_id(import, :details) do %>
+<%= turbo_stream_from import %>
+
   <%= polaris_card do %>
     <%= polaris_vertical_stack(gap: "6") do |stack| %>
 
@@ -34,4 +35,3 @@
 
     <% end %>
   <% end %>
-<% end %>

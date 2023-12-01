@@ -1,7 +1,9 @@
 class Import < ApplicationRecord
   include ActionView::RecordIdentifier
 
-  belongs_to :user
+  broadcasts_refreshes
+
+  belongs_to :user, touch: true
   has_many :payments, dependent: :delete_all
   has_many :metrics, dependent: :delete_all
   has_one_attached :payouts_file, dependent: :destroy
@@ -31,8 +33,6 @@ class Import < ApplicationRecord
   validates :status, presence: true, inclusion: {in: statuses.keys}
 
   after_create_commit :schedule
-  after_update_commit :broadcast_details_update
-  after_update_commit :broadcast_status_update, if: -> { saved_change_to_status? }
 
   scope :in_progress, -> { where(status: %i[scheduled importing calculating]) }
 
@@ -97,25 +97,5 @@ class Import < ApplicationRecord
   def import_metrics_before_date
     # Don't include the latest day, because it may not be complete
     user.payments.maximum(:payment_date) - 1.day
-  end
-
-  private
-
-  def broadcast_details_update
-    broadcast_replace_to(
-      [user, :imports],
-      target: dom_id(self, :details),
-      partial: "imports/import",
-      locals: {import: self}
-    )
-  end
-
-  def broadcast_status_update
-    broadcast_replace_to(
-      [user, :imports],
-      target: dom_id(self, :status),
-      partial: "shared/status",
-      locals: {resource: self}
-    )
   end
 end

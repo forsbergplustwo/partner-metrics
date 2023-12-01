@@ -20,6 +20,9 @@
     <%= javascript_include_tag "application" %>
     <%= hotwire_livereload_tags if Rails.env.development? %>
     <%= javascript_include_tag "https://www.gstatic.com/charts/loader.js" %>
+
+    <%= turbo_refreshes_with method: :morph, scroll: :preserve %>
+    <%= yield :head %>
   </head>
 
   <body style="<%= polaris_html_styles %>">

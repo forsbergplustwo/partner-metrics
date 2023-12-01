@@ -19,7 +19,7 @@ gem "rubyzip"
 # Frontend
 gem "sprockets-rails"
 gem "jsbundling-rails"
-gem "turbo-rails"
+gem "turbo-rails", "= 2.0.0.pre.beta.1"
 gem "stimulus-rails"
 gem "devise"
 gem "polaris_view_components"
