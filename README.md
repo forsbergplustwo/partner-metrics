@@ -41,11 +41,17 @@ bin/rails test
 bin/rails test:all
 ```
 
+To import data from Partner API manually (once you have added your credentials in the app UI):
+```bash
+bin/rails import_all_from_partner_api
+```
+
 ### Deploying to Production
 
 1. Delete `config/credentials/production.yml.enc`
 2. Run `bin/rails credentials:edit -e production` and update as necessary
 3. If deploying to Heroku, make sure to set `heroku config:set RAILS_MASTER_KEY=[key]` where `[key]` is the value of your `config/credentials/production.key` file.
+4. Setup a cron job to run `bin/rails import_all_from_partner_api` on a daily basis.
 
 ## Contributing
 We'd love for you to contribute join us in making it better! In general, please follow the "fork-and-pull" Git workflow.
