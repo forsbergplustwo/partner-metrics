@@ -5,7 +5,7 @@
 
   <%= render "shared/page_actions", page: page %>
 
-  <%= tag.div data: { controller: "loading" } do %>
+  <%= turbo_frame_tag :metrics, data: { controller: "loading" } do %>
 
     <%= polaris_vertical_stack(gap: "6") do %>
 

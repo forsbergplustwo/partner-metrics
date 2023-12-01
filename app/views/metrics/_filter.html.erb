@@ -1,7 +1,7 @@
   <%= form_tag(
     url_for(action: action_name, charge_type: filter.charge_type),
     method: :get,
-    data: {controller: "filters"},
+    data: {controller: "filters", turbo_action: :advance},
   ) do %>
 
     <%= hidden_field_tag :chart, filter.chart %>
