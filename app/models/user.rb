@@ -2,6 +2,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
     :recoverable, :rememberable, :trackable, :validatable
 
+  broadcasts_refreshes
+
   has_many :payments, dependent: :delete_all
   has_many :metrics, dependent: :delete_all
   has_many :imports, dependent: :delete_all

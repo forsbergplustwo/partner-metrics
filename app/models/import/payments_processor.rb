@@ -28,8 +28,10 @@ class Import::PaymentsProcessor
         payments << new_payment(transaction)
       end
 
-      Payment.import!(payments.compact, validate: false, no_returning: true) if payments.present?
-      @import.touch
+      if payments.present?
+        Payment.import!(payments.compact, validate: false, no_returning: true)
+        @import.touch
+      end
     end
   end
 

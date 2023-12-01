@@ -1,5 +1,3 @@
-<%= turbo_stream_from [current_user, :imports] %>
-
 <%= polaris_page(
   narrow_width: true,
   title: t(".title"),
@@ -25,12 +23,14 @@
 
 <% end %>
 
-<%= turbo_frame_tag :globe, src: import_globe_path(@import) %>
+<%= turbo_frame_tag :globe, src: import_globe_path(@import), data: {"turbo-permanent": true} %>
 
 <%= render "modals/destroy",
   id: "destroy-modal",
   url: @import,
   title: t("actions.delete", resource: resource_name_for(Import)) + "?",
   message: t("imports.confirm_destroy"),
-  primary_action_text: t("actions.delete", resource: resource_name_for(Import))
+  primary_action_text: t("actions.delete", resource: resource_name_for(Import),
+  data: {"turbo-permanent": true}
+  )
 %>

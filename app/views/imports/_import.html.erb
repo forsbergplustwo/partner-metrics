@@ -1,37 +1,37 @@
-<%= tag.div id: dom_id(import, :details) do %>
-  <%= polaris_card do %>
-    <%= polaris_vertical_stack(gap: "6") do |stack| %>
+<%= turbo_stream_from import %>
 
-      <%= polaris_stack(alignment: :center) do |nested_stack| %>
-        <% nested_stack.with_item do %>
-          <%= polaris_icon(name: "DynamicSourceMajor", color: :base) %>
-        <% end %>
-        <% nested_stack.with_item do %>
-          <%= polaris_text_strong { t("imports.source") } %><br>
-          <%= t("imports.sources.#{import.source}") %>
-        <% end %>
+<%= polaris_card do %>
+  <%= polaris_vertical_stack(gap: "6") do |stack| %>
+
+    <%= polaris_stack(alignment: :center) do |nested_stack| %>
+      <% nested_stack.with_item do %>
+        <%= polaris_icon(name: "DynamicSourceMajor", color: :base) %>
       <% end %>
-
-      <%= polaris_stack(alignment: :center) do |nested_stack| %>
-        <% nested_stack.with_item do %>
-          <%= polaris_icon(name: "CashDollarMajor", color: :base) %>
-        <% end %>
-        <% nested_stack.with_item do %>
-          <%= polaris_text_strong { t("imports.imported") } %><br>
-          <%= number_with_delimiter(import.payments.count) %> <%= t("imports.payments") %>
-        <% end %>
+      <% nested_stack.with_item do %>
+        <%= polaris_text_strong { t("imports.source") } %><br>
+        <%= t("imports.sources.#{import.source}") %>
       <% end %>
-
-      <%= polaris_stack(alignment: :center) do |nested_stack| %>
-        <% nested_stack.with_item do %>
-          <%= polaris_icon(name: "CalendarTimeMinor", color: :base) %>
-        <% end %>
-        <% nested_stack.with_item do %>
-          <%= polaris_text_strong { t("imports.metrics_date_range") } %><br>
-          <%= metrics_date_range_text(import)%>
-        <% end %>
-      <% end %>
-
     <% end %>
+
+    <%= polaris_stack(alignment: :center) do |nested_stack| %>
+      <% nested_stack.with_item do %>
+        <%= polaris_icon(name: "CashDollarMajor", color: :base) %>
+      <% end %>
+      <% nested_stack.with_item do %>
+        <%= polaris_text_strong { t("imports.imported") } %><br>
+        <%= number_with_delimiter(import.payments.count) %> <%= t("imports.payments") %>
+      <% end %>
+    <% end %>
+
+    <%= polaris_stack(alignment: :center) do |nested_stack| %>
+      <% nested_stack.with_item do %>
+        <%= polaris_icon(name: "CalendarTimeMinor", color: :base) %>
+      <% end %>
+      <% nested_stack.with_item do %>
+        <%= polaris_text_strong { t("imports.metrics_date_range") } %><br>
+        <%= metrics_date_range_text(import)%>
+      <% end %>
+    <% end %>
+
   <% end %>
 <% end %>

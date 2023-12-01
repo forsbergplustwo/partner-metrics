@@ -33,7 +33,7 @@
                 accept: Import::ACCEPTED_FILE_TYPES.join(","),
                 multiple: false,
                 data: {
-                  action: "ondrop@window->form#markAsDirty"
+                  action: "polaris-dropzone:drop-accepted->form#markAsDirty"
                 }
               ) %>
             <% end %>

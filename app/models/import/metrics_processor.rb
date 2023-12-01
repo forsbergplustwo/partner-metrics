@@ -36,8 +36,10 @@ class Import::MetricsProcessor
           end
         end
       end
-      Metric.import!(metrics, validate: false, no_returning: true) if metrics.present?
-      @import.touch
+      if metrics.present?
+        Metric.import!(metrics, validate: false, no_returning: true)
+        @import.touch
+      end
     end
   end
 
