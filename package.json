@@ -10,7 +10,7 @@
     "debounce": "^1.2.1",
     "esbuild": "^0.19.2",
     "globe.gl": "^2.29.2",
-    "polaris-view-components": "^1.1.0"
+    "polaris-view-components": "^1.3.0"
   },
   "scripts": {
     "build": "esbuild app/javascript/*.* --bundle --minify --outdir=app/assets/builds --public-path=/assets"
