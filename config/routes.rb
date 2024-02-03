@@ -18,7 +18,7 @@ Rails.application.routes.draw do
   resources :summarys, only: [] do
     collection do
       get :monthly, to: "summarys/monthly#index"
-      get :shop, to: "summarys/shop#index"
+      get 'shops/index/(:page)', to: 'shops#index', as: 'shops_index'
     end
   end
 
