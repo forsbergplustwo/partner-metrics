@@ -9,7 +9,7 @@ module PaginationHelper
 
   def link_to_previous_page(collection, options)
     unless collection.first_page?
-      link_to "Previous", url_for(page: collection.prev_page), class: options[:previous_class] || "prev-page"
+      link_to 'Previous', url_for(page: collection.prev_page), class: options[:previous_class] || "prev-page"
     end
   end
 
@@ -24,7 +24,7 @@ module PaginationHelper
     end_page = [collection.current_page + options[:page_range], collection.total_pages].min
 
     (start_page..end_page).map do |page|
-      link_to page, url_for(page: page), class: (page == collection.current_page ? options[:active_class] : options[:page_class])
+      link_to page, url_for(page: page), class: ((page == collection.current_page ? options[:active_class] : options[:page_class]))
     end.join.html_safe
   end
 end
