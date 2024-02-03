@@ -18,12 +18,14 @@ class Summary::Shop < Summary
 
   private
 
-  def summarized_shop_data
+  def summarized_shop_data(page: 1, per_page: TOP_SHOPS_LIMIT)
+    offset = (page - 1) * per_page
     result = payments
       .select(SQL_QUERY)
       .group(:shop)
       .order("total_revenue DESC")
-      .limit(TOP_SHOPS_LIMIT)
+      .offset(offset)
+      .limit(per_page)
 
     result.each_with_object({}) do |record, hash|
       hash[record.shop] = record.attributes.except("shop")
