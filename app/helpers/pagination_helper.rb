@@ -11,7 +11,7 @@ module PaginationHelper
       pagination_html += '<li>' + link_to('Next', "#{base_url}?page=#{current_page + 1}") + '</li>'
     end
 
-    pagination_html += '</ul>'
+    pagination_html += "</ul>"
     pagination_html.html_safe
   end
 end
