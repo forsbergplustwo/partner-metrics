@@ -14,7 +14,7 @@
       <%= polaris_card do %>
         <%= render controller_name, rows: @summaries %>
       <% end %>
-      <%= polaris_pagination(previous_url: summary_shop_path(page: @page.to_i - 1), next_url: summary_shop_path(page: @page.to_i + 1)) %>
+      <%= polaris_pagination(previous_url: @page > 1 ? summary_shop_path(page: @page - 1) : nil, next_url: @page < @total_pages ? summary_shop_path(page: @page + 1) : nil) %>
 
     <% end %>
 
