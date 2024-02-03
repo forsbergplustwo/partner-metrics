@@ -9,7 +9,7 @@ module PaginationHelper
 
   def link_to_previous_page(collection, options)
     unless collection.first_page?
-      link_to 'Previous', url_for(page: collection.prev_page), class: options[:previous_class] || "prev-page"
+      link_to "Previous", url_for(page: collection.prev_page), class: options[:previous_class] || "prev-page"
     end
   end
 
