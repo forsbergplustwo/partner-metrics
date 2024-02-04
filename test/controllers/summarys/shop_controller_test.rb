@@ -1,4 +1,4 @@
-require "test_helper"
+require 'test_helper'
 
 class ShopControllerTest < ActionController::TestCase
   setup do
@@ -9,7 +9,7 @@ class ShopControllerTest < ActionController::TestCase
   end
 
   test "index pagination" do
-    get :index, params: { selected_app: @selected_app.id, page: 1 }
+    get :index, params: { selected_app: @selected_app.id, page: 1}
     assert_response :success
     assert_equal @summary, assigns(:summaries)
   end
