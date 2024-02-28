@@ -11,7 +11,7 @@
 
       <%= render "app_filter", selected_app: @selected_app, app_titles: @app_titles %>
 
-      <%= polaris_card do %>
+      <%= polaris_card(sectioned: false) do %>
         <%= render controller_name, rows: @summaries %>
       <% end %>
 

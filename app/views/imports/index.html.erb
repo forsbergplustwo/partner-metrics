@@ -37,7 +37,9 @@
         <%= render "api_credentials_banner" %>
       <% end %>
 
-      <%= render "table", imports: @imports %>
+      <%= polaris_card(sectioned: false) do %>
+        <%= render "table", imports: @imports %>
+      <% end %>
 
     <% end %>
 

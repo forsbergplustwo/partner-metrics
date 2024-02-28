@@ -126,7 +126,7 @@
   resolved "https://registry.yarnpkg.com/@esbuild/win32-x64/-/win32-x64-0.19.2.tgz#1205014625790c7ff0e471644a878a65d1e34ab0"
   integrity sha512-tcuhV7ncXBqbt/Ybf0IyrMcwVOAPDckMK9rXNHtF17UTK18OKLpg08glminN06pt2WCoALhXdLfSPbVvK/6fxw==
 
-"@hotwired/stimulus@^3.2.1":
+"@hotwired/stimulus@^3.2.1", "@hotwired/stimulus@^3.2.2":
   version "3.2.2"
   resolved "https://registry.yarnpkg.com/@hotwired/stimulus/-/stimulus-3.2.2.tgz#071aab59c600fed95b97939e605ff261a4251608"
   integrity sha512-eGeIqNOQpXoPAIP7tC1+1Yc1yl1xnwYqg+3mzqxyrbE5pg5YFBZcA6YoTiByJB6DKAEsiWtl6tjTJS4IYtbB7A==
@@ -403,12 +403,12 @@ lodash-es@4:
   resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.21.tgz#43e626c46e6591b7750beb2b50117390c609e3ee"
   integrity sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==
 
-polaris-view-components@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/polaris-view-components/-/polaris-view-components-1.1.0.tgz#92d35287aa75fe80715d6ffee7eb214232f13d29"
-  integrity sha512-pjHxPrYV9w42Cj86gVOKLzzUCteoSe5wsdIDyKDEtoUQ7GX3yTbQGCDXwhFKy4plHiGzQdJU44ABI2q0JEBTDw==
+polaris-view-components@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/polaris-view-components/-/polaris-view-components-1.3.0.tgz#babba153a056b71fdebc8118a4be26ecb8ba2dd1"
+  integrity sha512-x07MPuNhA3fmP4UsufhsVMAFjot0ynmEj4d6pHvvgomhv4b6k/w3rteCnYE8fswAs+PurWjTtkY7YHgIIQdQMQ==
   dependencies:
-    "@hotwired/stimulus" "^3.2.1"
+    "@hotwired/stimulus" "^3.2.2"
     "@rails/request.js" "^0.0.8"
 
 polished@4:
