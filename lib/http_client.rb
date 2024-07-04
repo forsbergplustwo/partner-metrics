@@ -1,6 +1,6 @@
 module ShopifyPartnerAPI
   class HTTPClient < GraphQL::Client::HTTP
-    SHOPIFY_PARTNER_API_VERSION = "2023-07"
+    SHOPIFY_PARTNER_API_VERSION = "2024-07"
 
     def initialize
       super("https://partners.shopify.com/")
