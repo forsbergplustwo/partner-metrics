@@ -6,7 +6,7 @@
 
   <%= polaris_card do %>
     <%= turbo_frame_tag resource, target: "_top" do %>
-      <%= form_with(model: resource, as: resource_name, url: user_password_path(resource_name), builder: Polaris::FormBuilder, data: {turbo: false}, format: :html) do |form| %>
+      <%= form_with(model: resource, as: resource_name, url: password_path(resource_name), builder: Polaris::FormBuilder, data: {turbo: false}, format: :html) do |form| %>
         <%= polaris_form_layout do |form_layout| %>
 
           <% if resource.errors.any? %>
