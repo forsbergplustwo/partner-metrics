@@ -76,7 +76,7 @@ jobs:
           bin/rails test
       - name: Upload artifacts
         if: failure()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: screenshots
           path: /home/runner/work/${{ inputs.app_name }}/${{ inputs.app_name }}/tmp/screenshots/
