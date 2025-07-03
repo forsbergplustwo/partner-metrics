@@ -4,7 +4,9 @@
       "queryType": {
         "name": "QueryRoot"
       },
-      "mutationType": null,
+      "mutationType": {
+        "name": "MutationRoot"
+      },
       "subscriptionType": null,
       "types": [
         {
@@ -64,9 +66,16 @@
             }
           ],
           "inputFields": null,
-          "interfaces": null,
+          "interfaces": [
+
+          ],
           "enumValues": null,
           "possibleTypes": [
+            {
+              "kind": "OBJECT",
+              "name": "MerchantUser",
+              "ofType": null
+            },
             {
               "kind": "OBJECT",
               "name": "Organization",
@@ -75,6 +84,16 @@
             {
               "kind": "OBJECT",
               "name": "Shop",
+              "ofType": null
+            },
+            {
+              "kind": "OBJECT",
+              "name": "ShopifyEmployee",
+              "ofType": null
+            },
+            {
+              "kind": "OBJECT",
+              "name": "TeamMember",
               "ofType": null
             }
           ]
@@ -411,7 +430,9 @@
             }
           ],
           "inputFields": null,
-          "interfaces": null,
+          "interfaces": [
+
+          ],
           "enumValues": null,
           "possibleTypes": [
             {
@@ -518,14 +539,63 @@
           "interfaces": [
             {
               "kind": "INTERFACE",
-              "name": "Node",
+              "name": "AppCharge",
               "ofType": null
             },
             {
               "kind": "INTERFACE",
-              "name": "AppCharge",
+              "name": "Node",
               "ofType": null
             }
+          ],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "AppCreditCreatePayload",
+          "description": "The result of an appCreditCreate mutation.",
+          "fields": [
+            {
+              "name": "appCredit",
+              "description": "The app credit that was created.",
+              "args": [
+
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "AppCredit",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "userErrors",
+              "description": "Errors when creating the application credit.",
+              "args": [
+
+              ],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "UserError",
+                    "ofType": null
+                  }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [
+
           ],
           "enumValues": null,
           "possibleTypes": null
@@ -555,7 +625,9 @@
             }
           ],
           "inputFields": null,
-          "interfaces": null,
+          "interfaces": [
+
+          ],
           "enumValues": null,
           "possibleTypes": [
             {
@@ -654,7 +726,9 @@
             }
           ],
           "inputFields": null,
-          "interfaces": null,
+          "interfaces": [
+
+          ],
           "enumValues": null,
           "possibleTypes": [
             {
@@ -714,6 +788,16 @@
             },
             {
               "kind": "OBJECT",
+              "name": "SubscriptionApproachingCappedAmount",
+              "ofType": null
+            },
+            {
+              "kind": "OBJECT",
+              "name": "SubscriptionCappedAmountUpdated",
+              "ofType": null
+            },
+            {
+              "kind": "OBJECT",
               "name": "SubscriptionChargeAccepted",
               "ofType": null
             },
@@ -757,7 +841,7 @@
         {
           "kind": "OBJECT",
           "name": "AppEventConnection",
-          "description": "",
+          "description": "The connection type for AppEvent.",
           "fields": [
             {
               "name": "edges",
@@ -955,6 +1039,18 @@
             {
               "name": "SUBSCRIPTION_CHARGE_UNFROZEN",
               "description": "Subscription charge unfrozen",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "SUBSCRIPTION_CAPPED_AMOUNT_UPDATED",
+              "description": "Subscription capped amount was updated.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "SUBSCRIPTION_APPROACHING_CAPPED_AMOUNT",
+              "description": "Subscription is approaching capped amount.",
               "isDeprecated": false,
               "deprecationReason": null
             },
@@ -1240,12 +1336,12 @@
           "interfaces": [
             {
               "kind": "INTERFACE",
-              "name": "Node",
+              "name": "AppCharge",
               "ofType": null
             },
             {
               "kind": "INTERFACE",
-              "name": "AppCharge",
+              "name": "Node",
               "ofType": null
             }
           ],
@@ -1277,7 +1373,9 @@
             }
           ],
           "inputFields": null,
-          "interfaces": null,
+          "interfaces": [
+
+          ],
           "enumValues": null,
           "possibleTypes": [
             {
@@ -1698,12 +1796,12 @@
           "interfaces": [
             {
               "kind": "INTERFACE",
-              "name": "Node",
+              "name": "AppCharge",
               "ofType": null
             },
             {
               "kind": "INTERFACE",
-              "name": "AppCharge",
+              "name": "Node",
               "ofType": null
             }
           ],
@@ -1735,9 +1833,21 @@
             }
           ],
           "inputFields": null,
-          "interfaces": null,
+          "interfaces": [
+
+          ],
           "enumValues": null,
           "possibleTypes": [
+            {
+              "kind": "OBJECT",
+              "name": "SubscriptionApproachingCappedAmount",
+              "ofType": null
+            },
+            {
+              "kind": "OBJECT",
+              "name": "SubscriptionCappedAmountUpdated",
+              "ofType": null
+            },
             {
               "kind": "OBJECT",
               "name": "SubscriptionChargeAccepted",
@@ -2021,12 +2131,12 @@
           "interfaces": [
             {
               "kind": "INTERFACE",
-              "name": "Node",
+              "name": "AppCharge",
               "ofType": null
             },
             {
               "kind": "INTERFACE",
-              "name": "AppCharge",
+              "name": "Node",
               "ofType": null
             }
           ],
@@ -2058,7 +2168,9 @@
             }
           ],
           "inputFields": null,
-          "interfaces": null,
+          "interfaces": [
+
+          ],
           "enumValues": null,
           "possibleTypes": [
             {
@@ -2230,6 +2342,355 @@
         },
         {
           "kind": "OBJECT",
+          "name": "Conversation",
+          "description": "A conversation with a merchant through the Experts Marketplace.",
+          "fields": [
+            {
+              "name": "createdAt",
+              "description": "The date and time the conversation was started.",
+              "args": [
+
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "DateTime",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "dashboardUrl",
+              "description": "The URL to access this conversation in the Partner Dashboard.",
+              "args": [
+
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Url",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "hasUnreadMessages",
+              "description": "Whether the conversation has unread messages.",
+              "args": [
+
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "id",
+              "description": "A globally unique identifier.",
+              "args": [
+
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "lastEventAt",
+              "description": "The date and time of the most recent conversation event. Example events: a message being sent, or a proposal being accepted.",
+              "args": [
+
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "DateTime",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "merchantUser",
+              "description": "The merchant account involved in the conversation.",
+              "args": [
+
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "MerchantUser",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "messages",
+              "description": "The messages exchanged within the conversation.",
+              "args": [
+                {
+                  "name": "after",
+                  "description": "Returns the elements in the list that come after the specified cursor.",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "before",
+                  "description": "Returns the elements in the list that come before the specified cursor.",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "first",
+                  "description": "Returns the first _n_ elements from the list.",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "last",
+                  "description": "Returns the last _n_ elements from the list.",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "sentAtMin",
+                  "description": "Returns messages that were sent on or after the specified date and time.",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "DateTime",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "sentAtMax",
+                  "description": "Returns messages that were sent on or before the specified date and time.",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "DateTime",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "MessageConnection",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "status",
+              "description": "The status of the Experts Marketplace conversation.",
+              "args": [
+
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "ENUM",
+                  "name": "ConversationStatus",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [
+            {
+              "kind": "INTERFACE",
+              "name": "Node",
+              "ofType": null
+            }
+          ],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "ConversationConnection",
+          "description": "The connection type for Conversation.",
+          "fields": [
+            {
+              "name": "edges",
+              "description": "A list of edges.",
+              "args": [
+
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "OBJECT",
+                      "name": "ConversationEdge",
+                      "ofType": null
+                    }
+                  }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "pageInfo",
+              "description": "Information about pagination in a connection.",
+              "args": [
+
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "PageInfo",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [
+
+          ],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "ConversationEdge",
+          "description": "An edge in a connection.",
+          "fields": [
+            {
+              "name": "cursor",
+              "description": "A cursor for use in pagination.",
+              "args": [
+
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "node",
+              "description": "The item at the end of the edge.",
+              "args": [
+
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "Conversation",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [
+
+          ],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "ENUM",
+          "name": "ConversationStatus",
+          "description": "The status of the Experts Marketplace conversation.",
+          "fields": null,
+          "inputFields": null,
+          "interfaces": null,
+          "enumValues": [
+            {
+              "name": "ACTIVE",
+              "description": "The conversation is active. Messages can be sent and received.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "BLOCKED",
+              "description": "A participant in the conversation has blocked the other. Messages can't be sent or received.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
           "name": "CreditApplied",
           "description": "An event that marks that an app credit was applied.",
           "fields": [
@@ -2328,12 +2789,12 @@
           "interfaces": [
             {
               "kind": "INTERFACE",
-              "name": "AppEvent",
+              "name": "AppCreditEvent",
               "ofType": null
             },
             {
               "kind": "INTERFACE",
-              "name": "AppCreditEvent",
+              "name": "AppEvent",
               "ofType": null
             }
           ],
@@ -2440,12 +2901,12 @@
           "interfaces": [
             {
               "kind": "INTERFACE",
-              "name": "AppEvent",
+              "name": "AppCreditEvent",
               "ofType": null
             },
             {
               "kind": "INTERFACE",
-              "name": "AppCreditEvent",
+              "name": "AppEvent",
               "ofType": null
             }
           ],
@@ -2552,12 +3013,12 @@
           "interfaces": [
             {
               "kind": "INTERFACE",
-              "name": "AppEvent",
+              "name": "AppCreditEvent",
               "ofType": null
             },
             {
               "kind": "INTERFACE",
-              "name": "AppCreditEvent",
+              "name": "AppEvent",
               "ofType": null
             }
           ],
@@ -2573,8 +3034,1154 @@
           "interfaces": null,
           "enumValues": [
             {
+              "name": "CYP",
+              "description": "Cypriot pound.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "EEK",
+              "description": "Estonian kroon.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "GHC",
+              "description": "Ghanaian cedi.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "MRO",
+              "description": "Mauritanian ouguiya.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "MTL",
+              "description": "Maltese lira.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "STD",
+              "description": "São tomé and príncipe dobra.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "TMM",
+              "description": "Turkmenistani manat.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "VEB",
+              "description": "Venezuelan bolívar.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "VEF",
+              "description": "Venezuelan bolívar fuerte.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "ZWD",
+              "description": "Zimbabwean dollar.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "ZWL",
+              "description": "Zimbabwean dollar.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "ZWN",
+              "description": "Zimbabwean dollar.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "ZWR",
+              "description": "Zimbabwean dollar.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "JEP",
+              "description": "Jersey pound.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "KID",
+              "description": "Kiribati dollar.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "GGP",
+              "description": "Guernsey pound.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "IMP",
+              "description": "Isle of man pound.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "XFU",
+              "description": "Uic franc.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "GBX",
+              "description": "British penny.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "AED",
+              "description": "United arab emirates dirham.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "AFN",
+              "description": "Afghan afghani.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "ALL",
+              "description": "Albanian lek.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "AMD",
+              "description": "Armenian dram.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "ANG",
+              "description": "Netherlands antillean gulden.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "AOA",
+              "description": "Angolan kwanza.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "ARS",
+              "description": "Argentine peso.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "AUD",
+              "description": "Australian dollar.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "AWG",
+              "description": "Aruban florin.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "AZN",
+              "description": "Azerbaijani manat.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "BAM",
+              "description": "Bosnia and herzegovina convertible mark.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "BBD",
+              "description": "Barbadian dollar.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "BDT",
+              "description": "Bangladeshi taka.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "BGN",
+              "description": "Bulgarian lev.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "BHD",
+              "description": "Bahraini dinar.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "BIF",
+              "description": "Burundian franc.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "BMD",
+              "description": "Bermudian dollar.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "BND",
+              "description": "Brunei dollar.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "BOB",
+              "description": "Bolivian boliviano.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "BRL",
+              "description": "Brazilian real.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "BSD",
+              "description": "Bahamian dollar.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "BTN",
+              "description": "Bhutanese ngultrum.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "BWP",
+              "description": "Botswana pula.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "BYN",
+              "description": "Belarusian ruble.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "BYR",
+              "description": "Belarusian ruble.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "BZD",
+              "description": "Belize dollar.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CAD",
+              "description": "Canadian dollar.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CDF",
+              "description": "Congolese franc.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CHF",
+              "description": "Swiss franc.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CLF",
+              "description": "Unidad de fomento.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CLP",
+              "description": "Chilean peso.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CNY",
+              "description": "Chinese renminbi yuan.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "COP",
+              "description": "Colombian peso.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CRC",
+              "description": "Costa rican colón.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CUC",
+              "description": "Cuban convertible peso.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CUP",
+              "description": "Cuban peso.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CVE",
+              "description": "Cape verdean escudo.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CZK",
+              "description": "Czech koruna.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "DJF",
+              "description": "Djiboutian franc.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "DKK",
+              "description": "Danish krone.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "DOP",
+              "description": "Dominican peso.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "DZD",
+              "description": "Algerian dinar.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "EGP",
+              "description": "Egyptian pound.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "ERN",
+              "description": "Eritrean nakfa.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "ETB",
+              "description": "Ethiopian birr.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "EUR",
+              "description": "Euro.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "FJD",
+              "description": "Fijian dollar.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "FKP",
+              "description": "Falkland pound.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "GBP",
+              "description": "British pound.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "GEL",
+              "description": "Georgian lari.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "GHS",
+              "description": "Ghanaian cedi.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "GIP",
+              "description": "Gibraltar pound.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "GMD",
+              "description": "Gambian dalasi.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "GNF",
+              "description": "Guinean franc.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "GTQ",
+              "description": "Guatemalan quetzal.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "GYD",
+              "description": "Guyanese dollar.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "HKD",
+              "description": "Hong kong dollar.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "HNL",
+              "description": "Honduran lempira.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "HRK",
+              "description": "Croatian kuna.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "HTG",
+              "description": "Haitian gourde.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "HUF",
+              "description": "Hungarian forint.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "IDR",
+              "description": "Indonesian rupiah.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "ILS",
+              "description": "Israeli new sheqel.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "INR",
+              "description": "Indian rupee.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "IQD",
+              "description": "Iraqi dinar.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "IRR",
+              "description": "Iranian rial.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "ISK",
+              "description": "Icelandic króna.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "JMD",
+              "description": "Jamaican dollar.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "JOD",
+              "description": "Jordanian dinar.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "JPY",
+              "description": "Japanese yen.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "KES",
+              "description": "Kenyan shilling.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "KGS",
+              "description": "Kyrgyzstani som.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "KHR",
+              "description": "Cambodian riel.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "KMF",
+              "description": "Comorian franc.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "KPW",
+              "description": "North korean won.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "KRW",
+              "description": "South korean won.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "KWD",
+              "description": "Kuwaiti dinar.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "KYD",
+              "description": "Cayman islands dollar.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "KZT",
+              "description": "Kazakhstani tenge.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "LAK",
+              "description": "Lao kip.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "LBP",
+              "description": "Lebanese pound.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "LKR",
+              "description": "Sri lankan rupee.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "LRD",
+              "description": "Liberian dollar.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "LSL",
+              "description": "Lesotho loti.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "LTL",
+              "description": "Lithuanian litas.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "LVL",
+              "description": "Latvian lats.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "LYD",
+              "description": "Libyan dinar.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "MAD",
+              "description": "Moroccan dirham.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "MDL",
+              "description": "Moldovan leu.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "MGA",
+              "description": "Malagasy ariary.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "MKD",
+              "description": "Macedonian denar.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "MMK",
+              "description": "Myanmar kyat.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "MNT",
+              "description": "Mongolian tögrög.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "MOP",
+              "description": "Macanese pataca.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "MRU",
+              "description": "Mauritanian new ouguiya.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "MUR",
+              "description": "Mauritian rupee.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "MVR",
+              "description": "Maldivian rufiyaa.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "MWK",
+              "description": "Malawian kwacha.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "MXN",
+              "description": "Mexican peso.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "MYR",
+              "description": "Malaysian ringgit.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "MZN",
+              "description": "Mozambican metical.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "NAD",
+              "description": "Namibian dollar.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "NGN",
+              "description": "Nigerian naira.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "NIO",
+              "description": "Nicaraguan córdoba.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "NOK",
+              "description": "Norwegian krone.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "NPR",
+              "description": "Nepalese rupee.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "NZD",
+              "description": "New zealand dollar.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "OMR",
+              "description": "Omani rial.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "PAB",
+              "description": "Panamanian balboa.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "PEN",
+              "description": "Peruvian sol.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "PGK",
+              "description": "Papua new guinean kina.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "PHP",
+              "description": "Philippine peso.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "PKR",
+              "description": "Pakistani rupee.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "PLN",
+              "description": "Polish złoty.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "PYG",
+              "description": "Paraguayan guaraní.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "QAR",
+              "description": "Qatari riyal.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "RON",
+              "description": "Romanian leu.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "RSD",
+              "description": "Serbian dinar.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "RUB",
+              "description": "Russian ruble.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "RWF",
+              "description": "Rwandan franc.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "SAR",
+              "description": "Saudi riyal.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "SBD",
+              "description": "Solomon islands dollar.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "SCR",
+              "description": "Seychellois rupee.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "SDG",
+              "description": "Sudanese pound.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "SEK",
+              "description": "Swedish krona.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "SGD",
+              "description": "Singapore dollar.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "SHP",
+              "description": "Saint helenian pound.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "SKK",
+              "description": "Slovak koruna.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "SLL",
+              "description": "Sierra leonean leone.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "SOS",
+              "description": "Somali shilling.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "SRD",
+              "description": "Surinamese dollar.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "SSP",
+              "description": "South sudanese pound.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "STN",
+              "description": "São tomé and príncipe dobra.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "SVC",
+              "description": "Salvadoran colón.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "SYP",
+              "description": "Syrian pound.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "SZL",
+              "description": "Swazi lilangeni.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "THB",
+              "description": "Thai baht.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "TJS",
+              "description": "Tajikistani somoni.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "TMT",
+              "description": "Turkmenistani manat.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "TND",
+              "description": "Tunisian dinar.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "TOP",
+              "description": "Tongan paʻanga.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "TRY",
+              "description": "Turkish lira.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "TTD",
+              "description": "Trinidad and tobago dollar.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "TWD",
+              "description": "New taiwan dollar.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "TZS",
+              "description": "Tanzanian shilling.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "UAH",
+              "description": "Ukrainian hryvnia.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "UGX",
+              "description": "Ugandan shilling.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "USD",
-              "description": null,
+              "description": "United states dollar.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "UYU",
+              "description": "Uruguayan peso.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "UZS",
+              "description": "Uzbekistan som.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "VED",
+              "description": "Venezuelan bolívar soberano.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "VES",
+              "description": "Venezuelan bolívar soberano.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "VND",
+              "description": "Vietnamese đồng.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "VUV",
+              "description": "Vanuatu vatu.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "WST",
+              "description": "Samoan tala.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "XAF",
+              "description": "Central african cfa franc.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "XAG",
+              "description": "Silver (troy ounce).",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "XAU",
+              "description": "Gold (troy ounce).",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "XBA",
+              "description": "European composite unit.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "XBB",
+              "description": "European monetary unit.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "XBC",
+              "description": "European unit of account 9.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "XBD",
+              "description": "European unit of account 17.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "XCD",
+              "description": "East caribbean dollar.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "XDR",
+              "description": "Special drawing rights.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "XOF",
+              "description": "West african cfa franc.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "XPD",
+              "description": "Palladium.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "XPF",
+              "description": "Cfp franc.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "XPT",
+              "description": "Platinum.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "xts",
+              "description": "Codes specifically reserved for testing purposes.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "YER",
+              "description": "Yemeni rial.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "ZAR",
+              "description": "South african rand.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "ZMK",
+              "description": "Zambian kwacha.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "ZMW",
+              "description": "Zambian kwacha.",
               "isDeprecated": false,
               "deprecationReason": null
             }
@@ -2584,7 +4191,7 @@
         {
           "kind": "SCALAR",
           "name": "DateTime",
-          "description": "An [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) encoded UTC date time string. Example value: `\"2019-07-03T20:47:55Z\"`.",
+          "description": "An [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) encoded UTC date time string. Example value: `\"2019-07-03T20:47:55.123456Z\"`.",
           "fields": null,
           "inputFields": null,
           "interfaces": null,
@@ -2640,6 +4247,20 @@
                   "name": "Boolean",
                   "ofType": null
                 }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "conversation",
+              "description": "The conversation containing messages exchanged with the merchant.",
+              "args": [
+
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "Conversation",
+                "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -2710,83 +4331,6 @@
                 "ofType": {
                   "kind": "SCALAR",
                   "name": "DateTime",
-                  "ofType": null
-                }
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "messages",
-              "description": "The messages exchanged within the job.",
-              "args": [
-                {
-                  "name": "after",
-                  "description": "Returns the elements in the list that come after the specified cursor.",
-                  "type": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  },
-                  "defaultValue": null
-                },
-                {
-                  "name": "before",
-                  "description": "Returns the elements in the list that come before the specified cursor.",
-                  "type": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  },
-                  "defaultValue": null
-                },
-                {
-                  "name": "first",
-                  "description": "Returns the first _n_ elements from the list.",
-                  "type": {
-                    "kind": "SCALAR",
-                    "name": "Int",
-                    "ofType": null
-                  },
-                  "defaultValue": null
-                },
-                {
-                  "name": "last",
-                  "description": "Returns the last _n_ elements from the list.",
-                  "type": {
-                    "kind": "SCALAR",
-                    "name": "Int",
-                    "ofType": null
-                  },
-                  "defaultValue": null
-                },
-                {
-                  "name": "sentAtMin",
-                  "description": "Returns messages that were sent on or after the specified date and time.",
-                  "type": {
-                    "kind": "SCALAR",
-                    "name": "DateTime",
-                    "ofType": null
-                  },
-                  "defaultValue": null
-                },
-                {
-                  "name": "sentAtMax",
-                  "description": "Returns messages that were sent on or before the specified date and time.",
-                  "type": {
-                    "kind": "SCALAR",
-                    "name": "DateTime",
-                    "ofType": null
-                  },
-                  "defaultValue": null
-                }
-              ],
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "OBJECT",
-                  "name": "MessageConnection",
                   "ofType": null
                 }
               },
@@ -2896,7 +4440,7 @@
         {
           "kind": "OBJECT",
           "name": "JobConnection",
-          "description": "",
+          "description": "The connection type for Job.",
           "fields": [
             {
               "name": "edges",
@@ -3213,12 +4757,116 @@
         },
         {
           "kind": "OBJECT",
-          "name": "Message",
-          "description": "A message exchanged as part of a job.",
+          "name": "MerchantUser",
+          "description": "A merchant account. This might be a shop owner, a staff member, or a user that isn't associated with a shop.\nA single merchant account can be associated with many shops.",
           "fields": [
             {
-              "name": "attachmentUrls",
-              "description": "A collection of URLs pointing to attachments associated with the message.",
+              "name": "avatarUrl",
+              "description": "A URL referencing the avatar associated with the actor.",
+              "args": [
+
+              ],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Url",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "id",
+              "description": "A globally unique identifier for the actor. Example value: `gid://partners/Shop/1234`.",
+              "args": [
+
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "name",
+              "description": "The user's full name.",
+              "args": [
+
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "timezone",
+              "description": "The user's time zone.",
+              "args": [
+
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [
+            {
+              "kind": "INTERFACE",
+              "name": "Actor",
+              "ofType": null
+            },
+            {
+              "kind": "INTERFACE",
+              "name": "Node",
+              "ofType": null
+            }
+          ],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "Message",
+          "description": "A message exchanged within a conversation.",
+          "fields": [
+            {
+              "name": "body",
+              "description": "The message body.",
+              "args": [
+
+              ],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "fileUrls",
+              "description": "A collection of URLs pointing to files attached to the message.",
               "args": [
 
               ],
@@ -3237,42 +4885,6 @@
                       "ofType": null
                     }
                   }
-                }
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "body",
-              "description": "The message body.",
-              "args": [
-
-              ],
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                }
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "from",
-              "description": "The organization or shop that sent the message.",
-              "args": [
-
-              ],
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "INTERFACE",
-                  "name": "Actor",
-                  "ofType": null
                 }
               },
               "isDeprecated": false,
@@ -3315,6 +4927,24 @@
               "deprecationReason": null
             },
             {
+              "name": "sentBy",
+              "description": "The organization or user that sent the message.",
+              "args": [
+
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "UNION",
+                  "name": "MessageSender",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "sentVia",
               "description": "The platform that was used to send the message.",
               "args": [
@@ -3326,24 +4956,6 @@
                 "ofType": {
                   "kind": "ENUM",
                   "name": "MessageSentVia",
-                  "ofType": null
-                }
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "to",
-              "description": "The organization or shop that the message was sent to.",
-              "args": [
-
-              ],
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "INTERFACE",
-                  "name": "Actor",
                   "ofType": null
                 }
               },
@@ -3365,7 +4977,7 @@
         {
           "kind": "OBJECT",
           "name": "MessageConnection",
-          "description": "",
+          "description": "The connection type for Message.",
           "fields": [
             {
               "name": "edges",
@@ -3469,6 +5081,42 @@
           "possibleTypes": null
         },
         {
+          "kind": "UNION",
+          "name": "MessageSender",
+          "description": "A union of all of the types that can send messages within a conversation.",
+          "fields": null,
+          "inputFields": null,
+          "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": [
+            {
+              "kind": "OBJECT",
+              "name": "MerchantUser",
+              "ofType": null
+            },
+            {
+              "kind": "OBJECT",
+              "name": "Organization",
+              "ofType": null
+            },
+            {
+              "kind": "OBJECT",
+              "name": "Shop",
+              "ofType": null
+            },
+            {
+              "kind": "OBJECT",
+              "name": "ShopifyEmployee",
+              "ofType": null
+            },
+            {
+              "kind": "OBJECT",
+              "name": "TeamMember",
+              "ofType": null
+            }
+          ]
+        },
+        {
           "kind": "ENUM",
           "name": "MessageSentVia",
           "description": "The platform that was used to send the message.",
@@ -3541,6 +5189,129 @@
           "possibleTypes": null
         },
         {
+          "kind": "INPUT_OBJECT",
+          "name": "MoneyInput",
+          "description": "A monetary value with currency.",
+          "fields": null,
+          "inputFields": [
+            {
+              "name": "amount",
+              "description": "The amount of money.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "Decimal",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "currencyCode",
+              "description": "Currency of the money.",
+              "type": {
+                "kind": "ENUM",
+                "name": "Currency",
+                "ofType": null
+              },
+              "defaultValue": null
+            }
+          ],
+          "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "MutationRoot",
+          "description": "The schema's entry-point for mutations. This acts as the public, top-level API from which all mutations must start.",
+          "fields": [
+            {
+              "name": "appCreditCreate",
+              "description": "Allows an app to create a credit for a shop that can be used towards future app purchases. This mutation is only available to Partner API clients that have been granted the `View financials` permission.",
+              "args": [
+                {
+                  "name": "appId",
+                  "description": "The id of the app to associate the credit with. Example value: `gid://partners/App/123`.",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "ID",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "shopId",
+                  "description": "The id of the shop to be credited. Example value: `gid://partners/Shop/456`.",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "ID",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "amount",
+                  "description": "The amount that can be used towards future app purchases in Shopify.",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "INPUT_OBJECT",
+                      "name": "MoneyInput",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "description",
+                  "description": "The description of the app credit.",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "test",
+                  "description": "Specifies whether the app credit is a test transaction.",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": "false"
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "AppCreditCreatePayload",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [
+
+          ],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
           "kind": "INTERFACE",
           "name": "Node",
           "description": "An object with an ID to support global identification.",
@@ -3565,7 +5336,9 @@
             }
           ],
           "inputFields": null,
-          "interfaces": null,
+          "interfaces": [
+
+          ],
           "enumValues": null,
           "possibleTypes": [
             {
@@ -3620,12 +5393,22 @@
             },
             {
               "kind": "OBJECT",
+              "name": "Conversation",
+              "ofType": null
+            },
+            {
+              "kind": "OBJECT",
               "name": "Job",
               "ofType": null
             },
             {
               "kind": "OBJECT",
               "name": "LegacyTransaction",
+              "ofType": null
+            },
+            {
+              "kind": "OBJECT",
+              "name": "MerchantUser",
               "ofType": null
             },
             {
@@ -3665,7 +5448,17 @@
             },
             {
               "kind": "OBJECT",
+              "name": "ShopifyEmployee",
+              "ofType": null
+            },
+            {
+              "kind": "OBJECT",
               "name": "TaxTransaction",
+              "ofType": null
+            },
+            {
+              "kind": "OBJECT",
+              "name": "TeamMember",
               "ofType": null
             },
             {
@@ -4188,12 +5981,84 @@
           "interfaces": [
             {
               "kind": "INTERFACE",
-              "name": "Node",
+              "name": "Actor",
               "ofType": null
             },
             {
               "kind": "INTERFACE",
+              "name": "Node",
+              "ofType": null
+            }
+          ],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "Organization",
+          "description": "A Partner organization.",
+          "fields": [
+            {
+              "name": "avatarUrl",
+              "description": "A URL referencing the avatar associated with the actor.",
+              "args": [
+
+              ],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Url",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "id",
+              "description": "A globally unique identifier for the actor. Example value: `gid://partners/Shop/1234`.",
+              "args": [
+
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "name",
+              "description": "The name of the actor. This might be a Partner organization or shop name.",
+              "args": [
+
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [
+            {
+              "kind": "INTERFACE",
               "name": "Actor",
+              "ofType": null
+            },
+            {
+              "kind": "INTERFACE",
+              "name": "Node",
               "ofType": null
             }
           ],
@@ -4252,7 +6117,7 @@
         {
           "kind": "OBJECT",
           "name": "QueryRoot",
-          "description": "The schema’s entry-point for queries. This acts as the public, top-level API from which all queries must start.",
+          "description": "The schema's entry-point for queries. This acts as the public, top-level API from which all queries must start.",
           "fields": [
             {
               "name": "app",
@@ -4282,6 +6147,158 @@
               "deprecationReason": null
             },
             {
+              "name": "conversation",
+              "description": "A conversation with a merchant through the Experts Marketplace.",
+              "args": [
+                {
+                  "name": "id",
+                  "description": "The conversation ID. Example value: `gid://partners/Conversation/1234`.",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "ID",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "Conversation",
+                "ofType": null
+              },
+              "isDeprecated": true,
+              "deprecationReason": "No longer supported (2024-01)."
+            },
+            {
+              "name": "conversations",
+              "description": "A list of the Partner organization's conversations.",
+              "args": [
+                {
+                  "name": "after",
+                  "description": "Returns the elements in the list that come after the specified cursor.",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "before",
+                  "description": "Returns the elements in the list that come before the specified cursor.",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "first",
+                  "description": "Returns the first _n_ elements from the list.",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "last",
+                  "description": "Returns the last _n_ elements from the list.",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "unreadOnly",
+                  "description": "Only include conversations that have unread messages.",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": "false"
+                },
+                {
+                  "name": "statuses",
+                  "description": "Returns conversations with the specified statuses.",
+                  "type": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "NON_NULL",
+                      "name": null,
+                      "ofType": {
+                        "kind": "ENUM",
+                        "name": "ConversationStatus",
+                        "ofType": null
+                      }
+                    }
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "createdAtMin",
+                  "description": "Returns conversations that were created on or after the specified date and time.",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "DateTime",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "createdAtMax",
+                  "description": "Returns conversations that were created on or before the specified date and time.",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "DateTime",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "lastEventAtMin",
+                  "description": "Returns conversations where the last event occurred on or after the specified date and time.",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "DateTime",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "lastEventAtMax",
+                  "description": "Returns conversations where the last event occurred on or before the specified date and time.",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "DateTime",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "ConversationConnection",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": true,
+              "deprecationReason": "No longer supported (2024-01)."
+            },
+            {
               "name": "job",
               "description": "An [Experts Marketplace job](https://help.shopify.com/partners/selling-services).",
               "args": [
@@ -4305,8 +6322,8 @@
                 "name": "Job",
                 "ofType": null
               },
-              "isDeprecated": false,
-              "deprecationReason": null
+              "isDeprecated": true,
+              "deprecationReason": "No longer supported (2024-01)."
             },
             {
               "name": "jobs",
@@ -4430,8 +6447,8 @@
                   "ofType": null
                 }
               },
-              "isDeprecated": false,
-              "deprecationReason": null
+              "isDeprecated": true,
+              "deprecationReason": "No longer supported (2024-01)."
             },
             {
               "name": "publicApiVersions",
@@ -4542,7 +6559,7 @@
                 },
                 {
                   "name": "myshopifyDomain",
-                  "description": "Returns transactions associated with the specified `.myshopify.com` shop domain. Example value: `johns-apparel.myshopify.com`.",
+                  "description": "Returns transactions associated with the specified `.myshopify.com` shop domain. Example value: `example.myshopify.com`.",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -4756,6 +6773,30 @@
             {
               "name": "POINT_OF_SALE",
               "description": "The merchant was referred using the Partner POS lead form.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "INTUIT_POINT_OF_SALE",
+              "description": "The merchant was referred from an Intuit Channel Partner.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "MARKETS_PRO",
+              "description": "The merchant was referred to Markets Pro by a partner.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "POS_SHOPIFY_PAYMENTS_PROFIT",
+              "description": "The merchant was referred to POS by a partner.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "SHOPIFY_PLUS_ONE_TIME_REFERRAL",
+              "description": "The merchant was referred to Shopify Plus by a partner.",
               "isDeprecated": false,
               "deprecationReason": null
             }
@@ -5198,7 +7239,7 @@
             },
             {
               "name": "reason",
-              "description": "The reason that the merchant uninstalled the app.",
+              "description": "A comma separated list of reasons why the merchant uninstalled the app.",
               "args": [
 
               ],
@@ -5582,7 +7623,7 @@
             },
             {
               "name": "myshopifyDomain",
-              "description": "The shop’s `.myshopify.com` domain name.",
+              "description": "The shop's `.myshopify.com` domain name.",
               "args": [
 
               ],
@@ -5621,12 +7662,84 @@
           "interfaces": [
             {
               "kind": "INTERFACE",
-              "name": "Node",
+              "name": "Actor",
               "ofType": null
             },
             {
               "kind": "INTERFACE",
+              "name": "Node",
+              "ofType": null
+            }
+          ],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "ShopifyEmployee",
+          "description": "A Shopify employee.",
+          "fields": [
+            {
+              "name": "avatarUrl",
+              "description": "A URL referencing the avatar associated with the actor.",
+              "args": [
+
+              ],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Url",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "id",
+              "description": "A globally unique identifier for the actor. Example value: `gid://partners/Shop/1234`.",
+              "args": [
+
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "name",
+              "description": "The Shopify employee's full name.",
+              "args": [
+
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [
+            {
+              "kind": "INTERFACE",
               "name": "Actor",
+              "ofType": null
+            },
+            {
+              "kind": "INTERFACE",
+              "name": "Node",
               "ofType": null
             }
           ],
@@ -5640,6 +7753,230 @@
           "fields": null,
           "inputFields": null,
           "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "SubscriptionApproachingCappedAmount",
+          "description": "An event that marks that a subscription is approaching its capped amount.",
+          "fields": [
+            {
+              "name": "app",
+              "description": "A Shopify [app](/concepts/apps).",
+              "args": [
+
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "App",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "charge",
+              "description": "A recurring charge for use of an app, such as a monthly subscription charge.",
+              "args": [
+
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "AppSubscription",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "occurredAt",
+              "description": "The date and time when the event took place.",
+              "args": [
+
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "DateTime",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "shop",
+              "description": "A Shopify shop.",
+              "args": [
+
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "Shop",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "type",
+              "description": "The type of app event.",
+              "args": [
+
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "ENUM",
+                  "name": "AppEventTypes",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [
+            {
+              "kind": "INTERFACE",
+              "name": "AppEvent",
+              "ofType": null
+            },
+            {
+              "kind": "INTERFACE",
+              "name": "AppSubscriptionEvent",
+              "ofType": null
+            }
+          ],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "SubscriptionCappedAmountUpdated",
+          "description": "An event that marks that a subscription had its capped amount updated.",
+          "fields": [
+            {
+              "name": "app",
+              "description": "A Shopify [app](/concepts/apps).",
+              "args": [
+
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "App",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "charge",
+              "description": "A recurring charge for use of an app, such as a monthly subscription charge.",
+              "args": [
+
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "AppSubscription",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "occurredAt",
+              "description": "The date and time when the event took place.",
+              "args": [
+
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "DateTime",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "shop",
+              "description": "A Shopify shop.",
+              "args": [
+
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "Shop",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "type",
+              "description": "The type of app event.",
+              "args": [
+
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "ENUM",
+                  "name": "AppEventTypes",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [
+            {
+              "kind": "INTERFACE",
+              "name": "AppEvent",
+              "ofType": null
+            },
+            {
+              "kind": "INTERFACE",
+              "name": "AppSubscriptionEvent",
+              "ofType": null
+            }
+          ],
           "enumValues": null,
           "possibleTypes": null
         },
@@ -6206,7 +8543,7 @@
         {
           "kind": "OBJECT",
           "name": "SubscriptionChargeFrozen",
-          "description": "An event that marks that a recurring app charge has been suspended.",
+          "description": "An event that marks that a recurring app charge has been suspended. For example, if a merchant stops paying their bills, or closes their store, then Shopify suspends the recurring app charge.",
           "fields": [
             {
               "name": "app",
@@ -6430,7 +8767,7 @@
         {
           "kind": "OBJECT",
           "name": "TaxTransaction",
-          "description": "Tax transactions are not computed for pending transactions. Instead, they're rolled\nup as one transaction per payout. The type of tax and the way it's\ncomputed is dependent on the type of transaction.\n\nFor sale transactions, such as app subscriptions or theme purchases, Shopify charges\nthe Partner tax on the fee collected for brokering the transaction. The amount is\na negative number in this scenario.\n\nFor referral transactions, such as a development store transfer, Shopify pays the Partner\na commission. The tax represents any taxes on the referral commission that are payable to \nthe Partner. The amount is a positive number in this scenario.",
+          "description": "Tax transactions are not computed for pending transactions. Instead, they're rolled\nup as one transaction per payout. The type of tax and the way it's\ncomputed is dependent on the type of transaction.\n\nFor sale transactions, such as app subscriptions or theme purchases, Shopify charges\nthe Partner tax on the fee collected for brokering the transaction. The amount is\na negative number in this scenario.\n\nFor referral transactions, such as a development store transfer, Shopify pays the Partner\na commission. The tax represents any taxes on the referral commission that are payable to\nthe Partner. The amount is a positive number in this scenario.",
           "fields": [
             {
               "name": "amount",
@@ -6501,8 +8838,8 @@
                   "ofType": null
                 }
               },
-              "isDeprecated": false,
-              "deprecationReason": null
+              "isDeprecated": true,
+              "deprecationReason": "Use `taxType` instead."
             }
           ],
           "inputFields": null,
@@ -6531,9 +8868,9 @@
           "enumValues": [
             {
               "name": "SALE_SHOPIFY_FEE",
-              "description": "The taxes charged on Shopify’s commission fee for an app, theme, or service transaction.",
-              "isDeprecated": false,
-              "deprecationReason": null
+              "description": "The taxes charged on Shopify's commission fee for an app, theme, or service transaction.",
+              "isDeprecated": true,
+              "deprecationReason": "Use `SALE_FEES` instead."
             },
             {
               "name": "REFERRAL_COMMISSION",
@@ -6542,6 +8879,78 @@
               "deprecationReason": null
             }
           ],
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "TeamMember",
+          "description": "An owner or staff member of the Partner Organization.",
+          "fields": [
+            {
+              "name": "avatarUrl",
+              "description": "A URL referencing the avatar associated with the actor.",
+              "args": [
+
+              ],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Url",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "id",
+              "description": "A globally unique identifier for the actor. Example value: `gid://partners/Shop/1234`.",
+              "args": [
+
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "name",
+              "description": "The team member's full name.",
+              "args": [
+
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [
+            {
+              "kind": "INTERFACE",
+              "name": "Actor",
+              "ofType": null
+            },
+            {
+              "kind": "INTERFACE",
+              "name": "Node",
+              "ofType": null
+            }
+          ],
+          "enumValues": null,
           "possibleTypes": null
         },
         {
@@ -6890,7 +9299,9 @@
             }
           ],
           "inputFields": null,
-          "interfaces": null,
+          "interfaces": [
+
+          ],
           "enumValues": null,
           "possibleTypes": [
             {
@@ -6963,7 +9374,7 @@
         {
           "kind": "OBJECT",
           "name": "TransactionConnection",
-          "description": "",
+          "description": "The connection type for Transaction.",
           "fields": [
             {
               "name": "edges",
@@ -7142,7 +9553,7 @@
             },
             {
               "name": "TAX",
-              "description": "Tax transactions are not computed for pending transactions. Instead, they're rolled\nup as one transaction per payout. The type of tax and the way it's\ncomputed is dependent on the type of transaction.\n\nFor sale transactions, such as app subscriptions or theme purchases, Shopify charges\nthe Partner tax on the fee collected for brokering the transaction. The amount is\na negative number in this scenario.\n\nFor referral transactions, such as a development store transfer, Shopify pays the Partner\na commission. The tax represents any taxes on the referral commission that are payable to \nthe Partner. The amount is a positive number in this scenario.",
+              "description": "Tax transactions are not computed for pending transactions. Instead, they're rolled\nup as one transaction per payout. The type of tax and the way it's\ncomputed is dependent on the type of transaction.\n\nFor sale transactions, such as app subscriptions or theme purchases, Shopify charges\nthe Partner tax on the fee collected for brokering the transaction. The amount is\na negative number in this scenario.\n\nFor referral transactions, such as a development store transfer, Shopify pays the Partner\na commission. The tax represents any taxes on the referral commission that are payable to\nthe Partner. The amount is a positive number in this scenario.",
               "isDeprecated": false,
               "deprecationReason": null
             },
@@ -7279,6 +9690,59 @@
         },
         {
           "kind": "OBJECT",
+          "name": "UserError",
+          "description": "Represents an error in a mutation.",
+          "fields": [
+            {
+              "name": "field",
+              "description": "The path to the input field that caused the error.",
+              "args": [
+
+              ],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "message",
+              "description": "The error message.",
+              "args": [
+
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [
+
+          ],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
           "name": "__Directive",
           "description": "A Directive provides a way to describe alternate runtime execution and type validation behavior in a GraphQL document.\n\nIn some cases, you need to provide options to alter GraphQL's execution behavior in ways field arguments will not suffice, such as conditionally including or skipping a field. Directives provide this by describing additional information to the executor.",
           "fields": [
@@ -7286,7 +9750,16 @@
               "name": "args",
               "description": null,
               "args": [
-
+                {
+                  "name": "includeDeprecated",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": "false"
+                }
               ],
               "type": {
                 "kind": "NON_NULL",
@@ -7317,6 +9790,20 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "isRepeatable",
+              "description": null,
+              "args": [
+
+              ],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -7543,6 +10030,12 @@
               "description": "Location adjacent to an input object field definition.",
               "isDeprecated": false,
               "deprecationReason": null
+            },
+            {
+              "name": "VARIABLE_DEFINITION",
+              "description": "Location adjacent to a variable definition.",
+              "isDeprecated": false,
+              "deprecationReason": null
             }
           ],
           "possibleTypes": null
@@ -7633,7 +10126,16 @@
               "name": "args",
               "description": null,
               "args": [
-
+                {
+                  "name": "includeDeprecated",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": "false"
+                }
               ],
               "type": {
                 "kind": "NON_NULL",
@@ -7765,6 +10267,20 @@
               "deprecationReason": null
             },
             {
+              "name": "deprecationReason",
+              "description": null,
+              "args": [
+
+              ],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "description",
               "description": null,
               "args": [
@@ -7774,6 +10290,24 @@
                 "kind": "SCALAR",
                 "name": "String",
                 "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "isDeprecated",
+              "description": null,
+              "args": [
+
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                }
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -7827,6 +10361,20 @@
           "name": "__Schema",
           "description": "A GraphQL Schema defines the capabilities of a GraphQL server. It exposes all available types and directives on the server, as well as the entry points for query, mutation, and subscription operations.",
           "fields": [
+            {
+              "name": "description",
+              "description": null,
+              "args": [
+
+              ],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
             {
               "name": "directives",
               "description": "A list of all directives supported by this server.",
@@ -8018,7 +10566,16 @@
               "name": "inputFields",
               "description": null,
               "args": [
-
+                {
+                  "name": "includeDeprecated",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": "false"
+                }
               ],
               "type": {
                 "kind": "LIST",
@@ -8053,6 +10610,24 @@
                     "name": "__Type",
                     "ofType": null
                   }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "isOneOf",
+              "description": null,
+              "args": [
+
+              ],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
                 }
               },
               "isDeprecated": false,
@@ -8122,6 +10697,20 @@
                     "ofType": null
                   }
                 }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "specifiedByURL",
+              "description": null,
+              "args": [
+
+              ],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -8196,6 +10785,28 @@
       ],
       "directives": [
         {
+          "name": "deprecated",
+          "description": "Marks an element of a GraphQL schema as no longer supported.",
+          "locations": [
+            "FIELD_DEFINITION",
+            "ENUM_VALUE",
+            "ARGUMENT_DEFINITION",
+            "INPUT_FIELD_DEFINITION"
+          ],
+          "args": [
+            {
+              "name": "reason",
+              "description": "Explains why this element was deprecated, usually also including a suggestion for how to access supported similar data. Formatted in [Markdown](https://daringfireball.net/projects/markdown/).",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": "\"No longer supported\""
+            }
+          ]
+        },
+        {
           "name": "include",
           "description": "Directs the executor to include this field or fragment only when the `if` argument is true.",
           "locations": [
@@ -8218,6 +10829,16 @@
               },
               "defaultValue": null
             }
+          ]
+        },
+        {
+          "name": "oneOf",
+          "description": "Requires that exactly one field must be supplied and that field must not be `null`.",
+          "locations": [
+            "INPUT_OBJECT"
+          ],
+          "args": [
+
           ]
         },
         {
@@ -8246,22 +10867,25 @@
           ]
         },
         {
-          "name": "deprecated",
-          "description": "Marks an element of a GraphQL schema as no longer supported.",
+          "name": "specifiedBy",
+          "description": "Exposes a URL that specifies the behavior of this scalar.",
           "locations": [
-            "FIELD_DEFINITION",
-            "ENUM_VALUE"
+            "SCALAR"
           ],
           "args": [
             {
-              "name": "reason",
-              "description": "Explains why this element was deprecated, usually also including a suggestion for how to access supported similar data. Formatted in [Markdown](https://daringfireball.net/projects/markdown/).",
+              "name": "url",
+              "description": "The URL that specifies the behavior of this scalar.",
               "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
               },
-              "defaultValue": "\"No longer supported\""
+              "defaultValue": null
             }
           ]
         }
