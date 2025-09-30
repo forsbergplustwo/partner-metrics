@@ -36,5 +36,13 @@ Rails.application.routes.draw do
     end
   end
 
+  resource :smiirl_integration, only: [:show, :update] do
+    post :rotate_token, on: :collection
+  end
+
+  namespace :public do
+    get "/smiirl/:token", to: "smiirl#show", as: :smiirl
+  end
+
   root to: "home#index"
 end

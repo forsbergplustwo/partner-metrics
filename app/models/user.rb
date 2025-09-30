@@ -6,6 +6,7 @@ class User < ApplicationRecord
   has_many :metrics, dependent: :delete_all
   has_many :imports, dependent: :delete_all
   has_one :partner_api_credential, dependent: :destroy
+  has_one :smiirl_integration, dependent: :destroy
 
   # TODO: These should probably be in metric model
 
