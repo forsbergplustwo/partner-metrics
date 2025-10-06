@@ -5,7 +5,7 @@ class PublicSmiirlControllerTest < ActionDispatch::IntegrationTest
     @user = users(:regular)
     @integration = @user.create_smiirl_integration!(enabled: true, metric_type: "paying_users_30d")
     # Ensure payments exist in last 30 days
-    Payment.create!(user: @user, import: imports(:completed), payment_date: Date.today, charge_type: "recurring_revenue", app_title: "x", shop: "a", revenue: 10)
+    Payment.create!(user: @user, import: imports(:completed), payment_date: Time.zone.today, charge_type: "recurring_revenue", app_title: "x", shop: "a", revenue: 10)
   end
 
   test "returns count json when enabled" do
