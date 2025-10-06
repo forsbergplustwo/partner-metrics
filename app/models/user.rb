@@ -6,6 +6,7 @@ class User < ApplicationRecord
   has_many :metrics, dependent: :delete_all
   has_many :imports, dependent: :delete_all
   has_one :partner_api_credential, dependent: :destroy
+  has_one :smiirl_integration, dependent: :destroy
 
   # TODO: These should probably be in metric model
 
@@ -34,6 +35,18 @@ class User < ApplicationRecord
   end
 
   # TODO: DRY the following methods up
+
+  def total_revenue_30d
+    return 0 if newest_metric_date.blank?
+
+    metrics.by_date_and_period(date: newest_metric_date, period: 30).sum(:revenue)
+  end
+
+  def paying_users_30d
+    return 0 if newest_metric_date.blank?
+
+    payments.by_date_and_period(date: newest_metric_date, period: 30).distinct.count(:shop)
+  end
 
   def yearly_revenue_per_product(date:, charge_type: nil)
     if charge_type

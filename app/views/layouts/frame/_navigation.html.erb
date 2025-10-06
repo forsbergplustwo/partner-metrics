@@ -49,6 +49,13 @@
         link_arguments: {}
       ) %>
       <% section.with_item(
+        url: edit_smiirl_integration_path,
+        label: "Smiirl integration",
+        icon: "GlobeMinor",
+        selected: nav_item_selected?(edit_smiirl_integration_path),
+        link_arguments: {}
+      ) %>
+      <% section.with_item(
         url: partner_api_credential_path_for(current_user),
         label: "Partner API Credentials",
         icon: "InsertDynamicSourceMajor",

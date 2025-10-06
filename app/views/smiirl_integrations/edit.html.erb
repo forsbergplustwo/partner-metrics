@@ -1,0 +1,76 @@
+<%= polaris_page(
+  narrow_width: true,
+  title: "Smiirl integration",
+  subtitle: "Expose a public counter endpoint for your account",
+  back_url: imports_path,
+  secondary_actions: @smiirl_integration.persisted? ? [
+    {
+      content: "Rotate token",
+      destructive: true,
+      url: rotate_token_smiirl_integration_path,
+      method: :post
+    }
+  ] : [],
+) do |page| %>
+
+  <%= form_with(
+    model: @smiirl_integration,
+    url: smiirl_integration_path,
+    method: :put,
+    builder: Polaris::FormBuilder,
+    data: { controller: "form" }
+  ) do |form| %>
+
+    <%= polaris_layout do |layout| %>
+      <%# Required to submit form via Return/Enter %>
+      <%= form.submit hidden: true %>
+
+      <% if @smiirl_integration.errors.any? %>
+        <% layout.with_section do %>
+          <%= form.errors_summary %>
+        <% end %>
+      <% end %>
+
+      <% layout.with_section do %>
+        <%= polaris_card do %>
+          <%= polaris_form_layout do |form_layout| %>
+
+            <% form_layout.with_item do %>
+              <%= form.polaris_check_box :enabled, label: "Enable public endpoint" %>
+            <% end %>
+
+            <% form_layout.with_item do %>
+              <%= form.polaris_select :metric_type,
+                label: "Metric to expose",
+                options: [["Paying users (30 days)", "paying_users_30d"], ["Total revenue (30 days)", "total_revenue_30d"]]
+              %>
+            <% end %>
+
+            <% if @smiirl_integration.persisted? %>
+              <% form_layout.with_item do %>
+                <% endpoint_url = public_smiirl_url(token: @smiirl_integration.token, format: :json) %>
+                <%= polaris_text_field(label: "Endpoint URL",
+                  value: endpoint_url,
+                  disabled: true,
+                  help_text: "Copy this URL into your <a href='https://my.smiirl.com/' target='_blank'>Smiirl dashboard</a>".html_safe,
+                  connected_right: polaris_button(url: endpoint_url, external: true) { "Open" }
+                ) %>
+              <% end %>
+            <% end %>
+
+            <% form_layout.with_item do %>
+              <%= polaris_button(
+                submit: true,
+                primary: true,
+                data: {form_target: "submitButton"},
+              ) { t('actions.save') } %>
+            <% end %>
+
+          <% end %>
+        <% end %>
+      <% end %>
+
+    <% end %>
+
+  <% end %>
+<% end %>

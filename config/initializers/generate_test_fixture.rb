@@ -36,7 +36,7 @@ class ActiveRecord::Base
 
             blob = attachment.blob
             blob.dump_raw_fixture("#{blob_name}: <%= ActiveStorage::Blob.fixture(filename: '#{blob.filename}') %>\n")
-            blob_path = "#{Rails.root}/test/fixtures/files/#{blob.filename}"
+            blob_path = "#{Rails.root.join("test/fixtures/files/#{blob.filename}")}"
             File.open(blob_path, "wb+") do |file|
               blob.download { |chunk| file.write(chunk) }
             end
@@ -46,7 +46,7 @@ class ActiveRecord::Base
   end
 
   def dump_raw_fixture(text)
-    fixture_file = "#{Rails.root}/test/fixtures/#{self.class.name.underscore.pluralize}.yml"
+    fixture_file = "#{Rails.root.join("test/fixtures/#{self.class.name.underscore.pluralize}.yml")}"
     File.open(fixture_file, "a+") do |f|
       f.puts(text)
     end
