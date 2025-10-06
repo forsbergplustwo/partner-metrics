@@ -2,20 +2,20 @@ class SmiirlIntegrationsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_smiirl_integration
 
-  def show
+  def edit
   end
 
   def update
     if @smiirl_integration.update(smiirl_integration_params)
-      redirect_to smiirl_integration_path, notice: t("actions.saved")
+      redirect_to smiirl_integration_path, notice: "Smiirl integration updated."
     else
-      render :show, status: :unprocessable_entity
+      render :edit, status: :unprocessable_entity
     end
   end
 
   def rotate_token
     @smiirl_integration.rotate_token!
-    redirect_to smiirl_integration_path, notice: t("actions.saved")
+    redirect_to smiirl_integration_path, notice: "Smiirl integration token rotated."
   end
 
   private
@@ -28,4 +28,3 @@ class SmiirlIntegrationsController < ApplicationController
     params.require(:smiirl_integration).permit(:enabled, :metric_type)
   end
 end
-

@@ -18,7 +18,7 @@ class Metric::TilePresenter
       .by_optional_charge_type(@charge_type)
       .by_optional_is_yearly_revenue(@is_yearly_revenue)
       .calculate_value(@calculation, @column)
-    metrics.blank? ? 0 : metrics
+    metrics.presence || 0
   end
 
   def previous_value
@@ -26,7 +26,7 @@ class Metric::TilePresenter
       .by_optional_charge_type(@charge_type)
       .by_optional_is_yearly_revenue(@is_yearly_revenue)
       .calculate_value(@calculation, @column)
-    metrics.blank? ? 0 : metrics
+    metrics.presence || 0
   end
 
   def change

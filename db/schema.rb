@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_19_173404) do
+ActiveRecord::Schema[7.0].define(version: 2025_09_30_000000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -109,6 +109,17 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_19_173404) do
     t.index ["user_id", "payment_date"], name: "index_payments_on_user_id_and_payment_date"
   end
 
+  create_table "smiirl_integrations", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.boolean "enabled", default: false, null: false
+    t.string "metric_type", default: "total_revenue_30d", null: false
+    t.string "token", limit: 64, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["token"], name: "index_smiirl_integrations_on_token", unique: true
+    t.index ["user_id"], name: "index_smiirl_integrations_on_user_id", unique: true
+  end
+
   create_table "users", id: :serial, force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -137,4 +148,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_19_173404) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "imports", "users"
   add_foreign_key "partner_api_credentials", "users"
+  add_foreign_key "smiirl_integrations", "users"
 end

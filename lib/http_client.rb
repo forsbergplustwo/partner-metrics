@@ -15,7 +15,7 @@ module ShopifyPartnerAPI
     def execute(document:, operation_name: nil, variables: {}, context: {})
       @uri = URI.parse("https://partners.shopify.com/#{context.fetch(:organization_id)}/api/#{SHOPIFY_PARTNER_API_VERSION}/graphql.json")
 
-      super(document: document, operation_name: operation_name, variables: variables, context: context)
+      super
     end
   end
 end

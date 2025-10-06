@@ -36,7 +36,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resource :smiirl_integration, only: [:show, :update] do
+  resource :smiirl_integration, only: [:edit, :update] do
     post :rotate_token, on: :collection
   end
 

@@ -22,4 +22,3 @@ class SmiirlIntegrationTest < ActiveSupport::TestCase
     assert_includes integration.errors[:metric_type], "is not included in the list"
   end
 end
-

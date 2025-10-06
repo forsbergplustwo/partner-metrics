@@ -36,6 +36,20 @@ class User < ApplicationRecord
 
   # TODO: DRY the following methods up
 
+  def total_revenue_30d
+    date = user.newest_metric_date
+    return 0 if date.blank?
+
+    metrics.by_date_and_period(date: date, period: 30).sum(:revenue)
+  end
+
+  def paying_users_30d
+    date = user.newest_metric_date
+    return 0 if date.blank?
+
+    payments.by_date_and_period(date: date, period: 30).distinct.count(:shop)
+  end
+
   def yearly_revenue_per_product(date:, charge_type: nil)
     if charge_type
       metrics.where(metric_date: 12.months.ago..date, charge_type: charge_type)

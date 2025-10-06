@@ -6,8 +6,8 @@ class SmiirlIntegration < ApplicationRecord
 
   belongs_to :user
 
-  validates :token, presence: true, length: { minimum: 32 }, uniqueness: true
-  validates :metric_type, inclusion: { in: METRIC_TYPES }
+  validates :token, presence: true, length: {minimum: 32}, uniqueness: true
+  validates :metric_type, inclusion: {in: METRIC_TYPES}
 
   before_validation :ensure_token
 
@@ -28,4 +28,3 @@ class SmiirlIntegration < ApplicationRecord
     self.token ||= self.class.generate_unique_token
   end
 end
-

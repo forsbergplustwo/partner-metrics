@@ -3,6 +3,14 @@
   title: "Smiirl integration",
   subtitle: "Expose a public counter endpoint for your account",
   back_url: imports_path,
+  secondary_actions: @smiirl_integration.persisted? ? [
+    {
+      content: "Rotate token",
+      destructive: true,
+      url: rotate_token_smiirl_integration_path,
+      method: :post
+    }
+  ] : [],
 ) do |page| %>
 
   <%= form_with(
@@ -12,7 +20,9 @@
     builder: Polaris::FormBuilder,
     data: { controller: "form" }
   ) do |form| %>
+
     <%= polaris_layout do |layout| %>
+      <%# Required to submit form via Return/Enter %>
       <%= form.submit hidden: true %>
 
       <% if @smiirl_integration.errors.any? %>
@@ -22,10 +32,11 @@
       <% end %>
 
       <% layout.with_section do %>
-        <%= polaris_card(sectioned: true) do %>
+        <%= polaris_card do %>
           <%= polaris_form_layout do |form_layout| %>
+
             <% form_layout.with_item do %>
-              <%= form.polaris_checkbox :enabled, label: "Enable public endpoint" %>
+              <%= form.polaris_check_box :enabled, label: "Enable public endpoint" %>
             <% end %>
 
             <% form_layout.with_item do %>
@@ -36,26 +47,30 @@
             <% end %>
 
             <% if @smiirl_integration.persisted? %>
-              <% endpoint_url = public_smiirl_url(token: @smiirl_integration.token) %>
               <% form_layout.with_item do %>
-                <%= polaris_text_field :endpoint_url,
-                  label: "Endpoint URL",
+                <% endpoint_url = public_smiirl_url(token: @smiirl_integration.token, format: :json) %>
+                <%= polaris_text_field(label: "Endpoint URL",
                   value: endpoint_url,
                   disabled: true,
-                  help_text: "Copy this URL into your Smiirl dashboard",
+                  help_text: "Copy this URL into your <a href='https://my.smiirl.com/' target='_blank'>Smiirl dashboard</a>".html_safe,
                   connected_right: polaris_button(url: endpoint_url, external: true) { "Open" }
-                %>
+                ) %>
               <% end %>
             <% end %>
 
             <% form_layout.with_item do %>
-              <%= polaris_button(submit: true, primary: true) { t('actions.save') } %>
-              <%= polaris_button(url: rotate_token_smiirl_integration_path, method: :post, destructive: true, disabled: !@smiirl_integration.persisted?) { "Rotate token" } %>
+              <%= polaris_button(
+                submit: true,
+                primary: true,
+                data: {form_target: "submitButton"},
+              ) { t('actions.save') } %>
             <% end %>
+
           <% end %>
         <% end %>
       <% end %>
+
     <% end %>
+
   <% end %>
 <% end %>
-
