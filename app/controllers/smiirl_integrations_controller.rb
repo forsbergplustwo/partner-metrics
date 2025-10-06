@@ -7,7 +7,7 @@ class SmiirlIntegrationsController < ApplicationController
 
   def update
     if @smiirl_integration.update(smiirl_integration_params)
-      redirect_to smiirl_integration_path, notice: "Smiirl integration updated."
+      redirect_to edit_smiirl_integration_path, notice: "Smiirl integration updated."
     else
       render :edit, status: :unprocessable_entity
     end
@@ -15,7 +15,7 @@ class SmiirlIntegrationsController < ApplicationController
 
   def rotate_token
     @smiirl_integration.rotate_token!
-    redirect_to smiirl_integration_path, notice: "Smiirl integration token rotated."
+    redirect_to edit_smiirl_integration_path, notice: "Smiirl integration token rotated."
   end
 
   private
