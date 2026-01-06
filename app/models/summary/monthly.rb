@@ -26,7 +26,9 @@ class Summary::Monthly < Summary
       summary[month][:user_churn] = churn
     end
 
-    summary
+    summary.keep_if do |month, data|
+      data[:payments] > 0
+    end
   end
 
   private
