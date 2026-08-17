@@ -5,7 +5,7 @@ module PartnerMetrics
 
       tool_name "metrics_tiles"
       title "Metrics tiles"
-      description "Return the same metrics tiles shown on the Partner Metrics metrics page for the authenticated user."
+      description "Return the same metrics tiles shown on the Partner Metrics metrics page for the authenticated user. Omitted or blank args use Metric::TilesFilter defaults; call with no args to discover live app_titles and tile handles in the response."
       input_schema(
         properties: {
           charge_type: {
