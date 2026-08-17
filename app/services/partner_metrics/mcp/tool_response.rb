@@ -7,7 +7,6 @@ module PartnerMetrics
           structured_content: payload
         )
       end
-
     end
   end
 end

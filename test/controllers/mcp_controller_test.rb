@@ -61,7 +61,8 @@ class McpControllerTest < ActionDispatch::IntegrationTest
 
     assert_equal filter.date.iso8601, content.dig("filters", "date")
     assert_equal filter.period, content.dig("filters", "period")
-    assert_equal filter.charge_type, content.dig("filters", "charge_type")
+    assert_nil filter.charge_type
+    assert_nil content.dig("filters", "charge_type")
     assert_equal filter.selected_tile.current_value.to_s("F"), content.dig("selected_tile", "current_value")
     assert_equal filter.selected_tile.previous_value.to_s("F"), content.dig("selected_tile", "previous_value")
   end
