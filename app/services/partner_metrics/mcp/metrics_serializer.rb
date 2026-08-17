@@ -1,17 +1,9 @@
 module PartnerMetrics
   module Mcp
     class MetricsSerializer
-      CHARGE_TYPES = {
-        "overview" => nil,
-        "recurring_revenue" => "recurring_revenue",
-        "onetime_revenue" => "onetime_revenue",
-        "affiliate_revenue" => "affiliate_revenue"
-      }.freeze
-
       class << self
         def tiles(user:, params:)
-          normalized_params = normalize_tile_params(params)
-          filter = Metric::TilesFilter.new(user: user, params: normalized_params)
+          filter = Metric::TilesFilter.new(user: user, params: params)
 
           {
             filters: {
@@ -19,12 +11,10 @@ module PartnerMetrics
               chart: filter.chart,
               date: filter.date.iso8601,
               period: filter.period,
-              charge_type: normalized_params[:charge_type] || "overview"
+              charge_type: filter.charge_type
             },
             has_metrics: filter.has_metrics?,
             app_titles: filter.app_titles.sort,
-            period_options: Metric::PERIODS,
-            charge_type_options: CHARGE_TYPES.keys,
             selected_tile: tile(filter.selected_tile, include_chart_data: true),
             tiles: filter.tiles.map { |tile_presenter| tile(tile_presenter) }
           }
@@ -64,35 +54,7 @@ module PartnerMetrics
           }
         end
 
-        def options(user:)
-          {
-            charge_types: CHARGE_TYPES.keys,
-            periods: Metric::PERIODS,
-            app_titles: user.metrics.distinct.pluck(:app_title).compact.sort,
-            newest_metric_date: user.newest_metric_date&.iso8601,
-            default_date: user.newest_metric_date_or_today.iso8601
-          }
-        end
-
         private
-
-        def normalize_tile_params(params)
-          params = params.to_h.symbolize_keys
-          charge_type = params[:charge_type].presence || "overview"
-          raise ArgumentError, "charge_type must be one of: #{CHARGE_TYPES.keys.join(", ")}" unless CHARGE_TYPES.key?(charge_type)
-
-          if params[:period].present? && !Metric::PERIODS.include?(params[:period].to_i)
-            raise ArgumentError, "period must be one of: #{Metric::PERIODS.join(", ")}"
-          end
-
-          {
-            app: params[:app].presence,
-            chart: params[:chart].presence,
-            date: params[:date].presence,
-            period: params[:period].presence,
-            charge_type: CHARGE_TYPES.fetch(charge_type)
-          }
-        end
 
         def tile(tile_presenter, include_chart_data: false)
           data = {

@@ -10,8 +10,8 @@ module PartnerMetrics
         properties: {
           charge_type: {
             type: "string",
-            enum: MetricsSerializer::CHARGE_TYPES.keys,
-            description: "Metrics page to query. Use overview for /metrics."
+            enum: Metric::DISPLAYABLE_TYPES.map(&:to_s),
+            description: "Optional metrics page charge type. Omit for /metrics."
           },
           app: {
             type: "string",
@@ -19,17 +19,17 @@ module PartnerMetrics
           },
           chart: {
             type: "string",
-            description: "Optional tile handle to select chart data for. Defaults to the first tile for the charge type."
+            description: "Optional tile handle to select chart data for."
           },
           date: {
             type: "string",
             format: "date",
-            description: "End date for the period. Defaults to the user's newest metric date, or today when no metrics exist."
+            description: "Optional end date for the period."
           },
           period: {
             type: "integer",
             enum: Metric::PERIODS,
-            description: "Period length in days. Defaults to 30."
+            description: "Optional period length in days."
           }
         }
       )
@@ -45,8 +45,6 @@ module PartnerMetrics
         def call(server_context:, **args)
           user = User.find(server_context.fetch(:user_id))
           json_response(MetricsSerializer.tiles(user: user, params: args))
-        rescue ArgumentError => e
-          error_response(e.message)
         end
       end
     end

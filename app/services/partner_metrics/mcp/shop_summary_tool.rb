@@ -25,7 +25,7 @@ module PartnerMetrics
       class << self
         def call(server_context:, selected_app: nil)
           user = User.find(server_context.fetch(:user_id))
-          json_response(MetricsSerializer.shop_summary(user: user, selected_app: selected_app.presence))
+          json_response(MetricsSerializer.shop_summary(user: user, selected_app: selected_app))
         end
       end
     end

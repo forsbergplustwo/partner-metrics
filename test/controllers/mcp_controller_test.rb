@@ -27,9 +27,10 @@ class McpControllerTest < ActionDispatch::IntegrationTest
     assert_includes tool_names, "metrics_tiles"
     assert_includes tool_names, "monthly_summary"
     assert_includes tool_names, "shop_summary"
+    assert_not_includes tool_names, "metric_options"
 
     result = call_tool!("metrics_tiles", {})
-    assert_equal "overview", result.dig("structuredContent", "filters", "charge_type")
+    assert_nil result.dig("structuredContent", "filters", "charge_type")
     assert_equal "30.0", result.dig("structuredContent", "tiles").find { |tile| tile["handle"] == "total_revenue" }.fetch("current_value")
   end
 
@@ -60,19 +61,20 @@ class McpControllerTest < ActionDispatch::IntegrationTest
 
     assert_equal filter.date.iso8601, content.dig("filters", "date")
     assert_equal filter.period, content.dig("filters", "period")
-    assert_equal "overview", content.dig("filters", "charge_type")
+    assert_equal filter.charge_type, content.dig("filters", "charge_type")
     assert_equal filter.selected_tile.current_value.to_s("F"), content.dig("selected_tile", "current_value")
     assert_equal filter.selected_tile.previous_value.to_s("F"), content.dig("selected_tile", "previous_value")
   end
 
   test "each UI charge type exposes the same tile set" do
     {
-      "overview" => Metric::TilesConfig::OVERVIEW_TILES,
+      nil => Metric::TilesConfig::OVERVIEW_TILES,
       "recurring_revenue" => Metric::TilesConfig::RECURRING_TILES,
       "onetime_revenue" => Metric::TilesConfig::ONETIME_TILES,
       "affiliate_revenue" => Metric::TilesConfig::AFFILIATE_TILES
     }.each do |charge_type, config|
-      result = call_tool!("metrics_tiles", {charge_type: charge_type})
+      arguments = charge_type.present? ? {charge_type: charge_type} : {}
+      result = call_tool!("metrics_tiles", arguments)
       handles = result.dig("structuredContent", "tiles").map { |tile| tile.fetch("handle") }
 
       assert_equal config.map { |tile| tile.fetch(:handle).to_s }, handles

@@ -88,7 +88,7 @@ Example MCP client configuration shape:
 }
 ```
 
-The server exposes read-only tools for metric filter options, metrics tiles, monthly summaries, and shop summaries. Metric filters match the web UI: app, chart, date, period, and charge type (`overview`, `recurring_revenue`, `onetime_revenue`, or `affiliate_revenue`).
+The server exposes read-only tools for metrics tiles, monthly summaries, and shop summaries. Metric filters match the web UI: app, chart, date, period, and charge type. Omit charge type for the overview metrics page, or pass one of the UI charge types such as `recurring_revenue`, `onetime_revenue`, or `affiliate_revenue`.
 
 ### Deploying to Production
 

@@ -61,7 +61,6 @@ class McpController < ActionController::API
       website_url: "https://partnermetrics.io",
       instructions: "Use these read-only tools to answer questions about the authenticated user's Partner Metrics data.",
       tools: [
-        PartnerMetrics::Mcp::MetricOptionsTool,
         PartnerMetrics::Mcp::MetricsTilesTool,
         PartnerMetrics::Mcp::MonthlySummaryTool,
         PartnerMetrics::Mcp::ShopSummaryTool

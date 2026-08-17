@@ -8,12 +8,6 @@ module PartnerMetrics
         )
       end
 
-      def error_response(message)
-        ::MCP::Tool::Response.new(
-          [{type: "text", text: message}],
-          error: true
-        )
-      end
     end
   end
 end
