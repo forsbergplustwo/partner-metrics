@@ -94,6 +94,7 @@ GEM
       aws-eventstream (~> 1, >= 1.0.2)
     base64 (0.1.1)
     bcrypt (3.1.20)
+    bigdecimal (4.1.2)
     bindex (0.8.1)
     bootsnap (1.16.0)
       msgpack (~> 1.2)
@@ -141,6 +142,7 @@ GEM
       graphql
     groupdate (6.3.0)
       activesupport (>= 6.1)
+    hana (1.3.7)
     hotwire-livereload (1.2.3)
       listen (>= 3.0.0)
       rails (>= 6.0.0)
@@ -154,6 +156,11 @@ GEM
     jsbundling-rails (1.1.2)
       railties (>= 6.0.0)
     json (2.6.3)
+    json_schemer (2.5.0)
+      bigdecimal
+      hana (~> 1.3)
+      regexp_parser (~> 2.0)
+      simpleidn (~> 0.2)
     language_server-protocol (3.17.0.3)
     launchy (2.5.2)
       addressable (~> 2.8)
@@ -173,6 +180,8 @@ GEM
       net-smtp
     marcel (1.0.2)
     matrix (0.4.2)
+    mcp (1.2.0)
+      json_schemer (>= 2.4)
     method_source (1.1.0)
     mini_mime (1.1.5)
     minitest (5.25.0)
@@ -311,6 +320,7 @@ GEM
       connection_pool (>= 2.3.0)
       rack (>= 2.2.4)
       redis-client (>= 0.14.0)
+    simpleidn (0.2.3)
     sprockets (4.2.0)
       concurrent-ruby (~> 1.0)
       rack (>= 2.2.4, < 4)
@@ -399,6 +409,7 @@ DEPENDENCIES
   http_logger
   jsbundling-rails
   letter_opener
+  mcp (~> 1.2)
   mocha
   pg (~> 1.1)
   polaris_view_components
@@ -427,4 +438,4 @@ RUBY VERSION
    ruby 3.2.9p265
 
 BUNDLED WITH
-   2.4.4
+   2.4.19

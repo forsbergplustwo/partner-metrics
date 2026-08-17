@@ -46,6 +46,50 @@ To import data from Partner API manually (once you have added your credentials i
 bin/rails import_all_from_partner_api
 ```
 
+## MCP access for agents
+
+Partner Metrics includes an authenticated [Model Context Protocol](https://modelcontextprotocol.io/) server so MCP clients such as Cursor, Claude Desktop, and other agents can query the same metrics shown in the app.
+
+### Create an access token
+
+1. Sign in to Partner Metrics.
+2. Open **MCP access** from the app navigation.
+3. Click **Create token**. If you already have a token, click **Rotate token**.
+4. Copy the token immediately. For security, only a short preview is stored and the full token is shown once.
+
+Tokens are scoped to your user account. Revoking or rotating a token immediately invalidates the old token.
+
+### Connect a client
+
+Use the Streamable HTTP endpoint with an `Authorization: Bearer` header:
+
+```text
+https://partnermetrics.io/mcp
+```
+
+Local development uses:
+
+```text
+http://localhost:4000/mcp
+```
+
+Example MCP client configuration shape:
+
+```json
+{
+  "mcpServers": {
+    "partner-metrics": {
+      "url": "https://partnermetrics.io/mcp",
+      "headers": {
+        "Authorization": "Bearer pmcp_your_token_here"
+      }
+    }
+  }
+}
+```
+
+The server exposes read-only tools for metric filter options, metrics tiles, monthly summaries, and shop summaries. Metric filters match the web UI: app, chart, date, period, and charge type (`overview`, `recurring_revenue`, `onetime_revenue`, or `affiliate_revenue`).
+
 ### Deploying to Production
 
 1. Delete `config/credentials/production.yml.enc`

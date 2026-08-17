@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_09_30_000000) do
+ActiveRecord::Schema[7.0].define(version: 2026_08_17_093000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -49,6 +49,17 @@ ActiveRecord::Schema[7.0].define(version: 2025_09_30_000000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_imports_on_user_id"
+  end
+
+  create_table "mcp_access_tokens", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "token_digest", null: false
+    t.string "token_preview", null: false
+    t.datetime "last_used_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["token_digest"], name: "index_mcp_access_tokens_on_token_digest", unique: true
+    t.index ["user_id"], name: "index_mcp_access_tokens_on_user_id", unique: true
   end
 
   create_table "metrics", id: :serial, force: :cascade do |t|
@@ -147,6 +158,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_09_30_000000) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "imports", "users"
+  add_foreign_key "mcp_access_tokens", "users"
   add_foreign_key "partner_api_credentials", "users"
   add_foreign_key "smiirl_integrations", "users"
 end

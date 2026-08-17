@@ -1,0 +1,61 @@
+<%= polaris_page(
+  narrow_width: true,
+  title: "MCP access",
+  subtitle: "Connect agents like Cursor or Claude to your Partner Metrics data",
+  back_url: imports_path,
+) do |page| %>
+
+  <%= polaris_layout do |layout| %>
+    <% layout.with_section do %>
+      <%= polaris_card do %>
+        <%= polaris_form_layout do |form_layout| %>
+          <% form_layout.with_item do %>
+            <%= polaris_text(variant: :bodyMd, as: :p) do %>
+              MCP access tokens let compatible clients query your metrics through the Streamable HTTP endpoint.
+              Tokens are scoped to your user account and should be treated like passwords.
+            <% end %>
+          <% end %>
+
+          <% if @plain_text_token.present? %>
+            <% form_layout.with_item do %>
+              <%= polaris_banner(title: "Copy your token now", status: :success) do %>
+                This token is shown once. Store it in your MCP client configuration before leaving this page.
+              <% end %>
+            <% end %>
+
+            <% form_layout.with_item do %>
+              <%= polaris_text_field(
+                label: "Access token",
+                value: @plain_text_token,
+                disabled: true,
+                help_text: "Use this as an Authorization: Bearer token for #{mcp_url}."
+              ) %>
+            <% end %>
+          <% end %>
+
+          <% if @mcp_access_token.present? %>
+            <% form_layout.with_item do %>
+              <%= polaris_text_field(
+                label: "Current token",
+                value: @mcp_access_token.token_preview,
+                disabled: true,
+                help_text: "Last used: #{@mcp_access_token.last_used_at&.to_fs(:long) || 'Never'}"
+              ) %>
+            <% end %>
+
+            <% form_layout.with_item do %>
+              <%= polaris_button_group do |group| %>
+                <% group.with_button(url: mcp_access_token_path, method: :post, primary: true) { "Rotate token" } %>
+                <% group.with_button(url: mcp_access_token_path, method: :delete, destructive: true) { "Revoke token" } %>
+              <% end %>
+            <% end %>
+          <% else %>
+            <% form_layout.with_item do %>
+              <%= polaris_button(url: mcp_access_token_path, method: :post, primary: true) { "Create token" } %>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
