@@ -56,6 +56,13 @@
         link_arguments: {}
       ) %>
       <% section.with_item(
+        url: edit_mcp_access_token_path,
+        label: "MCP access",
+        icon: "InsertDynamicSourceMajor",
+        selected: nav_item_selected?(edit_mcp_access_token_path),
+        link_arguments: {}
+      ) %>
+      <% section.with_item(
         url: partner_api_credential_path_for(current_user),
         label: "Partner API Credentials",
         icon: "InsertDynamicSourceMajor",

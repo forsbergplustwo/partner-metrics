@@ -36,5 +36,8 @@ module PartnerMetrics
     config.active_record.encryption.primary_key = Rails.application.credentials[:active_record_encryption][:primary_key]
     config.active_record.encryption.deterministic_key = Rails.application.credentials[:active_record_encryption][:deterministic_key]
     config.active_record.encryption.key_derivation_salt = Rails.application.credentials[:active_record_encryption][:key_derivation_salt]
+
+    config.x.mcp_allowed_hosts = ENV.fetch("MCP_ALLOWED_HOSTS", "").split(",").map(&:strip).reject(&:blank?)
+    config.x.mcp_allowed_origins = ENV.fetch("MCP_ALLOWED_ORIGINS", "").split(",").map(&:strip).reject(&:blank?)
   end
 end

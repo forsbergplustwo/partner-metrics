@@ -59,3 +59,5 @@ group :test do
   gem "webdrivers"
   gem "mocha"
 end
+
+gem "mcp", "~> 1.2"

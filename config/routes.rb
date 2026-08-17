@@ -40,6 +40,10 @@ Rails.application.routes.draw do
     post :rotate_token, on: :collection
   end
 
+  resource :mcp_access_token, only: [:edit, :create, :destroy]
+
+  match "/mcp", to: "mcp#handle", via: [:get, :post, :delete], as: :mcp
+
   namespace :public do
     get "/smiirl/:token", to: "smiirl#show", as: :smiirl
   end
