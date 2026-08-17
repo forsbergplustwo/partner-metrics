@@ -71,14 +71,10 @@ class McpController < ActionController::API
   end
 
   def allowed_hosts
-    configured_values("MCP_ALLOWED_HOSTS") + MCP_ALLOWED_HOSTS
+    Rails.configuration.x.mcp_allowed_hosts + MCP_ALLOWED_HOSTS
   end
 
   def allowed_origins
-    configured_values("MCP_ALLOWED_ORIGINS") + MCP_ALLOWED_ORIGINS
-  end
-
-  def configured_values(env_key)
-    ENV.fetch(env_key, "").split(",").map(&:strip).reject(&:blank?)
+    Rails.configuration.x.mcp_allowed_origins + MCP_ALLOWED_ORIGINS
   end
 end
