@@ -1,0 +1,18 @@
+# Layer 0 supply-chain freeze (pnpm 12 settings).
+# Single-package app: no packages: list, so only the root is included.
+
+# Don't install any version published less than 14 days ago
+minimumReleaseAge: 20160   # 14 days, minutes
+
+# Fail if a dependency has an unreviewed install/build script
+strictDepBuilds: true
+
+# Fail if a package's trust evidence is weaker than an earlier release
+trustPolicy: no-downgrade
+
+# Transitive deps may not come from git repos or tarball URLs
+blockExoticSubdeps: true
+
+# Reviewed list: only packages in this tree that need install/build scripts
+allowBuilds:
+  esbuild: true   # downloads the platform binary used by `pnpm build`
