@@ -31,6 +31,8 @@
 !/app/assets/builds/.keep
 
 /node_modules
+.pnpm-store
+pnpm-debug.log*
 
 # Ignore production credentials key
 # Note: Dev and Test keys are included for easier setup.

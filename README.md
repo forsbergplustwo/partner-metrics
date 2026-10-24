@@ -27,6 +27,8 @@ Note: We recommend deleting your existing metrics data and re-importing to take 
 
 ### First time setup
 
+JavaScript dependencies are managed with pnpm (`packageManager` in `package.json`). `bin/setup` runs `pnpm install --frozen-lockfile`.
+
 1. Setup dependencies, environment & database: `bin/setup`
 2. Start web server and sidekiq workers with: `bin/dev`
 
