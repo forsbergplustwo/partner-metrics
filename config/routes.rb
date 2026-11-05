@@ -44,5 +44,16 @@ Rails.application.routes.draw do
     get "/smiirl/:token", to: "smiirl#show", as: :smiirl
   end
 
+  agent_file = ->(env) {
+    [
+      200,
+      {"content-type" => "text/plain; charset=utf-8"},
+      [Rails.public_path.join("agents.md").read]
+    ]
+  }
+
+  get "/llms.txt", to: agent_file
+  get "/llms-full.txt", to: agent_file
+
   root to: "home#index"
 end

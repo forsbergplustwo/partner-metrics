@@ -1,1 +1,6 @@
-# See https://www.robotstxt.org/robotstxt.html for documentation on how to use the robots.txt file
+User-agent: *
+Allow: /
+
+Sitemap: https://www.partnermetrics.io/sitemap.xml
+Sitemap: https://help.forsbergplustwo.com/sitemap.xml
+Sitemap: https://www.forsbergplustwo.com/sitemap.xml
