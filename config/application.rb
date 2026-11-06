@@ -21,8 +21,9 @@ Bundler.require(*Rails.groups)
 module PartnerMetrics
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 7.0
-    config.active_support.to_time_preserves_timezone = :zone
+    config.load_defaults 8.0
+    # polaris_view_components 1.1 requires helpers from its autoload path (`require "polaris/view_helper"`).
+    config.add_autoload_paths_to_load_path = true
 
     # Configuration for the application, engines, and railties goes here.
     #
@@ -37,5 +38,8 @@ module PartnerMetrics
     config.active_record.encryption.primary_key = Rails.application.credentials[:active_record_encryption][:primary_key]
     config.active_record.encryption.deterministic_key = Rails.application.credentials[:active_record_encryption][:deterministic_key]
     config.active_record.encryption.key_derivation_salt = Rails.application.credentials[:active_record_encryption][:key_derivation_salt]
+    # PartnerApiCredential columns were encrypted under Rails 7.0, which used SHA-1.
+    # Rails 7.1+ writes SHA-256; keep SHA-1 as a previous scheme so existing rows decrypt.
+    config.active_record.encryption.support_sha1_for_non_deterministic_encryption = true
   end
 end
