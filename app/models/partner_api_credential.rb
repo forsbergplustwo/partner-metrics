@@ -10,11 +10,11 @@ class PartnerApiCredential < ApplicationRecord
 
   belongs_to :user
 
-  enum status: {
+  enum :status, {
     draft: "draft",
     valid: "valid",
     invalid: "invalid"
-  }, _default: :draft, _suffix: true
+  }, default: :draft, suffix: true
 
   validates :access_token, presence: true
   validates :organization_id, presence: true

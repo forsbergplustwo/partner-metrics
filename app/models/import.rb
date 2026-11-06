@@ -11,20 +11,20 @@ class Import < ApplicationRecord
 
   ACCEPTED_FILE_TYPES = %w[text/csv application/zip].freeze
 
-  enum source: {
+  enum :source, {
     csv_file: "csv_file",
     shopify_payments_api: "shopify_payments_api"
     # shopify_app_events_api: "shopify_app_events_api"
-  }, _suffix: true
+  }, suffix: true
 
-  enum status: {
+  enum :status, {
     draft: "draft",
     scheduled: "scheduled",
     importing: "importing",
     calculating: "calculating",
     completed: "completed",
     failed: "failed"
-  }, _default: "draft"
+  }, default: "draft"
 
   validates :payouts_file, attached: true, content_type: ACCEPTED_FILE_TYPES, if: -> { csv_file_source? }
   validates :source, presence: true, inclusion: {in: sources.keys}
