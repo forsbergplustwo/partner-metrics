@@ -1,10 +1,10 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "3.2.9"
+ruby "4.0.9"
 
 # Backend
-gem "rails", "~> 7.0.8"
+gem "rails", "~> 8.0.5", ">= 8.0.5.2"
 gem "pg", "~> 1.1"
 gem "puma", "~> 6.0"
 gem "redis", "~> 5.0"
@@ -14,6 +14,7 @@ gem "sidekiq"
 gem "rack-timeout", require: "rack/timeout/base"
 gem "active_storage_validations"
 gem "sendgrid-actionmailer"
+gem "ostruct" # no longer a default gem in Ruby 4.0; required by activerecord-import 1.x
 gem "rubyzip"
 
 # Frontend
@@ -22,7 +23,9 @@ gem "jsbundling-rails"
 gem "turbo-rails"
 gem "stimulus-rails"
 gem "devise"
-gem "polaris_view_components"
+# Keep in step with the polaris-view-components npm package (package.json).
+# 1.2+ (floating-ui popovers) hangs the browser in the system tests.
+gem "polaris_view_components", "~> 1.1.0"
 
 # Charting + Metrics Display
 gem "chartkick"

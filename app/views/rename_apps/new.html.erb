@@ -7,7 +7,7 @@
 
   <%= polaris_card do %>
     <%= turbo_frame_tag :rename_apps, target: "_top" do %>
-      <%= form_for(:rename_app, url: rename_apps_path, builder: Polaris::FormBuilder) do |form| %>
+      <%= form_for(:rename_app, url: rename_apps_path, builder: ScopedPolarisFormBuilder) do |form| %>
         <%= polaris_form_layout do |form_layout| %>
 
           <% form_layout.with_item do %>
