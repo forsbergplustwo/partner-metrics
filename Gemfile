@@ -22,7 +22,9 @@ gem "jsbundling-rails"
 gem "turbo-rails"
 gem "stimulus-rails"
 gem "devise"
-gem "polaris_view_components"
+# Keep in step with the polaris-view-components npm package (package.json).
+# 1.2+ (floating-ui popovers) hangs the browser in the system tests.
+gem "polaris_view_components", "~> 1.1.0"
 
 # Charting + Metrics Display
 gem "chartkick"

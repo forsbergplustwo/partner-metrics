@@ -403,7 +403,7 @@ lodash-es@4:
   resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.21.tgz#43e626c46e6591b7750beb2b50117390c609e3ee"
   integrity sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==
 
-polaris-view-components@^1.1.0:
+polaris-view-components@~1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/polaris-view-components/-/polaris-view-components-1.1.0.tgz#92d35287aa75fe80715d6ffee7eb214232f13d29"
   integrity sha512-pjHxPrYV9w42Cj86gVOKLzzUCteoSe5wsdIDyKDEtoUQ7GX3yTbQGCDXwhFKy4plHiGzQdJU44ABI2q0JEBTDw==
