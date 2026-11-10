@@ -12,9 +12,11 @@ Partner Metrics was created by [@forsbergplustwo](@forsbergplustwo), and will re
 
 ## Development
 
-### Upgrading
+The app runs Rails 8.1 on Ruby 4.0.9. JavaScript dependencies install with pnpm 12.15.0, and Node is 24.22.1. [mise](https://mise.jdx.dev) reads `.ruby-version`, `.node-version`, and the `packageManager` field in `package.json`.
 
-The app in this repo was recently upgraded to Rails 7. If you had the earlier version running locally, you can upgrade by performing the following actions on your existing local app:
+### Upgrading an older local database
+
+If a local database still predates the Rails 7 encryption change, run:
 
 ```
 bin/rails db:migrate
@@ -27,7 +29,7 @@ Note: We recommend deleting your existing metrics data and re-importing to take 
 
 ### First time setup
 
-1. Setup dependencies, environment & database: `bin/setup`
+1. Setup dependencies, environment & database: `bin/setup` (JS dependencies use `pnpm install --frozen-lockfile`)
 2. Start web server and sidekiq workers with: `bin/dev`
 
 Visit `localhost:4000`
@@ -42,9 +44,21 @@ bin/rails test:all
 ```
 
 To import data from Partner API manually (once you have added your credentials in the app UI):
+
 ```bash
 bin/rails import_all_from_partner_api
 ```
+
+### mise tasks
+
+Reviewdog runs `mise run lint:ruby` through the shared Standard workflow in `forsbergplustwo/github-actions`. Run a task with `mise run <task>`:
+
+- `install` installs Ruby and JS dependencies
+- `setup` installs dependencies and prepares databases
+- `dev` starts the dev server
+- `test` runs the Rails test suite used in CI
+- `ci` runs the same checks as `test`
+- `lint:ruby` lints Ruby with Standard
 
 ### Deploying to Production
 
@@ -59,7 +73,7 @@ We'd love for you to contribute join us in making it better! In general, please 
 1. Check out the Issues page, feel free to pick an existing issue or add a new one with clear title and description.
 2. Fork and clone the repo on GitHub
 3. Create a new branch for your fix or code improvement
-4. Run `standardrb --fix` to safely-autofix any linter or formatter corrections
+4. Run `mise run lint:ruby` to safely-autofix any linter or formatter corrections
 5. Commit changes to your own branch
 6. Push your work back up to your fork
 7. Submit a Pull request so that @forsbergplustwo can review your changes. Please link your PR to the existing issue if you are solving one.

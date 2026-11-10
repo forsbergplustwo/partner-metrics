@@ -6,12 +6,15 @@ class SummarysTest < ApplicationSystemTestCase
   end
 
   test "should show monthly summary" do
-    visit monthly_summarys_path
-    find("span.Polaris-Navigation__Text", text: "Monthly summary").click
+    travel_to Time.zone.local(2023, 1, 15) do
+      visit monthly_summarys_path
+      find("span.Polaris-Navigation__Text", text: "Monthly summary").click
 
-    assert_selector "h1", text: "Monthly summary"
-    assert_selector "td", text: "Jan 2023"
-    assert_selector "td", text: "$30"
+      assert_selector "h1", text: "Monthly summary"
+      assert_selector "td", text: "Jan 2023"
+      assert_selector "td", text: "$30"
+      assert_no_selector "td", text: "$NaN"
+    end
   end
 
   test "should show shop summary" do
