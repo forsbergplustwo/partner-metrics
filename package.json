@@ -1,6 +1,10 @@
 {
   "name": "app",
-  "private": "true",
+  "engines": {
+    "node": "24.x"
+  },
+  "packageManager": "pnpm@12.15.0",
+  "private": true,
   "dependencies": {
     "@hotwired/stimulus": "^3.2.2",
     "@hotwired/turbo-rails": "~7.3.0",
@@ -11,9 +15,6 @@
     "esbuild": "~0.19.12",
     "globe.gl": "^2.46.2",
     "polaris-view-components": "~1.1.0"
-  },
-  "resolutions": {
-    "@rails/actioncable": "8.1.401"
   },
   "scripts": {
     "build": "esbuild app/javascript/*.* --bundle --minify --outdir=app/assets/builds --public-path=/assets"
