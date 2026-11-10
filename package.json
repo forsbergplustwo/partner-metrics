@@ -4,7 +4,7 @@
   "dependencies": {
     "@hotwired/stimulus": "^3.2.2",
     "@hotwired/turbo-rails": "~7.3.0",
-    "@rails/activestorage": "8.0.502",
+    "@rails/activestorage": "8.1.401",
     "@rails/request.js": "^0.0.13",
     "chartkick": "~5.0.1",
     "debounce": "^1.2.1",
@@ -13,7 +13,7 @@
     "polaris-view-components": "~1.1.0"
   },
   "resolutions": {
-    "@rails/actioncable": "8.0.502"
+    "@rails/actioncable": "8.1.401"
   },
   "scripts": {
     "build": "esbuild app/javascript/*.* --bundle --minify --outdir=app/assets/builds --public-path=/assets"

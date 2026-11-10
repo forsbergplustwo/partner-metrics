@@ -21,7 +21,7 @@ Bundler.require(*Rails.groups)
 module PartnerMetrics
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 8.0
+    config.load_defaults 8.1
     # polaris_view_components 1.1 requires helpers from its autoload path (`require "polaris/view_helper"`).
     config.add_autoload_paths_to_load_path = true
 
@@ -34,6 +34,9 @@ module PartnerMetrics
     # config.eager_load_paths << Rails.root.join("extras")
 
     config.active_job.queue_adapter = :sidekiq
+
+    # The app stores uploads and does not generate image variants.
+    config.active_storage.variant_processor = :disabled
 
     config.active_record.encryption.primary_key = Rails.application.credentials[:active_record_encryption][:primary_key]
     config.active_record.encryption.deterministic_key = Rails.application.credentials[:active_record_encryption][:deterministic_key]

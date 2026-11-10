@@ -1,6 +1,6 @@
 class ImportsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_import, only: %i[show update destroy]
+  before_action :set_import, only: %i[show destroy]
 
   def index
     @imports = current_user.imports.all.order(created_at: :desc)
