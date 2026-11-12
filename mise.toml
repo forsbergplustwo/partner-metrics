@@ -1,0 +1,3 @@
+[tasks."lint:ruby"]
+description = "Lint Ruby code with RuboCop"
+run = "bin/rubocop -f github"

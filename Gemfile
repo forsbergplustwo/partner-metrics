@@ -44,10 +44,11 @@ group :development do
   gem "web-console"
   gem "pry-rails"
   gem "foreman"
-  gem "standard"
-  gem "standard-rails"
-  gem "standard-minitest"
-  gem "standard-thread_safety"
+  # Shopify Ruby styling [https://shopify.github.io/ruby-style-guide/]
+  gem "rubocop-shopify", require: false
+  gem "rubocop-rails", require: false
+  gem "rubocop-minitest", require: false
+  gem "rubocop-thread_safety", require: false
   gem "hotwire-livereload"
   gem "letter_opener"
   gem "http_logger"

@@ -59,7 +59,7 @@ We'd love for you to contribute join us in making it better! In general, please 
 1. Check out the Issues page, feel free to pick an existing issue or add a new one with clear title and description.
 2. Fork and clone the repo on GitHub
 3. Create a new branch for your fix or code improvement
-4. Run `standardrb --fix` to safely-autofix any linter or formatter corrections
+4. Run `bin/rubocop -a` to safely-autofix any RuboCop corrections
 5. Commit changes to your own branch
 6. Push your work back up to your fork
 7. Submit a Pull request so that @forsbergplustwo can review your changes. Please link your PR to the existing issue if you are solving one.
