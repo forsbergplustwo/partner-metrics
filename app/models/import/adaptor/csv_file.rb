@@ -1,16 +1,18 @@
+# frozen_string_literal: true
+
 require "zip"
 require "csvreader"
 
-class Import::Adaptor::CsvFile
+class Import::Adaptor::CsvFile # rubocop:disable Style/ClassAndModuleChildren -- Import is a class
   BATCH_SIZE = 1000
   MAX_HISTORY = 5.years
 
   CSV_READER_OPTIONS = {
     header_converters: :symbol,
-    encoding: "UTF-8"
+    encoding: "UTF-8",
   }.freeze
 
-  CSV_YEARLY_IDENTIFIER = "yearly".freeze
+  CSV_YEARLY_IDENTIFIER = "yearly"
 
   CSV_REVENUE_TYPES = {
     "recurring_revenue" => [
@@ -19,7 +21,7 @@ class Import::Adaptor::CsvFile
       "App sale – recurring",
       "App sale – subscription",
       "App sale – 30-day subscription",
-      "App sale – yearly subscription"
+      "App sale – yearly subscription",
     ],
     "onetime_revenue" => [
       "OneTimeApplicationFee",
@@ -27,14 +29,14 @@ class Import::Adaptor::CsvFile
       "One time application fee",
       "Theme purchase fee",
       "App sale – one-time",
-      "Service sale"
+      "Service sale",
     ],
     "affiliate_revenue" => [
       "AffiliateFee",
       "Affiliate fee",
       "Development store referral commission",
       "Affiliate referral commission",
-      "Shopify Plus referral commission"
+      "Shopify Plus referral commission",
     ],
     "refund" => [
       "Manual",
@@ -50,13 +52,13 @@ class Import::Adaptor::CsvFile
       "Development store commission adjustment",
       "Payout correction",
       "App downgrade",
-      "Service refund"
+      "Service refund",
     ],
     "usage_revenue" => [
       "App sale – usage",
       "Usage application fee",
-      "AppUsageSale"
-    ]
+      "AppUsageSale",
+    ],
   }.freeze
 
   def initialize(import:, import_payments_after_date:)
@@ -93,10 +95,10 @@ class Import::Adaptor::CsvFile
       charge_type: charge_type(csv_row),
       payment_date: payment_date(csv_row),
       revenue: revenue(csv_row),
-      is_yearly_revenue: is_yearly_revenue(csv_row),
+      is_yearly_revenue: yearly_revenue?(csv_row),
       app_title: app_title(csv_row),
       shop: shop(csv_row),
-      shop_country: shop_country(csv_row)
+      shop_country: shop_country(csv_row),
     }
   end
 
@@ -112,7 +114,7 @@ class Import::Adaptor::CsvFile
     csv_row[:partner_share]&.to_f || 0.0
   end
 
-  def is_yearly_revenue(csv_row)
+  def yearly_revenue?(csv_row)
     csv_row[:charge_type].to_s.include?(CSV_YEARLY_IDENTIFIER)
   end
 

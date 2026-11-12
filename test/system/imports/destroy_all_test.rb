@@ -1,26 +1,30 @@
+# frozen_string_literal: true
+
 require "application_system_test_case"
 
-class Imports::DestroyAllTest < ApplicationSystemTestCase
-  setup do
-    sign_in users(:regular)
+module Imports
+  class DestroyAllTest < ApplicationSystemTestCase
+    setup do
+      sign_in users(:regular)
 
-    @import_one = imports(:completed)
-    @import_two = imports(:failed)
-  end
-
-  test "destroy all" do
-    visit imports_url
-
-    assert_selector "h1", text: "Data imports"
-
-    assert_text "View details", count: Import.count
-
-    click_on "More actions"
-    click_on "Delete all imports"
-    within "#destroy-modal" do
-      click_on "Delete imports"
+      @import_one = imports(:completed)
+      @import_two = imports(:failed)
     end
-    assert_text "All imports deleted"
-    assert_text "No imports yet"
+
+    test "destroy all" do
+      visit imports_url
+
+      assert_selector "h1", text: "Data imports"
+
+      assert_text "View details", count: Import.count
+
+      click_on "More actions"
+      click_on "Delete all imports"
+      within "#destroy-modal" do
+        click_on "Delete imports"
+      end
+      assert_text "All imports deleted"
+      assert_text "No imports yet"
+    end
   end
 end

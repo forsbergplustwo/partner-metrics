@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "test_helper"
 
 class ImportsControllerTest < ActionDispatch::IntegrationTest
@@ -18,7 +20,7 @@ class ImportsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create import" do
     assert_difference("Import.count") do
-      post imports_url, params: {import: {payouts_file: fixture_file_upload("payouts-recurring.csv", "text/csv")}}
+      post imports_url, params: { import: { payouts_file: fixture_file_upload("payouts-recurring.csv", "text/csv") } }
     end
 
     assert_enqueued_jobs 1, only: ImportPaymentsJob

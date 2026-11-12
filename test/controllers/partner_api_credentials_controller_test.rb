@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "test_helper"
 
 class PartnerApiCredentialsControllerTest < ActionDispatch::IntegrationTest
@@ -23,7 +25,7 @@ class PartnerApiCredentialsControllerTest < ActionDispatch::IntegrationTest
     PartnerApiCredential.any_instance.expects(:credentials_have_access).returns(true)
 
     assert_difference("PartnerApiCredential.count") do
-      post partner_api_credentials_url, params: {partner_api_credential: {access_token: @partner_api_credential.access_token, organization_id: @partner_api_credential.organization_id}}
+      post partner_api_credentials_url, params: { partner_api_credential: { access_token: @partner_api_credential.access_token, organization_id: @partner_api_credential.organization_id } }
     end
 
     assert_redirected_to edit_partner_api_credential_url(PartnerApiCredential.last)
@@ -46,9 +48,9 @@ class PartnerApiCredentialsControllerTest < ActionDispatch::IntegrationTest
           access_token: @partner_api_credential.access_token,
           organization_id: @partner_api_credential.organization_id,
           user_attributes: {
-            count_usage_charges_as_recurring: "1"
-          }
-        }
+            count_usage_charges_as_recurring: "1",
+          },
+        },
       }
     assert_redirected_to edit_partner_api_credential_url(@partner_api_credential)
   end

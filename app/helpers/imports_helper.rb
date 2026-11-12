@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ImportsHelper
   def secondary_import_actions(import)
     actions = []
@@ -6,8 +8,8 @@ module ImportsHelper
         content: t("actions.retry", resource: resource_name_for(Import)),
         url: import_retry_path(import),
         data: {
-          turbo_method: "post"
-        }
+          turbo_method: "post",
+        },
       }
     end
     actions << {
@@ -16,8 +18,8 @@ module ImportsHelper
       data: {
         controller: "polaris",
         target: "#destroy-modal",
-        action: "polaris#openModal"
-      }
+        action: "polaris#openModal",
+      },
     }
   end
 

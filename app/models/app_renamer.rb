@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AppRenamer
   def initialize(user:, from:, to:)
     @user = user
@@ -7,6 +9,7 @@ class AppRenamer
 
   def rename
     return false unless valid?
+
     rename_metrics
     rename_payments
     true
@@ -15,11 +18,11 @@ class AppRenamer
   private
 
   def rename_metrics
-    @user.metrics.where(app_title: @from).update_all(app_title: @to)
+    @user.metrics.where(app_title: @from).update_all(app_title: @to) # rubocop:disable Rails/SkipsModelValidations -- bulk rename skips callbacks on purpose
   end
 
   def rename_payments
-    @user.payments.where(app_title: @from).update_all(app_title: @to)
+    @user.payments.where(app_title: @from).update_all(app_title: @to) # rubocop:disable Rails/SkipsModelValidations -- bulk rename skips callbacks on purpose
   end
 
   def valid?

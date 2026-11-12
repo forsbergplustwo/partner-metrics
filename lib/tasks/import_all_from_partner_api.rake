@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 desc "Import transactions for existing users, with partner api credentials"
 task import_all_from_partner_api: :environment do
   User.find_each do |user|

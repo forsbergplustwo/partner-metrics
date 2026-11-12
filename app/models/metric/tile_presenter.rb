@@ -1,4 +1,6 @@
-class Metric::TilePresenter
+# frozen_string_literal: true
+
+class Metric::TilePresenter # rubocop:disable Style/ClassAndModuleChildren -- Metric is a class
   def initialize(filter:, tile_config:)
     @filter = filter
 
@@ -31,11 +33,13 @@ class Metric::TilePresenter
 
   def change
     return 0 if current_value.blank? || previous_value.blank?
+
     (current_value.to_f / previous_value * 100) - 100
   end
 
   def average_value
     return 0 if current_value.blank?
+
     current_value / @filter.period
   end
 
@@ -50,6 +54,7 @@ class Metric::TilePresenter
 
   def period_ago_change(period_ago)
     return 0 if current_value.blank? || period_ago_value(period_ago).blank?
+
     (current_value.to_f / period_ago_value(period_ago) * 100) - 100
   end
 
@@ -59,6 +64,7 @@ class Metric::TilePresenter
     if @filter.show_forecasts? && @filter.period == 30
       forecast_data = forecast_chart_data(chart_data)
       return chart_data if forecast_data[:data].empty?
+
       chart_data << forecast_data
     end
     chart_data
@@ -68,12 +74,12 @@ class Metric::TilePresenter
 
   def basic_chart_data
     metrics_chart = metrics_chart_data
-    [{name: @display, data: metrics_chart}]
+    [{ name: @display, data: metrics_chart }]
   end
 
   def forecast_chart_data(chart_data)
     forecast_data = Metric::ForecastCharter.new(chart_data: metrics_chart_data).chart_data
-    {name: "Forecast", data: forecast_data}
+    { name: "Forecast", data: forecast_data }
   end
 
   def metrics_chart_data

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class ImportsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_import, only: %i[show update destroy]
+  before_action :set_import, only: [:show, :destroy]
 
   def index
     @imports = current_user.imports.all.order(created_at: :desc)
@@ -17,20 +19,20 @@ class ImportsController < ApplicationController
   def create
     @import = current_user.imports.new(
       source: Import.sources[:csv_file],
-      **import_params.except(:user_attributes)
+      **import_params.except(:user_attributes),
     )
     if @import.save
       save_user_attributes
-      redirect_to @import, notice: "Import successfully created."
+      redirect_to(@import, notice: "Import successfully created.")
     else
       flash.now[:alert] = "Import failed to create."
-      render :new, status: :unprocessable_entity
+      render(:new, status: :unprocessable_entity)
     end
   end
 
   def destroy
     @import.destroy
-    redirect_to imports_url, notice: "Import successfully destroyed.", status: :see_other
+    redirect_to(imports_url, notice: "Import successfully destroyed.", status: :see_other)
   end
 
   private
@@ -43,19 +45,19 @@ class ImportsController < ApplicationController
     params.require(:import).permit(
       :import_type,
       :payouts_file,
-      user_attributes: [:id, :count_usage_charges_as_recurring]
+      user_attributes: [:id, :count_usage_charges_as_recurring],
     )
   end
 
   def save_user_attributes
     current_user.update(
-      count_usage_charges_as_recurring: import_params.dig(:user_attributes, :count_usage_charges_as_recurring)
+      count_usage_charges_as_recurring: import_params.dig(:user_attributes, :count_usage_charges_as_recurring),
     )
   end
 
   def redirect_if_import_in_progress
     if current_user.imports.in_progress.any?
-      redirect_to imports_path, alert: "An import is already in progress."
+      redirect_to(imports_path, alert: "An import is already in progress.")
     end
   end
 end

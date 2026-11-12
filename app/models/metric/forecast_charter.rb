@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require "prophet-rb"
 require "rover"
 
-class Metric::ForecastCharter
+class Metric::ForecastCharter # rubocop:disable Style/ClassAndModuleChildren -- Metric is a class
   FORECAST_PERIODS = 6
   FREQUENCIES = {
-    monthly: "MS"
+    monthly: "MS",
   }.freeze
 
   def initialize(chart_data:)
@@ -28,7 +30,7 @@ class Metric::ForecastCharter
   end
 
   def dataframe_from_chart_data
-    Rover::DataFrame.new({"ds" => @chart_data.keys, "y" => @chart_data.values})
+    Rover::DataFrame.new({ "ds" => @chart_data.keys, "y" => @chart_data.values })
   end
 
   def prophet_for(dataframe)
