@@ -1,4 +1,6 @@
-class Metric::Calculator
+# frozen_string_literal: true
+
+class Metric::Calculator # rubocop:disable Style/ClassAndModuleChildren -- Metric is a class
   MONTHLY_BILLING_FREQUENCY = 30.days
   MONTHLY_BILLING_CHURN_WINDOW = 15.days
 
@@ -34,23 +36,25 @@ class Metric::Calculator
 
   def average_revenue_per_shop
     return 0.0 if number_of_shops.zero?
+
     revenue / number_of_shops
   end
 
   def average_revenue_per_charge
     return 0.0 if number_of_charges.zero?
+
     revenue / number_of_charges
   end
 
   def repeat_customers
-    @repeat_customers ||= begin
-      return 0.0 if not_repeatable_charge_type?
+    return 0.0 if not_repeatable_charge_type?
 
+    @repeat_customers ||= begin
       bulk_data = user.payments.where(
         shop: unique_shops,
         payment_date: ..date,
         charge_type: "onetime_revenue",
-        app_title: app_title
+        app_title: app_title,
       ).group(:shop).count
 
       unique_shops.count { |shop| bulk_data[shop] && bulk_data[shop] > 1 }
@@ -59,23 +63,27 @@ class Metric::Calculator
 
   def repeat_vs_new_customers
     return 0.0 if number_of_shops.zero? || not_repeatable_charge_type?
+
     repeat_customers.to_f / number_of_shops * 100
   end
 
   def revenue_churn
     return 0.0 if previous_shops.empty? || not_churnable_charge_type?
+
     revenue_churn = churned_sum / previous_sum
     revenue_churn.nan? ? 0.0 : revenue_churn * 100
   end
 
   def shop_churn
     return 0.0 if previous_shops.empty? || not_churnable_charge_type?
+
     shop_churn = churned_shops.size / previous_shops.size.to_f
     shop_churn.nan? ? 0.0 : shop_churn * 100
   end
 
   def lifetime_value
     return 0.0 if previous_shops.empty? || shop_churn.zero? || not_churnable_charge_type?
+
     previous_sum / previous_shops.size / (shop_churn / 100)
   end
 
@@ -112,7 +120,7 @@ class Metric::Calculator
   end
 
   def churned_shops
-    @churned_shops ||= previous_shops.reject { |h| current_shops.include? h }
+    @churned_shops ||= previous_shops.reject { |h| current_shops.include?(h) }
   end
 
   def churned_sum
@@ -136,7 +144,7 @@ class Metric::Calculator
       payment_date: date,
       charge_type: charge_type,
       app_title: app_title,
-      is_yearly_revenue: is_yearly_revenue
+      is_yearly_revenue: is_yearly_revenue,
     )
   end
 end

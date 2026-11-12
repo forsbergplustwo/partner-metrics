@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class Payment < ApplicationRecord
-  UNKNOWN_APP_TITLE = "Unknown".freeze
+  UNKNOWN_APP_TITLE = "Unknown"
 
   belongs_to :user
   belongs_to :import

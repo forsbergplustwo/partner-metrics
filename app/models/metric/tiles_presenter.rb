@@ -1,4 +1,6 @@
-class Metric::TilesPresenter
+# frozen_string_literal: true
+
+class Metric::TilesPresenter # rubocop:disable Style/ClassAndModuleChildren -- Metric is a class
   extend Metric::TilesConfig
 
   def initialize(filter:)

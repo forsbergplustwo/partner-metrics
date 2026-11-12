@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module MetricsHelper
   def revenue_per_partial_for(charge_type)
     if charge_type.blank?
@@ -19,14 +21,14 @@ module MetricsHelper
   end
 
   def number_to_currency_with_precision(value)
-    precision = (value.to_i < 100) ? 2 : 0
+    precision = value.to_i < 100 ? 2 : 0
     number_to_currency(value, precision: precision)
   end
 
   def number_to_percentage_with_precision(value)
-    precision = (value < 10) ? 2 : 1
+    precision = value < 10 ? 2 : 1
     percentage = number_to_percentage(value, precision: precision)
-    (value > 0) ? "+" + percentage : percentage
+    value > 0 ? "+" + percentage : percentage
   end
 
   def metric_change_color(metric_change, positive_change_is_good)
@@ -71,7 +73,7 @@ module MetricsHelper
       period: period,
       chart: tile_type,
       app: app,
-      anchor: "top"
+      anchor: "top",
     )
   end
 
@@ -85,7 +87,7 @@ module MetricsHelper
         animation: {
           startup: true,
           duration: 600,
-          easing: "inAndOut"
+          easing: "inAndOut",
         },
         lineWidth: 3,
         colors: ["#5a24cd", "#7945e3"],
@@ -94,34 +96,34 @@ module MetricsHelper
           axis: "horizontal",
           maxZoomIn: 0.5,
           maxZoomOut: 1,
-          zoomDelta: 1.1
+          zoomDelta: 1.1,
         },
         vAxis: {
           format: "short",
           gridlines: {
-            color: "#F1F2F4"
-          }
+            color: "#F1F2F4",
+          },
         },
         timeline: {
-          tooltipDateFormat: "MMM d, yyyy"
+          tooltipDateFormat: "MMM d, yyyy",
         },
         hAxis: {
-          format: "MMM d, y"
+          format: "MMM d, y",
         },
         chartArea: {
           width: "100%",
           height: "80%",
-          left: "5%"
+          left: "5%",
         },
         focusTarget: "category",
         series: {
           "1": {
             visibleInLegend: false,
             lineWidth: 0,
-            areaOpacity: 0
-          }
-        }
-      }
+            areaOpacity: 0,
+          },
+        },
+      },
     }
   end
 end

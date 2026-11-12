@@ -1,17 +1,19 @@
+# frozen_string_literal: true
+
 require "test_helper"
 require_relative "support/capybara"
 
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   include Devise::Test::IntegrationHelpers
 
-  DRIVER = (ENV["HEADLESS"] == "false") ? :chrome : :headless_chrome
+  DRIVER = ENV["HEADLESS"] == "false" ? :chrome : :headless_chrome
   driven_by :selenium, using: DRIVER, screen_size: [1400, 1400]
 
   parallelize_setup do |i|
     ActiveStorage::Blob.service.root = "#{ActiveStorage::Blob.service.root}-#{i}"
   end
 
-  parallelize_teardown do |i|
+  parallelize_teardown do |_i|
     FileUtils.rm_rf(ActiveStorage::Blob.service.root)
   end
 

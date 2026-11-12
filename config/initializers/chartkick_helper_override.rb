@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Chartkick
   module Helper
     # TODO: THIS IS A HACK to make turbo frames play nicely with charts
@@ -44,7 +46,7 @@ module Chartkick
         height: height,
         width: width,
         # don't delete loading option since it needs to be passed to JS
-        loading: options[:loading] || "Loading..."
+        loading: options[:loading] || "Loading...",
       }
 
       [:height, :width].each do |k|
@@ -68,14 +70,14 @@ module Chartkick
         type: klass.to_json,
         id: element_id.to_json,
         data: data_source.respond_to?(:chart_json) ? data_source.chart_json : data_source.to_json,
-        options: options.to_json
+        options: options.to_json,
       }
       js_vars.each_key do |k|
         js_vars[k] = Chartkick::Utils.json_escape(js_vars[k])
       end
-      createjs = "new Chartkick[%{type}](%{id}, %{data}, %{options});" % js_vars
+      createjs = format("new Chartkick[%{type}](%{id}, %{data}, %{options});", js_vars)
 
-      warn "[chartkick] The defer option is no longer needed and can be removed" if defer
+      warn("[chartkick] The defer option is no longer needed and can be removed") if defer
 
       # Turbolinks preview restores the DOM except for painted <canvas>
       # since it uses cloneNode(true) - https://developer.mozilla.org/en-US/docs/Web/API/Node/
@@ -100,12 +102,14 @@ module Chartkick
       JS
 
       if content_for
-        content_for(content_for) { js.respond_to?(:html_safe) ? js.html_safe : js }
+        # Chart markup is escaped above and must stay marked safe so the script renders.
+        content_for(content_for) { js.respond_to?(:html_safe) ? js.html_safe : js } # rubocop:disable Rails/OutputSafety
       else
         html += "\n#{js}"
       end
 
-      html.respond_to?(:html_safe) ? html.html_safe : html
+      # Chart markup is escaped above and must stay marked safe so the script renders.
+      html.respond_to?(:html_safe) ? html.html_safe : html # rubocop:disable Rails/OutputSafety
     end
   end
 end

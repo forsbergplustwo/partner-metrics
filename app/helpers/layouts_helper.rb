@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module LayoutsHelper
   def nav_item_selected?(url)
     url_part = url.include?("?") ? url.split("?").first : url

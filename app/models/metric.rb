@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Metric < ApplicationRecord
   belongs_to :user
   belongs_to :import
@@ -13,13 +15,13 @@ class Metric < ApplicationRecord
     "recurring_revenue" => true,
     "onetime_revenue" => false,
     "affiliate_revenue" => false,
-    "refund" => false
+    "refund" => false,
   }.freeze
 
   DISPLAYABLE_TYPES = [
     :recurring_revenue,
     :onetime_revenue,
-    :affiliate_revenue
+    :affiliate_revenue,
   ].freeze
 
   class << self
@@ -41,7 +43,7 @@ class Metric < ApplicationRecord
     end
 
     def calculate_value(calculation, column)
-      (calculation == :sum) ? sum(column) : average(column)
+      calculation == :sum ? sum(column) : average(column)
     end
 
     def chart_data(date, period, calculation, column)
@@ -51,23 +53,23 @@ class Metric < ApplicationRecord
 
       # Build the date ranges, and group the metrics by date
       group_options = group_options(date, first_date, period)
-      metrics = group(group_options, {restrict: true})
+      metrics = group(group_options, { restrict: true })
 
       # Calculate the metrics for each date range
-      metrics = (calculation == :sum) ? metrics.sum(column) : metrics.average(column)
+      metrics = calculation == :sum ? metrics.sum(column) : metrics.average(column)
 
       # Fill in dates with no metrics with 0
       group_options[:metric_date].keys.each { |k| metrics[k.to_s] ||= 0 }
 
       # Sort the dates and return the metrics
-      metrics.sort_by { |h| h[0].to_datetime }
+      metrics.sort_by { |h| h[0].to_date }
     end
 
     # Build a hash of dates containing date ranges,
     # for each period between the first date and the date selected
     def group_options(date, first_date, period)
       counter_date = date
-      group_options = {metric_date: {}}
+      group_options = { metric_date: {} }
       until counter_date < first_date
         group_options[:metric_date][counter_date] = (counter_date.beginning_of_day - period.days + 1.day)..counter_date.end_of_day
         counter_date -= period.days
