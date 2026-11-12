@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "test_helper"
 
 class SmiirlIntegrationsControllerTest < ActionDispatch::IntegrationTest
@@ -12,7 +14,7 @@ class SmiirlIntegrationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "update toggles enabled and metric_type" do
-    put smiirl_integration_url, params: {smiirl_integration: {enabled: true, metric_type: "total_revenue_30d"}}
+    put smiirl_integration_url, params: { smiirl_integration: { enabled: true, metric_type: "total_revenue_30d" } }
     assert_redirected_to edit_smiirl_integration_url
     @user.reload
     assert @user.smiirl_integration.enabled?

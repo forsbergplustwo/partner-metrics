@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "test_helper"
 
 class DeleteAppsControllerTest < ActionDispatch::IntegrationTest
@@ -12,13 +14,13 @@ class DeleteAppsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "can create with valid params" do
-    post delete_apps_path, params: {delete_apps: {app_title: "test-app-1"}}
+    post delete_apps_path, params: { delete_apps: { app_title: "test-app-1" } }
     assert_response :redirect
     assert_redirected_to delete_apps_path, notice: "App deleted successfully"
   end
 
   test "can't create with invalid params" do
-    post rename_apps_path, params: {rename_app: {app_title: "unknown"}}
+    post rename_apps_path, params: { rename_app: { app_title: "unknown" } }
     assert_response :unprocessable_entity
   end
 end

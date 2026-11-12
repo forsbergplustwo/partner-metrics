@@ -1,4 +1,6 @@
-class Import::MetricsProcessor
+# frozen_string_literal: true
+
+class Import::MetricsProcessor # rubocop:disable Style/ClassAndModuleChildren -- Import is a class
   def initialize(import:)
     @import = import
     @user = import.user
@@ -8,6 +10,7 @@ class Import::MetricsProcessor
 
   def calculate!
     return if @import_from.blank? || @import_to.blank?
+
     calculate_new_metrics
   rescue => error
     @import&.fail
@@ -20,7 +23,7 @@ class Import::MetricsProcessor
     @import_from.upto(@import_to) do |date|
       metrics = []
       Metric::CHARGE_TYPES.each do |charge_type|
-        is_yearly_revenue_intervals_for(charge_type).each do |is_yearly_revenue|
+        yearly_revenue_intervals_for?(charge_type).each do |is_yearly_revenue|
           app_titles = app_titles_for(date: date, charge_type: charge_type, is_yearly_revenue: is_yearly_revenue)
           next if app_titles.empty?
 
@@ -30,18 +33,18 @@ class Import::MetricsProcessor
               date: date,
               charge_type: charge_type,
               app_title: app_title,
-              is_yearly_revenue: is_yearly_revenue
+              is_yearly_revenue: is_yearly_revenue,
             )
             metrics << new_metric_from(calculator: calculator) if calculator.has_metrics?
           end
         end
       end
       Metric.import!(metrics, validate: false, no_returning: true) if metrics.present?
-      @import.touch
+      @import.touch # rubocop:disable Rails/SkipsModelValidations -- progress timestamp only
     end
   end
 
-  def is_yearly_revenue_intervals_for(charge_type)
+  def yearly_revenue_intervals_for?(charge_type)
     if Metric::CHARGE_TYPE_CAN_HAVE_YEARLY_INTERVAL[charge_type]
       [true, false]
     else
@@ -53,7 +56,7 @@ class Import::MetricsProcessor
     @user.payments.where(
       payment_date: date,
       charge_type: charge_type,
-      is_yearly_revenue: is_yearly_revenue
+      is_yearly_revenue: is_yearly_revenue,
     ).pluck(:app_title).uniq
   end
 
@@ -74,7 +77,7 @@ class Import::MetricsProcessor
       shop_churn: calculator.shop_churn,
       lifetime_value: calculator.lifetime_value,
       repeat_customers: calculator.repeat_customers,
-      repeat_vs_new_customers: calculator.repeat_vs_new_customers
+      repeat_vs_new_customers: calculator.repeat_vs_new_customers,
     }
   end
 end

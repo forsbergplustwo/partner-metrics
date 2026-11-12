@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "test_helper"
 
 class PublicSmiirlControllerTest < ActionDispatch::IntegrationTest
@@ -12,7 +14,7 @@ class PublicSmiirlControllerTest < ActionDispatch::IntegrationTest
     get public_smiirl_url(token: @integration.token)
     assert_response :success
     json = JSON.parse(response.body)
-    assert_equal({"count" => 1}, json)
+    assert_equal({ "count" => 1 }, json)
   end
 
   test "returns 404 when disabled" do

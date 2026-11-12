@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Import < ApplicationRecord
   include ActionView::RecordIdentifier
 
@@ -9,11 +11,11 @@ class Import < ApplicationRecord
 
   accepts_nested_attributes_for :user, update_only: true
 
-  ACCEPTED_FILE_TYPES = %w[text/csv application/zip].freeze
+  ACCEPTED_FILE_TYPES = ["text/csv", "application/zip"].freeze
 
   enum :source, {
     csv_file: "csv_file",
-    shopify_payments_api: "shopify_payments_api"
+    shopify_payments_api: "shopify_payments_api",
     # shopify_app_events_api: "shopify_app_events_api"
   }, suffix: true
 
@@ -23,18 +25,18 @@ class Import < ApplicationRecord
     importing: "importing",
     calculating: "calculating",
     completed: "completed",
-    failed: "failed"
+    failed: "failed",
   }, default: "draft"
 
   validates :payouts_file, attached: true, content_type: ACCEPTED_FILE_TYPES, if: -> { csv_file_source? }
-  validates :source, presence: true, inclusion: {in: sources.keys}
-  validates :status, presence: true, inclusion: {in: statuses.keys}
+  validates :source, presence: true, inclusion: { in: sources.keys }
+  validates :status, presence: true, inclusion: { in: statuses.keys }
 
   after_create_commit :schedule
   after_update_commit :broadcast_details_update
   after_update_commit :broadcast_status_update, if: -> { saved_change_to_status? }
 
-  scope :in_progress, -> { where(status: %i[scheduled importing calculating]) }
+  scope :in_progress, -> { where(status: [:scheduled, :importing, :calculating]) }
 
   def retriable?
     shopify_payments_api_source? && failed? && user.imports.in_progress.empty?
@@ -47,6 +49,7 @@ class Import < ApplicationRecord
 
   def schedule
     return unless draft?
+
     scheduled!
     ImportPaymentsJob.perform_later(import: self)
   end
@@ -106,7 +109,7 @@ class Import < ApplicationRecord
       [user, :imports],
       target: dom_id(self, :details),
       partial: "imports/import",
-      locals: {import: self}
+      locals: { import: self },
     )
   end
 
@@ -115,7 +118,7 @@ class Import < ApplicationRecord
       [user, :imports],
       target: dom_id(self, :status),
       partial: "shared/status",
-      locals: {resource: self}
+      locals: { resource: self },
     )
   end
 end

@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require "shopify_partner_api"
 require "graphql/client"
 require "graphql/client/http"
 
-class Import::Adaptor::ShopifyPaymentsApi
+class Import::Adaptor::ShopifyPaymentsApi # rubocop:disable Style/ClassAndModuleChildren -- Import is a class
   include ShopifyPartnerAPI
 
   BATCH_SIZE = 100
@@ -11,15 +13,15 @@ class Import::Adaptor::ShopifyPaymentsApi
 
   API_REVENUE_TYPES = {
     "recurring_revenue" => [
-      "AppSubscriptionSale"
+      "AppSubscriptionSale",
     ],
     "onetime_revenue" => [
       "AppOneTimeSale",
       "ServiceSale",
-      "ThemeSale"
+      "ThemeSale",
     ],
     "affiliate_revenue" => [
-      "ReferralTransaction"
+      "ReferralTransaction",
     ],
     "refund" => [
       "AppCredit",
@@ -27,19 +29,19 @@ class Import::Adaptor::ShopifyPaymentsApi
       "AppSaleCredit",
       "ReferralAdjustment",
       "ServiceSaleAdjustment",
-      "ThemeSaleAdjustment"
+      "ThemeSaleAdjustment",
     ],
     "usage_revenue" => [
       "App sale – usage",
       "Usage application fee",
       "AppUsageRecord",
-      "AppUsageSale"
-    ]
+      "AppUsageSale",
+    ],
   }.freeze
 
   UNSUPPORTED_TRANSACTION_TYPES = [
     "TaxTransaction",
-    "LegacyTransaction"
+    "LegacyTransaction",
   ].freeze
 
   def initialize(import:, import_payments_after_date:)
@@ -85,8 +87,8 @@ class Import::Adaptor::ShopifyPaymentsApi
   def fetch_from_api(cursor)
     results = ShopifyPartnerAPI.client.query(
       Graphql::TransactionsQuery,
-      variables: {cursor: cursor, createdAtMin: @import_payments_after_date, first: batch_size},
-      context: @context
+      variables: { cursor: cursor, createdAtMin: @import_payments_after_date, first: batch_size },
+      context: @context,
     )
     handle_error(results.errors) if results.errors.any?
     results
@@ -97,11 +99,11 @@ class Import::Adaptor::ShopifyPaymentsApi
       charge_type: charge_type(node),
       payment_date: payment_date(node),
       revenue: revenue(node),
-      is_yearly_revenue: is_yearly_revenue(node),
+      is_yearly_revenue: yearly_revenue?(node),
       app_title: app_title(node),
       shop: shop(node),
       # ShopifyPartnerApi does not return shop country
-      shop_country: nil
+      shop_country: nil,
     }
   end
 
@@ -126,7 +128,7 @@ class Import::Adaptor::ShopifyPaymentsApi
     end || 0.0
   end
 
-  def is_yearly_revenue(node)
+  def yearly_revenue?(node)
     case node.__typename
     when "AppSubscriptionSale"
       node.billing_interval&.to_s == "ANNUAL"
@@ -159,7 +161,7 @@ class Import::Adaptor::ShopifyPaymentsApi
     stop_time = Time.zone.now
     processing_duration = stop_time - start_time
     wait_time = (THROTTLE_MIN_TIME_PER_CALL - processing_duration).round(1)
-    sleep wait_time if wait_time > 0.0
+    sleep(wait_time) if wait_time > 0.0
     Time.zone.now
   end
 

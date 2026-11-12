@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 class SummarysController < ApplicationController
   before_action :authenticate_user!
-  before_action :get_app_titles
+  before_action :app_titles
 
   private
 
-  def get_app_titles
+  def app_titles
     @app_titles = current_user.metrics.distinct.pluck(:app_title)
   end
 

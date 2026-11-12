@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Summary
   def initialize(user:, selected_app: nil)
     @user = user

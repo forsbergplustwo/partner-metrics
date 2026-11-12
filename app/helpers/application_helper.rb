@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ApplicationHelper
   def resource_name_for(klass, pluralize = false)
     klass.model_name.human.pluralize(pluralize ? 2 : 1).downcase

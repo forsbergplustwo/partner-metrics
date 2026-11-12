@@ -1,6 +1,12 @@
+# frozen_string_literal: true
+
 class User < ApplicationRecord
-  devise :database_authenticatable, :registerable,
-    :recoverable, :rememberable, :trackable, :validatable
+  devise :database_authenticatable,
+    :registerable,
+    :recoverable,
+    :rememberable,
+    :trackable,
+    :validatable
 
   has_many :payments, dependent: :delete_all
   has_many :metrics, dependent: :delete_all

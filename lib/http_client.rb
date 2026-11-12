@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ShopifyPartnerAPI
   class HTTPClient < GraphQL::Client::HTTP
     SHOPIFY_PARTNER_API_VERSION = "2026-07"
@@ -8,7 +10,7 @@ module ShopifyPartnerAPI
 
     def headers(context)
       {
-        "X-Shopify-Access-Token": context.fetch(:access_token)
+        "X-Shopify-Access-Token": context.fetch(:access_token),
       }
     end
 

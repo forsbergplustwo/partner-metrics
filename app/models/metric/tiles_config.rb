@@ -1,4 +1,6 @@
-module Metric::TilesConfig
+# frozen_string_literal: true
+
+module Metric::TilesConfig # rubocop:disable Style/ClassAndModuleChildren -- Metric is a class
   OVERVIEW_TILES = [
     {
       handle: :total_revenue,
@@ -7,7 +9,7 @@ module Metric::TilesConfig
       column: :revenue,
       display: :currency,
       positive_change_is_good: true,
-      is_yearly_revenue: nil
+      is_yearly_revenue: nil,
     },
     {
       handle: :recurring_revenue,
@@ -16,7 +18,7 @@ module Metric::TilesConfig
       column: :revenue,
       display: :currency,
       positive_change_is_good: true,
-      is_yearly_revenue: nil
+      is_yearly_revenue: nil,
     },
     {
       handle: :onetime_revenue,
@@ -25,7 +27,7 @@ module Metric::TilesConfig
       column: :revenue,
       display: :currency,
       positive_change_is_good: true,
-      is_yearly_revenue: nil
+      is_yearly_revenue: nil,
     },
     {
       handle: :affiliate_revenue,
@@ -34,7 +36,7 @@ module Metric::TilesConfig
       column: :revenue,
       display: :currency,
       positive_change_is_good: true,
-      is_yearly_revenue: nil
+      is_yearly_revenue: nil,
     },
     {
       handle: :refunds,
@@ -43,7 +45,7 @@ module Metric::TilesConfig
       charge_type: :refund,
       display: :currency,
       positive_change_is_good: false,
-      is_yearly_revenue: nil
+      is_yearly_revenue: nil,
     },
     {
       handle: :avg_revenue_per_shop,
@@ -52,8 +54,8 @@ module Metric::TilesConfig
       column: :average_revenue_per_shop,
       display: :currency,
       positive_change_is_good: true,
-      is_yearly_revenue: nil
-    }
+      is_yearly_revenue: nil,
+    },
   ].freeze
 
   RECURRING_TILES = [
@@ -64,7 +66,7 @@ module Metric::TilesConfig
       column: :revenue,
       display: :currency,
       positive_change_is_good: true,
-      is_yearly_revenue: nil
+      is_yearly_revenue: nil,
     },
     {
       handle: :recurring_revenue_monthly,
@@ -73,7 +75,7 @@ module Metric::TilesConfig
       column: :revenue,
       display: :currency,
       positive_change_is_good: true,
-      is_yearly_revenue: false
+      is_yearly_revenue: false,
     },
     {
       handle: :recurring_revenue_yearly,
@@ -82,7 +84,7 @@ module Metric::TilesConfig
       column: :revenue,
       display: :currency,
       positive_change_is_good: true,
-      is_yearly_revenue: true
+      is_yearly_revenue: true,
     },
     {
       handle: :paying_shops,
@@ -91,7 +93,7 @@ module Metric::TilesConfig
       column: :number_of_shops,
       display: :number,
       positive_change_is_good: true,
-      is_yearly_revenue: nil
+      is_yearly_revenue: nil,
     },
     {
       handle: :paying_shops_monthly,
@@ -100,7 +102,7 @@ module Metric::TilesConfig
       column: :number_of_shops,
       display: :number,
       positive_change_is_good: true,
-      is_yearly_revenue: false
+      is_yearly_revenue: false,
     },
     {
       handle: :paying_shops_yearly,
@@ -109,7 +111,7 @@ module Metric::TilesConfig
       column: :number_of_shops,
       display: :number,
       positive_change_is_good: true,
-      is_yearly_revenue: true
+      is_yearly_revenue: true,
     },
     # {
     #   handle: :recurring_avg_revenue_per_shop,
@@ -128,7 +130,7 @@ module Metric::TilesConfig
       display: :currency,
       positive_change_is_good: true,
       is_yearly_revenue: false,
-      width: :half
+      width: :half,
     },
     {
       handle: :recurring_avg_revenue_per_shop_yearly,
@@ -138,7 +140,7 @@ module Metric::TilesConfig
       display: :currency,
       positive_change_is_good: true,
       is_yearly_revenue: true,
-      width: :half
+      width: :half,
     },
     # {
     #   handle: :shop_churn,
@@ -157,7 +159,7 @@ module Metric::TilesConfig
       display: :percentage,
       positive_change_is_good: false,
       is_yearly_revenue: false,
-      width: :half
+      width: :half,
     },
     {
       handle: :shop_churn_yearly,
@@ -167,7 +169,7 @@ module Metric::TilesConfig
       display: :percentage,
       positive_change_is_good: false,
       is_yearly_revenue: true,
-      width: :half
+      width: :half,
     },
     # {
     #   handle: :revenue_churn,
@@ -186,7 +188,7 @@ module Metric::TilesConfig
       display: :percentage,
       positive_change_is_good: false,
       is_yearly_revenue: false,
-      width: :half
+      width: :half,
     },
     {
       handle: :revenue_churn_yearly,
@@ -196,7 +198,7 @@ module Metric::TilesConfig
       display: :percentage,
       positive_change_is_good: false,
       is_yearly_revenue: true,
-      width: :half
+      width: :half,
     },
     # {
     #   handle: :lifetime_value,
@@ -215,7 +217,7 @@ module Metric::TilesConfig
       display: :currency,
       positive_change_is_good: true,
       is_yearly_revenue: false,
-      width: :half
+      width: :half,
     },
     {
       handle: :lifetime_value_yearly,
@@ -225,8 +227,8 @@ module Metric::TilesConfig
       display: :currency,
       positive_change_is_good: true,
       is_yearly_revenue: true,
-      width: :half
-    }
+      width: :half,
+    },
   ].freeze
 
   ONETIME_TILES = [
@@ -237,7 +239,7 @@ module Metric::TilesConfig
       column: :revenue,
       display: :currency,
       positive_change_is_good: true,
-      is_yearly_revenue: nil
+      is_yearly_revenue: nil,
     },
     {
       handle: :onetime_avg_revenue_per_charge,
@@ -246,7 +248,7 @@ module Metric::TilesConfig
       column: :average_revenue_per_charge,
       display: :currency,
       positive_change_is_good: true,
-      is_yearly_revenue: nil
+      is_yearly_revenue: nil,
     },
     {
       handle: :onetime_avg_revenue_per_shop,
@@ -255,7 +257,7 @@ module Metric::TilesConfig
       column: :average_revenue_per_shop,
       display: :currency,
       positive_change_is_good: true,
-      is_yearly_revenue: nil
+      is_yearly_revenue: nil,
     },
     {
       handle: :number_of_sales,
@@ -264,7 +266,7 @@ module Metric::TilesConfig
       column: :number_of_charges,
       display: :number,
       positive_change_is_good: true,
-      is_yearly_revenue: nil
+      is_yearly_revenue: nil,
     },
     {
       handle: :repeat_customers,
@@ -273,7 +275,7 @@ module Metric::TilesConfig
       column: :repeat_customers,
       display: :number,
       positive_change_is_good: true,
-      is_yearly_revenue: nil
+      is_yearly_revenue: nil,
     },
     {
       handle: :repeat_vs_new_customers,
@@ -282,8 +284,8 @@ module Metric::TilesConfig
       column: :repeat_vs_new_customers,
       display: :percentage,
       positive_change_is_good: true,
-      is_yearly_revenue: nil
-    }
+      is_yearly_revenue: nil,
+    },
   ].freeze
 
   AFFILIATE_TILES = [
@@ -294,7 +296,7 @@ module Metric::TilesConfig
       column: :revenue,
       display: :currency,
       positive_change_is_good: true,
-      is_yearly_revenue: nil
+      is_yearly_revenue: nil,
     },
     {
       handle: :affiliate_number_of_charges,
@@ -303,7 +305,7 @@ module Metric::TilesConfig
       column: :number_of_charges,
       display: :number,
       positive_change_is_good: true,
-      is_yearly_revenue: nil
+      is_yearly_revenue: nil,
     },
     {
       handle: :affiliate_avg_revenue_per_shop,
@@ -312,7 +314,7 @@ module Metric::TilesConfig
       column: :average_revenue_per_shop,
       display: :currency,
       positive_change_is_good: true,
-      is_yearly_revenue: nil
-    }
+      is_yearly_revenue: nil,
+    },
   ].freeze
 end

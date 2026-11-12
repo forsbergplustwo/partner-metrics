@@ -1,4 +1,6 @@
-class Import::PaymentsProcessor
+# frozen_string_literal: true
+
+class Import::PaymentsProcessor # rubocop:disable Style/ClassAndModuleChildren -- Import is a class
   def initialize(import:)
     @import = import
     @user = import.user
@@ -29,7 +31,7 @@ class Import::PaymentsProcessor
       end
 
       Payment.import!(payments.compact, validate: false, no_returning: true) if payments.present?
-      @import.touch
+      @import.touch # rubocop:disable Rails/SkipsModelValidations -- progress timestamp only
     end
   end
 
@@ -50,11 +52,11 @@ class Import::PaymentsProcessor
       is_yearly_revenue: payment[:is_yearly_revenue],
       app_title: payment[:app_title],
       shop: payment[:shop],
-      shop_country: payment[:shop_country]
+      shop_country: payment[:shop_country],
     }
   end
 
   def adjust_usage_charge_type(charge_type)
-    (@user.count_usage_charges_as_recurring == true) ? "recurring_revenue" : "onetime_revenue"
+    @user.count_usage_charges_as_recurring == true ? "recurring_revenue" : "onetime_revenue"
   end
 end
