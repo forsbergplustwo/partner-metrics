@@ -21,7 +21,7 @@ default: &default
   host: localhost
   # For details on connection pooling, see Rails configuration guide
   # https://guides.rubyonrails.org/configuring.html#database-pooling
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  max_connections: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 development:
   <<: *default
@@ -60,6 +60,11 @@ development:
 test:
   <<: *default
   database: partner-metrics-test
+
+# Heroku's DATABASE_URL is merged over this and takes precedence.
+production:
+  <<: *default
+  database: partner-metrics-production
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is

@@ -17,8 +17,8 @@ FileUtils.chdir APP_ROOT do
   system! "gem install bundler --conservative"
   system("bundle check") || system!("bundle install")
 
-  puts "== Installing yarn dependencies =="
-  system!("yarn install")
+  puts "== Installing pnpm dependencies =="
+  system!("pnpm install --frozen-lockfile")
 
   # puts "\n== Copying sample files =="
   # unless File.exist?("config/database.yml")

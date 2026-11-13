@@ -7,7 +7,7 @@
 
   <%= polaris_card do %>
     <%= turbo_frame_tag :delete_apps, target: "_top" do %>
-      <%= form_for(:delete_apps, url: delete_apps_path, builder: Polaris::FormBuilder) do |form| %>
+      <%= form_for(:delete_apps, url: delete_apps_path, builder: ScopedPolarisFormBuilder) do |form| %>
         <%= polaris_form_layout do |form_layout| %>
 
           <% form_layout.with_item do %>

@@ -1,3 +1,6 @@
+# standard 1.47 (held by standard-rails 0.2) can't parse a Ruby 4.0 target yet
+ruby_version: 3.4
+
 plugins:
   - standard-rails
   - standard-minitest

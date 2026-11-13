@@ -13,7 +13,8 @@ class Summary::Monthly < Summary
     payments_revenue.each do |month, revenue|
       summary[month] ||= {}
       summary[month][:revenue] = revenue
-      summary[month][:revenue_per_payment] = revenue / summary[month][:payments].to_f
+      payment_count = summary[month][:payments].to_f
+      summary[month][:revenue_per_payment] = payment_count.positive? ? (revenue / payment_count) : 0
     end
 
     metrics_revenue_churn.each do |month, churn|
