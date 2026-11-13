@@ -1,0 +1,39 @@
+[settings]
+idiomatic_version_file_enable_tools = ["node", "ruby", "pnpm"]
+lockfile = true
+
+[tasks.install]
+description = "Install Ruby and JS dependencies"
+depends = ["install:ruby", "install:js"]
+
+[tasks."install:ruby"]
+description = "Install Ruby dependencies"
+run = "bundle install"
+
+[tasks."install:js"]
+description = "Install JS dependencies"
+run = "pnpm install --frozen-lockfile"
+
+[tasks.setup]
+description = "Install dependencies and prepare databases"
+depends = ["install"]
+run = "bin/setup"
+
+[tasks.dev]
+description = "Starts the dev server using foreman and Procfile.dev"
+depends = ["install"]
+run = "bin/dev"
+
+[tasks.test]
+description = "Run the Rails test suite used in CI"
+depends = ["setup"]
+run = "bin/rails test"
+
+[tasks.ci]
+description = "Run app CI checks"
+depends = ["test"]
+
+[tasks."lint:ruby"]
+description = "Lint Ruby code with Standard"
+depends = ["install:ruby"]
+run = "bundle exec standardrb --fix --format github"

@@ -32,8 +32,7 @@
 
 /node_modules
 
-# Ignore production credentials key
-# Note: Dev and Test keys are included for easier setup.
+# Dev and test credential keys stay committed so setup does not need a separate secret.
 /config/credentials/production.key
 
 .env

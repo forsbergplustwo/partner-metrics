@@ -7,10 +7,6 @@ on:
         required: true
         type: string
         default: partner-metrics
-      use_node:
-        type: boolean
-        required: false
-        default: false
     secrets:
       master_key:
         required: true
@@ -40,11 +36,13 @@ jobs:
         options: --entrypoint redis-server
     steps:
       - uses: actions/checkout@v3
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
       - name: Set up Node
-        if: ${{ inputs.use_node == true }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version-file: '.node-version'
+          cache: pnpm
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         env:

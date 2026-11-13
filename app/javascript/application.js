@@ -1,4 +1,4 @@
-// Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
+// Bundled by esbuild (jsbundling-rails). Output is served by Propshaft from app/assets/builds.
 import "@hotwired/turbo-rails"
 import "./controllers"
 import "chartkick"
