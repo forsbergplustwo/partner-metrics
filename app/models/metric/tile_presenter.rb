@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Metric::TilePresenter # rubocop:disable Style/ClassAndModuleChildren -- Metric is a class
+class Metric::TilePresenter
   def initialize(filter:, tile_config:)
     @filter = filter
 

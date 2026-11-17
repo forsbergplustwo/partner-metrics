@@ -22,7 +22,8 @@ class PartnerApiCredentialTest < ActiveSupport::TestCase
 
   test "writes and reads values with the SHA-256 digest" do
     credential = partner_api_credentials(:one)
-    credential.update_column(:access_token, "new-sha256-token")
+    credential.access_token = "new-sha256-token"
+    credential.save!(validate: false)
 
     assert_equal "new-sha256-token", credential.reload.access_token
     assert_equal OpenSSL::Digest::SHA256, ActiveRecord::Encryption.config.hash_digest_class

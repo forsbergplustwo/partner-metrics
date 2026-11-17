@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Import::MetricsProcessor # rubocop:disable Style/ClassAndModuleChildren -- Import is a class
+class Import::MetricsProcessor
   def initialize(import:)
     @import = import
     @user = import.user

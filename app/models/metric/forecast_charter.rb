@@ -3,7 +3,7 @@
 require "prophet-rb"
 require "rover"
 
-class Metric::ForecastCharter # rubocop:disable Style/ClassAndModuleChildren -- Metric is a class
+class Metric::ForecastCharter
   FORECAST_PERIODS = 6
   FREQUENCIES = {
     monthly: "MS",

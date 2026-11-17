@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Metric::TilesFilter # rubocop:disable Style/ClassAndModuleChildren -- Metric is a class
+class Metric::TilesFilter
   def initialize(user:, params:)
     @user = user
     @date = params[:date]&.to_date || user.newest_metric_date_or_today

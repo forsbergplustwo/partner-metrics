@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Metric::Calculator # rubocop:disable Style/ClassAndModuleChildren -- Metric is a class
+class Metric::Calculator
   MONTHLY_BILLING_FREQUENCY = 30.days
   MONTHLY_BILLING_CHURN_WINDOW = 15.days
 

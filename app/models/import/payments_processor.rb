@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Import::PaymentsProcessor # rubocop:disable Style/ClassAndModuleChildren -- Import is a class
+class Import::PaymentsProcessor
   def initialize(import:)
     @import = import
     @user = import.user

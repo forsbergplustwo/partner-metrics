@@ -4,7 +4,7 @@ require "shopify_partner_api"
 require "graphql/client"
 require "graphql/client/http"
 
-class Import::Adaptor::ShopifyPaymentsApi # rubocop:disable Style/ClassAndModuleChildren -- Import is a class
+class Import::Adaptor::ShopifyPaymentsApi
   include ShopifyPartnerAPI
 
   BATCH_SIZE = 100

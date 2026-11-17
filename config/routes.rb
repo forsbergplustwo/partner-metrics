@@ -53,7 +53,7 @@ Rails.application.routes.draw do
   agent_file = ->(env) {
     [
       200,
-      {"content-type" => "text/plain; charset=utf-8"},
+      { "content-type" => "text/plain; charset=utf-8" },
       [Rails.public_path.join("agents.md").read]
     ]
   }

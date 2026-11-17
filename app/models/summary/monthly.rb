@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Summary::Monthly < Summary # rubocop:disable Style/ClassAndModuleChildren -- Summary is a class
+class Summary::Monthly < Summary
   MONTHS_TO_SUMMARIZE = 36
   GROUP_OPTIONS = { reverse: true, last: MONTHS_TO_SUMMARIZE }.freeze
 

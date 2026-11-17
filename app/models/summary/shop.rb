@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Summary::Shop < Summary # rubocop:disable Style/ClassAndModuleChildren -- Summary is a class
+class Summary::Shop < Summary
   TOP_SHOPS_LIMIT = 100
   SQL_QUERY = "shop, COUNT(payment_date) AS payment_count, SUM(revenue) AS total_revenue, MAX(payment_date) AS last_payment_date"
 

@@ -3,7 +3,7 @@
 require "zip"
 require "csvreader"
 
-class Import::Adaptor::CsvFile # rubocop:disable Style/ClassAndModuleChildren -- Import is a class
+class Import::Adaptor::CsvFile
   BATCH_SIZE = 1000
   MAX_HISTORY = 5.years
 

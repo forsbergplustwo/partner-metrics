@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Metric::TilesConfig # rubocop:disable Style/ClassAndModuleChildren -- Metric is a class
+module Metric::TilesConfig
   OVERVIEW_TILES = [
     {
       handle: :total_revenue,
