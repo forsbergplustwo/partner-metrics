@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module PartnerApiCredentialsHelper
   def partner_api_credential_path_for(current_user)
     if current_user.partner_api_credential&.persisted?

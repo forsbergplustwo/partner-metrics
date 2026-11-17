@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AppDeleter
   def initialize(user:, app_title:)
     @user = user

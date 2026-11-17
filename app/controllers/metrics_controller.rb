@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MetricsController < ApplicationController
   before_action :authenticate_user!
 
@@ -17,7 +19,7 @@ class MetricsController < ApplicationController
       :chart,
       :date,
       :period,
-      :charge_type
+      :charge_type,
     )
   end
 end

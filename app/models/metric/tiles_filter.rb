@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Metric::TilesFilter
   def initialize(user:, params:)
     @user = user
@@ -16,13 +18,9 @@ class Metric::TilesFilter
     @user.app_titles(@charge_type)
   end
 
-  def tiles
-    tiles_presenter.tiles
-  end
+  delegate :tiles, to: :tiles_presenter
 
-  def selected_tile
-    tiles_presenter.selected_tile
-  end
+  delegate :selected_tile, to: :tiles_presenter
 
   def has_metrics?
     current_period_metrics.any?
@@ -46,7 +44,7 @@ class Metric::TilesFilter
       charge_type: @charge_type,
       chart: @chart,
       period: @period,
-      app: @app
+      app: @app,
     }
   end
 

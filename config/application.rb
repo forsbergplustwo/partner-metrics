@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative "boot"
 
 require "rails"
@@ -21,7 +23,7 @@ Bundler.require(*Rails.groups)
 module PartnerMetrics
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 8.1
+    config.load_defaults(8.1)
     # polaris_view_components 1.1 requires helpers from its autoload path (`require "polaris/view_helper"`).
     config.add_autoload_paths_to_load_path = true
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "test_helper"
 
 class EncryptionCompatibilityTest < ActiveSupport::TestCase
@@ -20,7 +22,7 @@ class EncryptionCompatibilityTest < ActiveSupport::TestCase
       cipher: "aes-256-gcm",
       serializer: ActiveSupport::Messages::SerializerWithFallback[:json]
     )
-    payload = {"session_id" => "keep-me", "warden.user.user.key" => [[users(:regular).id], "salt"]}
+    payload = { "session_id" => "keep-me", "warden.user.user.key" => [[users(:regular).id], "salt"] }
 
     assert_equal payload, encryptor.decrypt_and_verify(encryptor.encrypt_and_sign(payload))
     assert_equal OpenSSL::Digest::SHA256, Rails.application.config.active_support.key_generator_hash_digest_class
