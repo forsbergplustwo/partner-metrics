@@ -6,7 +6,7 @@ ruby "4.0.9"
 # Backend
 gem "rails", "~> 8.1.4", ">= 8.1.4.1"
 gem "pg", "~> 1.1"
-gem "puma", "~> 6.0"
+gem "puma", "~> 7.2"
 gem "redis", "~> 5.0"
 gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
 gem "bootsnap", require: false
